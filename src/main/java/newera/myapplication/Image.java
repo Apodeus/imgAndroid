@@ -5,4 +5,5 @@ package newera.myapplication;
  */
 
 public class Image {
+    int t = 42;
 }
