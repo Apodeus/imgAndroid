@@ -26,8 +26,7 @@ public class CImageView extends View {
     @Override
     public void onDraw(Canvas canvas){
         if (image == null || !image.isEmpty()){
-            canvas.drawColor(0x5E7078);
-            Log.i("INFO", "" + R.color.colorPrimary);
+            canvas.drawColor(getResources().getColor(R.color.colorPrimary));
         } else {
             canvas.drawBitmap(image.getBitmap(), 0, 0, null);
         }
