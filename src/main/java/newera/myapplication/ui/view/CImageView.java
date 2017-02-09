@@ -24,9 +24,15 @@ public class CImageView extends View {
         image = null;
     }
 
+    public void setImage(Image image)
+    {
+        this.image = image;
+        invalidate();
+    }
+
     @Override
     public void onDraw(Canvas canvas){
-        if (image == null || !image.isEmpty()){
+        if (image == null || image.isEmpty()){
             canvas.drawColor(getResources().getColor(R.color.colorPrimary));
         } else {
             canvas.drawBitmap(image.getBitmap(), 0, 0, null);

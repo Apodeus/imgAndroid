@@ -7,13 +7,14 @@
     tools:context="newera.myapplication.MainActivity">
 
     <newera.myapplication.ui.view.CImageView
+            android:id="@+id/cImageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
     <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
-        app:fabSize="mini" app:srcCompat="@color/colorAccent"
+        app:fabSize="normal" app:srcCompat="@color/colorAccent"
         android:layout_marginEnd="18dp" android:layout_marginBottom="23dp"
         android:id="@+id/floatingActionButton" android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"/>
