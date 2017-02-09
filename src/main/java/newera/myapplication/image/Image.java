@@ -9,11 +9,11 @@ import android.graphics.Bitmap;
 public class Image {
     private Bitmap bitmap;
 
-    Bitmap getBitmap(){
+    public Bitmap getBitmap(){
         return bitmap;
     }
 
-    boolean isEmpty(){
+    public boolean isEmpty(){
         return bitmap == null;
     }
 }
