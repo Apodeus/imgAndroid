@@ -18,6 +18,7 @@ import java.util.ResourceBundle;
 
 public class CImageView extends View {
     private Image image;
+
     public CImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
         image = null;

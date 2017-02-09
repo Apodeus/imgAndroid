@@ -5,4 +5,5 @@ package newera.myapplication.image.processing.shaders;
  */
 
 public abstract class Shader {
+
 }

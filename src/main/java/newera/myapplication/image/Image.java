@@ -9,8 +9,17 @@ import android.graphics.Bitmap;
 public class Image {
     private Bitmap bitmap;
 
+    /**
+     * @return bitmap's reference
+     */
     public Bitmap getBitmap(){
         return bitmap;
+    }
+
+    public void setBitmap(Bitmap bitmap){
+        if(bitmap == null)
+            return;
+        this.bitmap = bitmap.copy(bitmap.getConfig(), bitmap.isMutable());
     }
 
     public boolean isEmpty(){
