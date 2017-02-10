@@ -5,4 +5,5 @@ package newera.myapplication.image;
  */
 
 public interface Histogram {
+
 }

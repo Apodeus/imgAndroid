@@ -18,8 +18,8 @@ public class MainActivity extends AppCompatActivity {
         //OnCreate
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        /*SystemActionHandler.setActivity(this);
-        PictureFileManager.CreatePictureFileFromCamera();
+        SystemActionHandler.setActivity(this);
+        PictureFileManager.IntentPickGallery();
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floatingActionButton);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
                 civ.setImage(PictureFileManager.RetrievePictureSavedFromCamera());
 
             }
-        });*/
+        });
 
     }
 

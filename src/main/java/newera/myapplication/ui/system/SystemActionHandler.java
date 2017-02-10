@@ -11,6 +11,7 @@ import static android.app.Activity.RESULT_OK;
 public class SystemActionHandler {
 
     private static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final int REQUEST_IMAGE_GALLERY = 2;
 
     /**
      * Set the activity often required to interact with Android and other apps.
@@ -24,6 +25,8 @@ public class SystemActionHandler {
     public static void handleActivityResult(int requestCode, int resultCode, Intent data)
     {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK)
+            PictureFileManager.HandleResult(data);
+        if(requestCode == REQUEST_IMAGE_GALLERY && resultCode == RESULT_OK)
             PictureFileManager.HandleResult(data);
     }
 }
