@@ -2,7 +2,6 @@ package newera.myapplication.ui.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -13,7 +12,6 @@ import newera.myapplication.image.Image;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
 /**
  * Created by Emile Barjou-Suire on 09/02/2017.
@@ -52,7 +50,7 @@ public class CImageView extends View {
     public boolean onTouchEvent(MotionEvent event)
     {
         contentScale = touchHandler.onTouch(event, touchMethod.DRAG, contentCoords, contentScale);
-        Log.i("FINAL", ""+contentCoords.x+"/"+contentCoords.y);
+        //Log.i("FINAL", ""+contentCoords.x+"/"+contentCoords.y);
         invalidate();
         return true;
     }
@@ -78,31 +76,35 @@ public class CImageView extends View {
                 pointerIndex = event.findPointerIndex(mActivePointerId);
                 touchList.add( new Point((int)event.getX(pointerIndex), (int)event.getY(pointerIndex)) );
             }
+
             switch(method) {
                 case DRAG: {
                     switch(event.getAction()) {
                         case MotionEvent.ACTION_DOWN: {
                             initialX = touchList.get(0).x;
                             initialY = touchList.get(0).y;
-                            Log.i("tI", ""+initialX+"/"+initialY);
+                            //Log.i("tI", ""+initialX+"/"+initialY);
                             initialContentX = coord.x;
                             initialContentY = coord.y;
                         } break;
+
                         case MotionEvent.ACTION_MOVE: {
                             coord.x = initialContentX + (touchList.get(0).x - initialX);
                             coord.y = initialContentY + (touchList.get(0).y - initialY);
-
-;                        } break;
+                        } break;
                     }
+
                 } break;
+
                 case ZOOM: {
                 } break;
+
                 case TOOL: {
                 } break;
             }
+
             return scale;
         }
-
     }
 
     private class Point{
@@ -112,6 +114,7 @@ public class CImageView extends View {
             this.x = 0;
             this.y = 0;
         }
+
         public Point(int x, int y){
             this.x = x;
             this.y = y;

@@ -9,8 +9,6 @@ import newera.myapplication.ui.system.SystemActionHandler;
 import newera.myapplication.ui.system.PictureFileManager;
 import newera.myapplication.ui.view.CImageView;
 
-import static android.support.design.R.styleable.FloatingActionButton;
-
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -19,13 +17,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         SystemActionHandler.setActivity(this);
-        PictureFileManager.IntentPickGallery();
+        PictureFileManager.LoadPictureFromGallery();
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floatingActionButton);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 CImageView civ = (CImageView) findViewById(R.id.cImageView);
-                civ.setImage(PictureFileManager.RetrievePictureSavedFromCamera());
+                civ.setImage(PictureFileManager.RetrieveSavedPictureFromIntent());
 
             }
         });

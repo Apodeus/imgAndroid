@@ -43,7 +43,7 @@ public class PictureFileManager {
 
     /**
      * Calls camera app to take a picture, then saves it in the application directory.
-     * Picture can later be retrieved with RetrievePictureFileFromCamera().
+     * Picture can later be retrieved with RetrieveSavedPictureFromIntent().
      */
     public static void CreatePictureFileFromCamera()
     {
@@ -51,24 +51,38 @@ public class PictureFileManager {
     }
 
     /**
-     * Retrieve a picture previously saved with CreatePictureFileFromCamera().
+     * Calls Gallery app to pick an already saved picture from phone.
+     * Picture can later be retrieved with RetrieveSavedPictureFromIntent().
+     */
+    public static void LoadPictureFromGallery()
+    {
+        dispatchPickPictureFromGallery();
+    }
+
+    /**
+     * Retrieve a picture previously saved with CreatePictureFileFromCamera() or LoadPictureFromGallery().
      * @return A new Image object of the saved picture
      */
-    public static Image RetrievePictureSavedFromCamera()
+    public static Image RetrieveSavedPictureFromIntent()
     {
         Image result = new Image();
-        if(LAST_REQUEST == REQUEST_IMAGE_GALLERY){
+        switch (LAST_REQUEST)
+        {
+            case REQUEST_IMAGE_CAPTURE:
+                Bitmap img = BitmapFactory.decodeFile(TmpPicturePath);
+                result.setBitmap(img);
+                break;
 
-            Bitmap bmp = BitmapFactory.decodeFileDescriptor(fd);
-            result.setBitmap(bmp);
-            try {
-                pfd.close();
-            } catch (IOException e){
-                Log.i("Close pfd", "Error");
-            }
-        } else {
-            Bitmap img = BitmapFactory.decodeFile(TmpPicturePath);
-            result.setBitmap(img);
+            case REQUEST_IMAGE_GALLERY:
+                Bitmap bmp = BitmapFactory.decodeFileDescriptor(fd);
+                result.setBitmap(bmp);
+                try {
+                    pfd.close();
+                } catch (IOException e){
+                    Log.i("WARNING", "Cannot close pfd");
+                }
+
+                break;
         }
 
         return result;
@@ -81,9 +95,8 @@ public class PictureFileManager {
         try {
             pfd = Activity.getContentResolver().openFileDescriptor(tmp, "r");
             fd = pfd.getFileDescriptor();
-
         } catch(IOException e) {
-            Log.i("Handle Result", "Error File,path");
+            Log.i("WARNING", "Cannot get file from Uri");
         }
     }
 
@@ -103,12 +116,12 @@ public class PictureFileManager {
                 Uri pictureFileUri = FileProvider.getUriForFile(Activity, "com.newera.fileprovider", TmpPictureFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, pictureFileUri);
                 Activity.startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-
             }
         }
     }
 
-    public static void IntentPickGallery(){
+    private static void dispatchPickPictureFromGallery()
+    {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         Activity.startActivityForResult(intent, REQUEST_IMAGE_GALLERY);
         LAST_REQUEST = REQUEST_IMAGE_GALLERY;
