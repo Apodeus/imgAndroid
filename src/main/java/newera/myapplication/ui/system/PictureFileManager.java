@@ -34,8 +34,8 @@ public class PictureFileManager {
 
     private static File TmpPictureFile;
 
-    private static ParcelFileDescriptor pfd;
-    private static FileDescriptor fd;
+    private static ParcelFileDescriptor parcelFD;
+    private static FileDescriptor fileDescriptor;
 
     static void setActivity(MainActivity activity) {
         Activity = activity;
@@ -66,20 +66,21 @@ public class PictureFileManager {
     public static Image RetrieveSavedPictureFromIntent()
     {
         Image result = new Image();
+        Bitmap img;
         switch (LAST_REQUEST)
         {
             case REQUEST_IMAGE_CAPTURE:
-                Bitmap img = BitmapFactory.decodeFile(TmpPicturePath);
+                img = BitmapFactory.decodeFile(TmpPicturePath);
                 result.setBitmap(img);
                 break;
 
             case REQUEST_IMAGE_GALLERY:
-                Bitmap bmp = BitmapFactory.decodeFileDescriptor(fd);
-                result.setBitmap(bmp);
                 try {
-                    pfd.close();
+                    img = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+                    result.setBitmap(img);
+                    parcelFD.close();
                 } catch (IOException e){
-                    Log.i("WARNING", "Cannot close pfd");
+                    Log.i("WARNING", "Cannot close parcelFileDescriptor");
                 }
 
                 break;
@@ -90,11 +91,11 @@ public class PictureFileManager {
 
     static void HandleResult(Intent data)
     {
-        Uri tmp = data.getData();
-        TmpPicturePath = tmp.getPath();
+        Uri uriFile = data.getData();
+        TmpPicturePath = uriFile.getPath();
         try {
-            pfd = Activity.getContentResolver().openFileDescriptor(tmp, "r");
-            fd = pfd.getFileDescriptor();
+            parcelFD = Activity.getContentResolver().openFileDescriptor(uriFile, "r");
+             fileDescriptor = parcelFD.getFileDescriptor();
         } catch(IOException e) {
             Log.i("WARNING", "Cannot get file from Uri");
         }
