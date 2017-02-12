@@ -15,9 +15,9 @@ Schéma fonctionnel : [Mindomo](https://www.mindomo.com/mindmap/b9565ab1eb794d20
 ## ToDo List
 
 ### Système
-~~- Charger une image depuis la Galerie~~
-~~- Charger une image depuis la caméra~~
-~~- Afficher une image sur une ImageView custom~~
+- ~~Charger une image depuis la Galerie~~
+- ~~Charger une image depuis la caméra~~
+- ~~Afficher une image sur une ImageView custom~~
 - Zoomer
 - Scroller
 - Réinitialiser l'image d'origine
