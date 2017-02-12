@@ -12,6 +12,31 @@ Deadline rendu final : **Vendredi 14 Avril**
 
 Schéma fonctionnel : [Mindomo](https://www.mindomo.com/mindmap/b9565ab1eb794d20a15267735e7b041d).
 
+## ToDo List
+
+### Système
+~~- Charger une image depuis la Galerie~~
+~~- Charger une image depuis la caméra~~
+~~- Afficher une image sur une ImageView custom~~
+- Zoomer
+- Scroller
+- Réinitialiser l'image d'origine
+- Sauvegarder l'image modifiée
+
+### Filtres
+- Régler la luminosité
+- Régler le contraste
+- Egalisation d'histogramme
+- Filtrage de couleur
+- Convolution
+
+### Bonus
+- Effet dessin au crayon
+- Effet cartoon
+- Incruster des objets (reconnaissance faciale ?)
+- "Schtroumpfer" un visage
+- Restreindre la zone d'application d'un filtre
+
 ## Membres
 
 **04348** : Emile Barjou
