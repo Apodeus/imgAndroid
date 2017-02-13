@@ -64,34 +64,43 @@ public class CircleMenu extends View {
                 radius += (extRadius - radius) / 2 + 10;
                 invalidate();
             } else if (isExtanded && radius > extRadius){
-                radius-=(radius - extRadius) / 2;
+                radius -= (radius - extRadius) / 2;
                 invalidate();
             } else if (!isExtanded && radius > initialRadius){
-                radius-=((radius-initialRadius)/2 + 10);
+                radius -= ((radius-initialRadius)/2 + 10);
                 invalidate();
             } else if (!isExtanded && radius < initialRadius){
-                radius+=(initialRadius-radius)/2;
+                radius += (initialRadius-radius)/2;
                 invalidate();
             }
         }
 
         paint.setColor(getResources().getColor(R.color.colorAccent));
-        padding = (extRadius+initialRadius)-radius;
-        rect.set(padding,padding,padding+radius*2,padding+radius*2);
+        padding = (extRadius + initialRadius) - radius;
+        rect.set(padding, padding, padding + radius * 2, padding + radius * 2);
         canvas.drawOval(rect, paint);
         if (isExtanded){
             for (int i = 0; i < itemList.size(); ++i){
+                angle = Math.toRadians(i * 15) - Math.toRadians(itemAngle);
+
+                // ===== draw circle item ====
                 paint.setColor(getResources().getColor(R.color.colorPrimaryDark));
-                angle = Math.toRadians(i*15) - Math.toRadians(itemAngle);
-                x = (int)(width+(radius-initialRadius*0.75)*Math.cos(angle));
-                y = (int)(height+(radius-initialRadius*0.75)*Math.sin(angle));
-                rectFromCircle(itemList.get(i), x, y , initialRadius/2);
+                x = (int)(width + (radius - initialRadius * 0.75) * Math.cos(angle));
+                y = (int)(height + (radius - initialRadius * 0.75) * Math.sin(angle));
+                rectFromCircle(itemList.get(i), x, y , initialRadius / 2);
                 canvas.drawOval(itemList.get(i).getRect(), paint);
 
+                int x2, y2;
+
+                // ==== Draw item name ====
                 paint.setColor(Color.WHITE);
-                x = (int)(width+(radius+initialRadius*0.75)*Math.cos(angle));
-                y = (int)(height+(radius+initialRadius*0.75)*Math.sin(angle));
-                canvas.drawText(itemList.get(i).getName(), x, y, paint);
+                x2 = (int)(width + (radius + initialRadius * 0.85) * Math.cos(angle));
+                y2 = (int)(height + (radius + initialRadius * 0.85) * Math.sin(angle));
+
+                canvas.save();
+                canvas.rotate((float)Math.toDegrees(angle) + 180, x2, y2);
+                canvas.drawText(itemList.get(i).getName(), x2, y2, paint);
+                canvas.restore();
             }
         }
     }
@@ -101,8 +110,8 @@ public class CircleMenu extends View {
         width = MeasureSpec.getSize(w);
         height = MeasureSpec.getSize(h);
 
-        initialRadius = (width/ RADIUS_FACTOR);
-        extRadius = width-initialRadius;
+        initialRadius = (width / RADIUS_FACTOR);
+        extRadius = width - initialRadius;
         radius = initialRadius;
 
         setMeasuredDimension(width, height);
@@ -116,7 +125,7 @@ public class CircleMenu extends View {
                 initialTx = (int)event.getX();
                 initialTy = (int)event.getY();
                 initialItemAngle = itemAngle;
-                if (Math.hypot(event.getX()-width, event.getY()-height) > extRadius+initialRadius){
+                if (Math.hypot(event.getX() - width, event.getY() - height) > extRadius+initialRadius){
                     isExtanded = false;
                     return false;
                 }
@@ -125,7 +134,7 @@ public class CircleMenu extends View {
             } break;
 
             case MotionEvent.ACTION_MOVE: {
-                if(!isExtanded || (isExtanded && Math.hypot(event.getX() - width, event.getY() - height) < 2*extRadius/3)){
+                if(!isExtanded || (isExtanded && Math.hypot(event.getX() - width, event.getY() - height) < 2 * extRadius / 3)){
                     if (Math.hypot(event.getX() - width, event.getY() - height) < extRadius + initialRadius) {
                         if (touchIsExt)
                             radius = (int) Math.hypot(event.getX() - width, event.getY() - height);
@@ -162,7 +171,7 @@ public class CircleMenu extends View {
     }
 
     private void rectFromCircle(MenuItem item, int x, int y, int r){
-        item.setRect(x-r, y-r, x+r, y+r);
+        item.setRect(x - r, y - r, x + r, y + r);
     }
 
     private class MenuItem{
