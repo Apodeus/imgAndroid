@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import newera.myapplication.R;
+import newera.myapplication.ui.system.PictureFileManager;
 
 /**
  * Created by Emile Barjou-Suire on 11/02/2017.
@@ -157,8 +158,17 @@ public class CircleMenu extends View {
                 */
                 if (Math.abs(initialTx-event.getX()) < 5 && Math.abs(initialTy-event.getY()) < 5){
                     for (int i = 0; i < itemList.size(); ++i){
-
                         if (itemList.get(i).contains((int)event.getX(), (int)event.getY())){
+                            switch(i){
+                                case 0:
+                                    PictureFileManager.LoadPictureFromGallery();
+                                    break;
+                                case 1:
+                                    PictureFileManager.CreatePictureFileFromCamera();
+                                    break;
+                                default:
+                                    break;
+                            }
                             Log.i("DBG", "Click on "+itemList.get(i).getName());
                         }
                     }

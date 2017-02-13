@@ -16,8 +16,9 @@ public class MainActivity extends AppCompatActivity {
         //OnCreate
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         SystemActionHandler.setActivity(this);
-        PictureFileManager.LoadPictureFromGallery();
+        //PictureFileManager.LoadPictureFromGallery();
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floatingActionButton);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
