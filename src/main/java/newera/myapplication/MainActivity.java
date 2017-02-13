@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         SystemActionHandler.setActivity(this);
+        PictureFileManager.CreatePictureFileFromCamera();
         //PictureFileManager.LoadPictureFromGallery();
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floatingActionButton);
         fab.setOnClickListener(new View.OnClickListener() {

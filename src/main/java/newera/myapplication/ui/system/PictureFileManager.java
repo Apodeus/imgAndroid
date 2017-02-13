@@ -47,6 +47,7 @@ public class PictureFileManager {
      */
     public static void CreatePictureFileFromCamera()
     {
+        LAST_REQUEST = REQUEST_IMAGE_CAPTURE;
         dispatchTakePictureIntent();
     }
 
@@ -91,18 +92,21 @@ public class PictureFileManager {
 
     static void HandleResult(Intent data)
     {
-        Uri uriFile = data.getData();
-        TmpPicturePath = uriFile.getPath();
-        try {
-            parcelFD = Activity.getContentResolver().openFileDescriptor(uriFile, "r");
-             fileDescriptor = parcelFD.getFileDescriptor();
-        } catch(IOException e) {
-            Log.i("WARNING", "Cannot get file from Uri");
+        if(LAST_REQUEST == REQUEST_IMAGE_GALLERY) {
+            Uri uriFile = data.getData();
+            TmpPicturePath = uriFile.getPath();
+            try {
+                parcelFD = Activity.getContentResolver().openFileDescriptor(uriFile, "r");
+                fileDescriptor = parcelFD.getFileDescriptor();
+            } catch (IOException e) {
+                Log.i("WARNING", "Cannot get file from Uri");
+            }
         }
     }
 
     private static void dispatchTakePictureIntent()
     {
+        LAST_REQUEST = REQUEST_IMAGE_CAPTURE;
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(Activity.getPackageManager()) != null)
         {
