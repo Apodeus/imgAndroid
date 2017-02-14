@@ -47,7 +47,7 @@ Schéma fonctionnel : [Mindomo](https://www.mindomo.com/mindmap/b9565ab1eb794d20
 
 ## Récupération du dépôt sous IntelliJ IDEA ou Android Studio
 
-- Créer un projet Android vierge avec comme nom de projet `My Application` et en domaine de compagnie `newEra`.
+- Créer un projet Android vierge avec comme nom de projet `My Application` et en domaine de compagnie `newEra`, sélectionner l'API 19.
 - Ajuster si besoin les paramètres Gradle ou autre pour compiler l'application vierge correctement.
 - Supprimer le dossier `MyApplication\app\src`.
 - Dans la console, se placer dans le dossier `MyApplication\app` et cloner le dépôt :
