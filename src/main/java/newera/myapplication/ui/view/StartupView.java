@@ -5,27 +5,29 @@ import android.graphics.*;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.CollapsibleActionView;
+import android.view.MotionEvent;
 import android.view.View;
 import newera.myapplication.R;
+import newera.myapplication.ui.system.PictureFileManager;
 
 /**
  * Created by echo on 14/02/2017.
  */
 public class StartupView extends View {
 
-    private final static float SPLIT_RATIO = 0.5f;
+    private final static float SPLIT_RATIO = 0.7f;
     private final static int ICON_SIZE = 100;
     private final static int TEXT_SIZE = 40;
 
     private Paint paint;
-    private boolean isActive = true;
-
     private Drawable galleryIcon;
     private Drawable cameraIcon;
     private Bitmap galleryIconBitmap;
     private Bitmap cameraIconBitmap;
     private Canvas galleryIconCanvas;
     private Canvas cameraIconCanvas;
+    private int canvasHeight = 0;
+    private boolean isActive = true;
 
     public StartupView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -48,14 +50,18 @@ public class StartupView extends View {
 
     public void mask()
     {
-        this.setActivated(false);
+        this.isActive = false;
     }
 
     @Override
     public void onDraw(Canvas canvas)
     {
+        if (!isActive)
+            return;
+
+        this.canvasHeight = canvas.getHeight();
         float centerUp = canvas.getHeight() * SPLIT_RATIO / 2;
-        float centerDown = canvas.getHeight() * (1 + SPLIT_RATIO) / 2; //?????????
+        float centerDown = canvas.getHeight() * (1 + SPLIT_RATIO) / 2;
 
         canvas.drawLine(0f, canvas.getHeight() * SPLIT_RATIO, canvas.getWidth(), canvas.getHeight() * SPLIT_RATIO, this.paint);
         paint.setTextAlign(Paint.Align.CENTER);
@@ -71,6 +77,22 @@ public class StartupView extends View {
         cameraIcon.setBounds(0,0,ICON_SIZE,ICON_SIZE);
         cameraIcon.draw(cameraIconCanvas);
         canvas.drawBitmap(cameraIconBitmap, canvas.getWidth() / 2 - ICON_SIZE / 2, centerDown - ICON_SIZE - TEXT_SIZE, this.paint);
+    }
 
+    public boolean onTouchEvent(MotionEvent event)
+    {
+        if (!isActive)
+            return true;
+
+        float xPos = event.getX();
+        float yPos = event.getY();
+
+        if (event.getAction() == MotionEvent.ACTION_UP)
+            if (yPos < canvasHeight * SPLIT_RATIO)
+                PictureFileManager.LoadPictureFromGallery();
+            else
+                PictureFileManager.CreatePictureFileFromCamera();
+
+        return true;
     }
 }
