@@ -32,7 +32,8 @@ public class SystemActionHandler {
         {
             PictureFileManager.HandleResult(data);
             StartupView sv = (StartupView) Activity.findViewById(R.id.startupView);
-            ((ViewGroup) sv.getParent()).removeView(sv);
+            if (sv != null)
+                ((ViewGroup) sv.getParent()).removeView(sv);
         }
     }
 }
