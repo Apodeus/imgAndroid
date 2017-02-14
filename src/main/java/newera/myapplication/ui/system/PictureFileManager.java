@@ -78,11 +78,15 @@ public class PictureFileManager {
 
             case REQUEST_IMAGE_GALLERY:
                 try {
-                    parcelFD = Activity.getContentResolver().openFileDescriptor(TmpUriFile, "r");
-                    fileDescriptor = parcelFD.getFileDescriptor();
-                    img = BitmapFactory.decodeFileDescriptor(fileDescriptor);
-                    result.setBitmap(img);
-                    parcelFD.close();
+                    if(TmpUriFile != null) {
+                        parcelFD = Activity.getContentResolver().openFileDescriptor(TmpUriFile, "r");
+                        fileDescriptor = parcelFD.getFileDescriptor();
+                        img = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+                        result.setBitmap(img);
+                        parcelFD.close();
+                    } else {
+                        Log.i("", "ERROR: TmpUriFile is empty.");
+                    }
                 } catch (IOException e) {
                     Log.i("WARNING", "Cannot get file from Uri");
                 }
