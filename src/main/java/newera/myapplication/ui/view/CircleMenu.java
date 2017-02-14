@@ -48,7 +48,10 @@ public class CircleMenu extends View {
         this.itemList = new ArrayList<MenuItem>();
         for(int i = 0; i <20; ++i){
             itemList.add(new MenuItem("Item n°"+i));
+
         }
+        itemList.get(0).string = "Gallery";
+        itemList.get(1).string = "Camera";
         this.itemAngle = 0;
         /*
          */
@@ -132,18 +135,21 @@ public class CircleMenu extends View {
                 }
                 touchIsExt = true;
                 touch = true;
+                Log.i("", "fixing hitbox");
             } break;
 
             case MotionEvent.ACTION_MOVE: {
                 if(!isExtanded || (isExtanded && Math.hypot(event.getX() - width, event.getY() - height) < 2 * extRadius / 3)){
                     if (Math.hypot(event.getX() - width, event.getY() - height) < extRadius + initialRadius) {
-                        if (touchIsExt)
+                        if (touchIsExt) {
                             radius = (int) Math.hypot(event.getX() - width, event.getY() - height);
+                        }
                     }
                 } else if (isExtanded){
                     int angle = (int)Math.toDegrees(Math.atan2(width - event.getX(), height - event.getY())) % 360;
                     int initialAngle = (int)Math.toDegrees(Math.atan2(width - initialTx, height - initialTy)) % 360;
                     this.itemAngle = initialItemAngle + (angle - initialAngle);
+
                 }
             } break;
 
@@ -159,6 +165,7 @@ public class CircleMenu extends View {
                 if (Math.abs(initialTx-event.getX()) < 5 && Math.abs(initialTy-event.getY()) < 5){
                     for (int i = 0; i < itemList.size(); ++i){
                         if (itemList.get(i).contains((int)event.getX(), (int)event.getY())){
+                            //Temporary Switch case to test the menu and impletations of functionality
                             switch(i){
                                 case 0:
                                     PictureFileManager.LoadPictureFromGallery();

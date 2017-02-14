@@ -36,6 +36,7 @@ public class PictureFileManager {
 
     private static ParcelFileDescriptor parcelFD;
     private static FileDescriptor fileDescriptor;
+    private static Uri TmpUriFile;
 
     static void setActivity(MainActivity activity) {
         Activity = activity;
@@ -77,12 +78,21 @@ public class PictureFileManager {
 
             case REQUEST_IMAGE_GALLERY:
                 try {
+                    parcelFD = Activity.getContentResolver().openFileDescriptor(TmpUriFile, "r");
+                    fileDescriptor = parcelFD.getFileDescriptor();
                     img = BitmapFactory.decodeFileDescriptor(fileDescriptor);
                     result.setBitmap(img);
                     parcelFD.close();
+                } catch (IOException e) {
+                    Log.i("WARNING", "Cannot get file from Uri");
+                }
+                /*try {
+                img = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+                result.setBitmap(img);
+                /*parcelFD.close();
                 } catch (IOException e){
                     Log.i("WARNING", "Cannot close parcelFileDescriptor");
-                }
+                }*/
 
                 break;
         }
@@ -93,20 +103,12 @@ public class PictureFileManager {
     static void HandleResult(Intent data)
     {
         if(LAST_REQUEST == REQUEST_IMAGE_GALLERY) {
-            Uri uriFile = data.getData();
-            TmpPicturePath = uriFile.getPath();
-            try {
-                parcelFD = Activity.getContentResolver().openFileDescriptor(uriFile, "r");
-                fileDescriptor = parcelFD.getFileDescriptor();
-            } catch (IOException e) {
-                Log.i("WARNING", "Cannot get file from Uri");
-            }
+            TmpUriFile = data.getData();
         }
     }
 
     private static void dispatchTakePictureIntent()
     {
-        LAST_REQUEST = REQUEST_IMAGE_CAPTURE;
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(Activity.getPackageManager()) != null)
         {
