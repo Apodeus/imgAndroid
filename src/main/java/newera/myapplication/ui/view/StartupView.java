@@ -59,8 +59,8 @@ public class StartupView extends View {
 
         canvas.drawLine(0f, canvas.getHeight() * SPLIT_RATIO, canvas.getWidth(), canvas.getHeight() * SPLIT_RATIO, this.paint);
         paint.setTextAlign(Paint.Align.CENTER);
-        canvas.drawText("Select a picture from Gallery", canvas.getWidth() / 2, centerUp, this.paint);
-        canvas.drawText("Take a new picture from Camera", canvas.getWidth() / 2, centerDown, this.paint);
+        canvas.drawText(getResources().getText(R.string.startupGalleryHint).toString(), canvas.getWidth() / 2, centerUp, this.paint);
+        canvas.drawText(getResources().getText(R.string.startupCameraHint).toString(), canvas.getWidth() / 2, centerDown, this.paint);
 
         galleryIcon.setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP);
         galleryIcon.setBounds(0,0,ICON_SIZE,ICON_SIZE);
