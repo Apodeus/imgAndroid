@@ -39,7 +39,7 @@ public class CImageView extends View {
     @Override
     public void onDraw(Canvas canvas){
         if (image == null || image.isEmpty()){
-            canvas.drawColor(getResources().getColor(R.color.colorPrimary));
+            canvas.drawColor(getResources().getColor(R.color.colorPrimaryDark));
         } else {
             canvas.drawBitmap(image.getBitmap(), contentCoords.x, contentCoords.y, null);
         }

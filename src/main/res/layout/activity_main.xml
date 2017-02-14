@@ -10,6 +10,8 @@
             android:id="@+id/cImageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+    <newera.myapplication.ui.view.StartupView android:layout_width="match_parent" android:layout_height="match_parent"
+    android:id="@+id/startupView"/>
 
     <newera.myapplication.ui.view.CircleMenu
         android:layout_width="320dp"

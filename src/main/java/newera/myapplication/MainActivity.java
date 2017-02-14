@@ -8,6 +8,7 @@ import android.view.View;
 import newera.myapplication.ui.system.SystemActionHandler;
 import newera.myapplication.ui.system.PictureFileManager;
 import newera.myapplication.ui.view.CImageView;
+import newera.myapplication.ui.view.StartupView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         SystemActionHandler.setActivity(this);
-        PictureFileManager.CreatePictureFileFromCamera();
+        //PictureFileManager.CreatePictureFileFromCamera();
         //PictureFileManager.LoadPictureFromGallery();
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floatingActionButton);
         fab.setOnClickListener(new View.OnClickListener() {
