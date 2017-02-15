@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 public class Image {
     private Bitmap bitmap;
 
+
     /**
      * @return bitmap's reference
      */
@@ -24,5 +25,15 @@ public class Image {
 
     public boolean isEmpty(){
         return bitmap == null;
+    }
+
+    public int getWidth()
+    {
+        return bitmap.getWidth();
+    }
+
+    public int getHeight()
+    {
+        return bitmap.getHeight();
     }
 }

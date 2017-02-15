@@ -15,7 +15,7 @@ import newera.myapplication.ui.system.PictureFileManager;
  */
 public class StartupView extends View {
 
-    private final static float SPLIT_RATIO = 0.7f;
+    private final static float SPLIT_RATIO = 0.6f;
     private final static int ICON_SIZE = 100;
     private final static int TEXT_SIZE = 40;
 

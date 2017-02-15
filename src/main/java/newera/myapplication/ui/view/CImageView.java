@@ -49,6 +49,8 @@ public class CImageView extends View {
     public boolean onTouchEvent(MotionEvent event)
     {
         contentScale = touchHandler.onTouch(event, TouchMethod.DRAG, contentCoords, contentScale);
+        contentCoords.x = Math.min(contentCoords.x + image.getWidth(), getWidth()) - image.getWidth();      // need the scale factor
+        contentCoords.y = Math.min(contentCoords.y + image.getHeight(), getHeight()) - image.getHeight();   // somewhere here
         invalidate();
         return true;
     }
@@ -84,10 +86,10 @@ public class CImageView extends View {
                             initialContentY = coord.y;
                         } break;
                         case MotionEvent.ACTION_MOVE: {
-                            coord.x = initialContentX + (touchList.get(0).x - initialX);
-                            coord.y = initialContentY + (touchList.get(0).y - initialY);
+                            coord.x = Math.max(0, initialContentX + (touchList.get(0).x - initialX)); // need a scale factor somewhere here
+                            coord.y = Math.max(0, initialContentY + (touchList.get(0).y - initialY));
 
-;                        } break;
+                        } break;
                     }
                 } break;
                 case ZOOM: {
