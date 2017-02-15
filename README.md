@@ -37,6 +37,11 @@ Schéma fonctionnel : [Mindomo](https://www.mindomo.com/mindmap/b9565ab1eb794d20
 - "Schtroumpfer" un visage
 - Restreindre la zone d'application d'un filtre
 
+### Problèmes connues à résoudre
+- Problème de hitbox du menu circulaire
+- Resteindre le dépassement de l'image à l'écran
+- Meilleure orientation de l'image lorsqu'elle est chargée
+
 ## Membres
 
 **04348** : Emile Barjou
