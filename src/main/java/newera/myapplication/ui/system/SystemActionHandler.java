@@ -16,6 +16,7 @@ public class SystemActionHandler {
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int REQUEST_IMAGE_GALLERY = 2;
     private static MainActivity Activity;
+
     /**
      * Set the activity often required to interact with Android and other apps.
      * @param activity The MainActivity of the application
@@ -26,6 +27,9 @@ public class SystemActionHandler {
         PictureFileManager.setActivity(activity);
     }
 
+    /**
+     * Called by MainActivity as it.
+     */
     public static void handleActivityResult(int requestCode, int resultCode, Intent data)
     {
         if ((requestCode == REQUEST_IMAGE_CAPTURE || requestCode == REQUEST_IMAGE_GALLERY)&& resultCode == RESULT_OK)

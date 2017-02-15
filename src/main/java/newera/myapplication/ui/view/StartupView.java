@@ -48,6 +48,9 @@ public class StartupView extends View {
         invalidate();
     }
 
+    /**
+     * Hide the view and controls.
+     */
     public void mask()
     {
         this.isActive = false;

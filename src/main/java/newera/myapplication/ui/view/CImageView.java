@@ -30,6 +30,10 @@ public class CImageView extends View {
         this.touchHandler = new TouchHandler();
     }
 
+    /**
+     * Set the picture to be displayed on the view.
+     * @param image the Image object to be displayed.
+     */
     public void setImage(Image image)
     {
         this.image = image;
@@ -64,18 +68,19 @@ public class CImageView extends View {
         private List<Point> touchList;
 
 
-        public TouchHandler(){
+        TouchHandler(){
             this.touchList = new ArrayList<Point>();
             this.touchList = new ArrayList<Point>();
         }
 
-        public float onTouch(MotionEvent event, TouchMethod method, Point coord, float scale){
+        float onTouch(MotionEvent event, TouchMethod method, Point coord, float scale){
             touchList.clear();
             for(int i = 0; i < event.getPointerCount(); ++i){
                 mActivePointerId = event.getPointerId(i);
                 pointerIndex = event.findPointerIndex(mActivePointerId);
                 touchList.add( new Point((int)event.getX(pointerIndex), (int)event.getY(pointerIndex)) );
             }
+
             switch(method) {
                 case DRAG: {
                     switch(event.getAction()) {
@@ -85,6 +90,7 @@ public class CImageView extends View {
                             initialContentX = coord.x;
                             initialContentY = coord.y;
                         } break;
+
                         case MotionEvent.ACTION_MOVE: {
                             coord.x = Math.max(0, initialContentX + (touchList.get(0).x - initialX)); // need a scale factor somewhere here
                             coord.y = Math.max(0, initialContentY + (touchList.get(0).y - initialY));
@@ -92,24 +98,28 @@ public class CImageView extends View {
                         } break;
                     }
                 } break;
+
                 case ZOOM: {
                 } break;
+
                 case TOOL: {
                 } break;
             }
+
             return scale;
         }
 
     }
 
     private class Point{
-        public int x, y;
+        int x, y;
 
-        public Point(){
+        Point(){
             this.x = 0;
             this.y = 0;
         }
-        public Point(int x, int y){
+
+        Point(int x, int y){
             this.x = x;
             this.y = y;
         }

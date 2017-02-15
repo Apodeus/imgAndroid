@@ -38,6 +38,9 @@ public class PictureFileManager {
     private static FileDescriptor fileDescriptor;
     private static Uri TmpUriFile;
 
+    /** Set the reference to MainActivity for systems calls.
+     * @param activity the MainActivity.
+     */
     static void setActivity(MainActivity activity) {
         Activity = activity;
     }
@@ -104,6 +107,10 @@ public class PictureFileManager {
         return result;
     }
 
+    /**
+     * Called by SystemActionHandler if an Intent returned something for this class.
+     * @param data the data returned from the Intent.
+     */
     static void HandleResult(Intent data)
     {
         if(LAST_REQUEST == REQUEST_IMAGE_GALLERY) {
