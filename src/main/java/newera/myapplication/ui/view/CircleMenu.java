@@ -22,12 +22,20 @@ import newera.myapplication.ui.system.PictureFileManager;
  */
 
 public class CircleMenu extends View {
-    private final static int RADIUS_FACTOR = 6;
+    public enum Position {TOP_LEFT, TOP_RIGHT, BOT_LEFT, BOT_RIGHT};
+
+    //Radius of menu minimized and extended, in percent of min(width, height)
+    private final static double RADIUS_MIN = 0.10;
+    private final static double RADIUS_EXT = 0.50;
+    private final static double TOUCH_MARGIN = 1.25;
+    private final static int CLICK_DEAD_ZONE = 5;
+    private final static int PositionArray[][] = {{0,0}, {1,0}, {0,1}, {1,1},};
 
     private Paint paint;
-    private int width, height;
+    private int width, height, min_wh, cornerX, cornerY;
     private int radius, initialRadius, extRadius;
-    private boolean isExtanded, touchIsExt, touch;
+    private boolean shouldExtand, isExtanded, touchIsExt, transisionLock, touchLock;
+    private Position position;
 
     private List<MenuItem> itemList;
     private int itemAngle;
@@ -35,9 +43,12 @@ public class CircleMenu extends View {
 
     public CircleMenu(Context context, AttributeSet attrs) {
         super(context, attrs);
-        this.paint = new Paint();
         this.isExtanded = false;
-        this.touch = false;
+        this.shouldExtand = false;
+        this.transisionLock = false;
+        this.position = Position.TOP_RIGHT;
+
+        this.paint = new Paint();
         paint.setAntiAlias(true);
         paint.setTextSize(40);
 
@@ -59,46 +70,28 @@ public class CircleMenu extends View {
     @Override
     public void onDraw(Canvas canvas){
         double angle;
-        int padding, x, y;
-        RectF rect = new RectF();
+        int x, y, x2, y2;;
 
-        if (!touch ){
-            if (isExtanded && radius < extRadius) {
-                radius += (extRadius - radius) / 2 + 10;
-                invalidate();
-            } else if (isExtanded && radius > extRadius){
-                radius -= (radius - extRadius) / 2;
-                invalidate();
-            } else if (!isExtanded && radius > initialRadius){
-                radius -= ((radius-initialRadius)/2 + 10);
-                invalidate();
-            } else if (!isExtanded && radius < initialRadius){
-                radius += (initialRadius-radius)/2;
-                invalidate();
-            }
-        }
+        transition();
 
         paint.setColor(getResources().getColor(R.color.colorAccent));
-        padding = (extRadius + initialRadius) - radius;
-        rect.set(padding, padding, padding + radius * 2, padding + radius * 2);
-        canvas.drawOval(rect, paint);
+        drawCircle(canvas, cornerX, cornerY, radius);
+
         if (isExtanded){
             for (int i = 0; i < itemList.size(); ++i){
                 angle = Math.toRadians(i * 15) - Math.toRadians(itemAngle);
 
                 // ===== draw circle item ====
                 paint.setColor(getResources().getColor(R.color.colorPrimaryDark));
-                x = (int)(width + (radius - initialRadius * 0.75) * Math.cos(angle));
-                y = (int)(height + (radius - initialRadius * 0.75) * Math.sin(angle));
-                rectFromCircle(itemList.get(i), x, y , initialRadius / 2);
-                canvas.drawOval(itemList.get(i).getRect(), paint);
-
-                int x2, y2;
+                x = (int)(cornerX + (radius - initialRadius * 0.75) * Math.cos(angle));
+                y = (int)(cornerY + (radius - initialRadius * 0.75) * Math.sin(angle));
+                itemList.get(i).setRect(x - (initialRadius/2), y - (initialRadius/2), x + (initialRadius/2), y + (initialRadius/2));
+                drawCircle(canvas, x, y, initialRadius/2);
 
                 // ==== Draw item name ====
                 paint.setColor(Color.WHITE);
-                x2 = (int)(width + (radius + initialRadius * 0.85) * Math.cos(angle));
-                y2 = (int)(height + (radius + initialRadius * 0.85) * Math.sin(angle));
+                x2 = (int)(cornerX + (radius + initialRadius * 0.85) * Math.cos(angle));
+                y2 = (int)(cornerY + (radius + initialRadius * 0.85) * Math.sin(angle));
 
                 canvas.save();
                 canvas.rotate((float)Math.toDegrees(angle) + 180, x2, y2);
@@ -112,10 +105,14 @@ public class CircleMenu extends View {
     public void onMeasure(int w, int h){
         width = MeasureSpec.getSize(w);
         height = MeasureSpec.getSize(h);
+        min_wh = Math.min(width, height);
 
-        initialRadius = (width / RADIUS_FACTOR);
-        extRadius = width - initialRadius;
+        initialRadius = (int)((double)min_wh*RADIUS_MIN);
+        extRadius = (int)((double)min_wh*RADIUS_EXT);
         radius = initialRadius;
+
+        cornerX = width*PositionArray[position.ordinal()][0];
+        cornerY = height*PositionArray[position.ordinal()][1];
 
         setMeasuredDimension(width, height);
     }
@@ -125,22 +122,43 @@ public class CircleMenu extends View {
     {
         switch(event.getAction()) {
             case MotionEvent.ACTION_DOWN: {
+                transisionLock = true;
+
                 initialTx = (int)event.getX();
                 initialTy = (int)event.getY();
                 initialItemAngle = itemAngle;
-                if (Math.hypot(event.getX() - width, event.getY() - height) > radius*1.10){
-                    isExtanded = false;
-                    return false;
+                touchIsExt = false;
+
+                if (dist(initialTx, initialTy, cornerX, cornerY) > radius*TOUCH_MARGIN){
+                    if (isExtanded){
+                        shouldExtand = false;
+                    } else {
+                        return false;
+                    }
                 }
-                /*if (Math.hypot(event.getX() - width, event.getY() - height) < initialRadius*1.5){
-                    touchIsExt = true;
-                }*/
-                touchIsExt = true;
-                touch = true;
-                Log.i("", "fixing hitbox");
             } break;
 
             case MotionEvent.ACTION_MOVE: {
+                double distFromCorner = dist((int)event.getX(), (int)event.getY(), cornerX, cornerY);
+                double distFromCornerInit = dist(cornerX, cornerY, initialTx, initialTy);
+                if ( distFromCorner < extRadius*TOUCH_MARGIN && distFromCorner > initialRadius*(1.0/TOUCH_MARGIN) ) {
+                    if (!isExtanded && Math.abs(distFromCorner-distFromCornerInit) > (initialRadius/2)*TOUCH_MARGIN) {
+                        touchIsExt = true;
+                    }
+                    if (isExtanded && Math.abs(distFromCorner-distFromCornerInit) > (extRadius/2)*TOUCH_MARGIN) {
+                        touchIsExt = true;
+                    }
+                    if (touchIsExt) {
+                        radius = (int)dist((int)event.getX(), (int)event.getY(), cornerX, cornerY);
+                    }
+                }
+
+                if (!touchIsExt){
+                    int angle = (int)Math.toDegrees(Math.atan2(cornerX - event.getX(), cornerY - event.getY())) % 360;
+                    int initialAngle = (int)Math.toDegrees(Math.atan2(cornerX - initialTx, cornerY - initialTy)) % 360;
+                    this.itemAngle = initialItemAngle + (angle - initialAngle);
+                }
+                /*
                 if((!isExtanded || (isExtanded && Math.hypot(event.getX() - width, event.getY() - height) < 2 * extRadius / 3))
                                 && (Math.hypot(event.getX() - initialTx, event.getY() - initialTy) > extRadius/3) ){
                     if (Math.hypot(event.getX() - width, event.getY() - height) < extRadius + initialRadius) {
@@ -153,22 +171,29 @@ public class CircleMenu extends View {
                     int initialAngle = (int)Math.toDegrees(Math.atan2(width - initialTx, height - initialTy)) % 360;
                     this.itemAngle = initialItemAngle + (angle - initialAngle);
 
-                }
+                }*/
             } break;
 
             case MotionEvent.ACTION_UP: {
-                if ( ((extRadius)-(initialRadius))/2 > Math.hypot(event.getX()-width, event.getY()-height)){
-                    isExtanded = false;
-                } else {
-                    isExtanded = true;
+                transisionLock = false;
+                if (touchIsExt){
+                    if ((extRadius-initialRadius)/2 > dist((int)event.getX(), (int)event.getY(), cornerX, cornerY)){
+                        shouldExtand = false;
+                    } else {
+                        shouldExtand = true;
+                    }
                 }
+
                 /*
                 * Handle click
                 */
-                if (Math.abs(initialTx-event.getX()) < 5 && Math.abs(initialTy-event.getY()) < 5){
+                if (!touchIsExt && dist(initialTx, initialTy, (int)event.getX(), (int)event.getY()) < CLICK_DEAD_ZONE){
+                    Log.i("DBG", "click");
                     for (int i = 0; i < itemList.size(); ++i){
                         if (itemList.get(i).contains((int)event.getX(), (int)event.getY())){
-                            //Temporary Switch case to test the menu and impletations of functionality
+                            /*
+                             * Temporary Switch case to test the menu and impletations of functionality
+                             */
                             switch(i){
                                 case 0:
                                     PictureFileManager.LoadPictureFromGallery();
@@ -179,19 +204,53 @@ public class CircleMenu extends View {
                                 default:
                                     break;
                             }
-                            Log.i("DBG", "Click on "+itemList.get(i).getName());
+                            /*
+                             */
+                            Log.i("DBG", "item");
                         }
                     }
                 }
-                touch = false;
             } break;
         }
         invalidate();
         return true;
     }
 
-    private void rectFromCircle(MenuItem item, int x, int y, int r){
-        item.setRect(x - r, y - r, x + r, y + r);
+    private void transition(){
+        if (!transisionLock ){
+            if (shouldExtand && radius < extRadius) {
+                radius += (extRadius - radius) / 2 + 10;
+                invalidate();
+            } else if (shouldExtand && radius > extRadius){
+                radius -= (radius - extRadius) / 2;
+                invalidate();
+            } else if (!shouldExtand && radius > initialRadius){
+                radius -= ((radius-initialRadius)/2 + 10);
+                invalidate();
+            } else if (!shouldExtand && radius < initialRadius){
+                radius += (initialRadius-radius)/2;
+                invalidate();
+            }
+            if (Math.abs(radius-initialRadius) <= initialRadius/100){
+                radius = initialRadius;
+                isExtanded = false;
+            } else if(Math.abs(radius-extRadius) <= extRadius/100){
+                radius = extRadius;
+                isExtanded = true;
+            }
+        }
+    }
+
+    private RectF rectFromCircle(int x, int y, int r){
+        return new RectF(x - r, y - r, x + r, y + r);
+    }
+
+    private void drawCircle(Canvas canvas, int x, int y, int r){
+        canvas.drawOval(rectFromCircle(x, y, r), paint);
+    }
+
+    private double dist(int x1, int y1, int x2, int y2){
+        return Math.hypot(x1 - x2, y1 - y2);
     }
 
     private class MenuItem{
