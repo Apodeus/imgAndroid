@@ -17,7 +17,8 @@ import java.util.List;
  */
 
 public class CImageView extends View {
-    private enum TouchMethod {DRAG, ZOOM, TOOL};
+    private final static float MOVE_SAFEZONE = 0.75f;
+    private enum TouchMethod {DRAG, ZOOM, TOOL}
     private Image image;
     private Point contentCoords;
     private float contentScale;
@@ -53,8 +54,8 @@ public class CImageView extends View {
     public boolean onTouchEvent(MotionEvent event)
     {
         contentScale = touchHandler.onTouch(event, TouchMethod.DRAG, contentCoords, contentScale);
-        contentCoords.x = Math.min(contentCoords.x + image.getWidth(), getWidth()) - image.getWidth();      // need the scale factor
-        contentCoords.y = Math.min(contentCoords.y + image.getHeight(), getHeight()) - image.getHeight();   // somewhere here
+        contentCoords.x = (int) (Math.min(contentCoords.x + image.getWidth(), getWidth() +  image.getWidth() * MOVE_SAFEZONE) - image.getWidth());      // need the scale factor
+        contentCoords.y = (int) (Math.min(contentCoords.y + image.getHeight(), getHeight() + image.getHeight() * MOVE_SAFEZONE) - image.getHeight());   // somewhere here
         invalidate();
         return true;
     }
@@ -92,8 +93,8 @@ public class CImageView extends View {
                         } break;
 
                         case MotionEvent.ACTION_MOVE: {
-                            coord.x = Math.max(0, initialContentX + (touchList.get(0).x - initialX)); // need a scale factor somewhere here
-                            coord.y = Math.max(0, initialContentY + (touchList.get(0).y - initialY));
+                            coord.x = (int) Math.max(0 - image.getWidth() * MOVE_SAFEZONE , initialContentX + (touchList.get(0).x - initialX)); // need a scale factor somewhere here
+                            coord.y = (int) Math.max(0 - image.getHeight() * MOVE_SAFEZONE, initialContentY + (touchList.get(0).y - initialY));
 
                         } break;
                     }
