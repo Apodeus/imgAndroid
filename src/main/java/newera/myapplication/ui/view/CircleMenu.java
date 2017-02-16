@@ -41,7 +41,6 @@ public class CircleMenu extends View {
         paint.setAntiAlias(true);
         paint.setTextSize(40);
 
-
         /*
             Following code only for testing purpose
          */
@@ -129,17 +128,21 @@ public class CircleMenu extends View {
                 initialTx = (int)event.getX();
                 initialTy = (int)event.getY();
                 initialItemAngle = itemAngle;
-                if (Math.hypot(event.getX() - width, event.getY() - height) > extRadius+initialRadius){
+                if (Math.hypot(event.getX() - width, event.getY() - height) > radius*1.10){
                     isExtanded = false;
                     return false;
                 }
+                /*if (Math.hypot(event.getX() - width, event.getY() - height) < initialRadius*1.5){
+                    touchIsExt = true;
+                }*/
                 touchIsExt = true;
                 touch = true;
                 Log.i("", "fixing hitbox");
             } break;
 
             case MotionEvent.ACTION_MOVE: {
-                if(!isExtanded || (isExtanded && Math.hypot(event.getX() - width, event.getY() - height) < 2 * extRadius / 3)){
+                if((!isExtanded || (isExtanded && Math.hypot(event.getX() - width, event.getY() - height) < 2 * extRadius / 3))
+                                && (Math.hypot(event.getX() - initialTx, event.getY() - initialTy) > extRadius/3) ){
                     if (Math.hypot(event.getX() - width, event.getY() - height) < extRadius + initialRadius) {
                         if (touchIsExt) {
                             radius = (int) Math.hypot(event.getX() - width, event.getY() - height);
