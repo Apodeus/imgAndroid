@@ -43,12 +43,14 @@ public class CImageView extends View {
      */
     public void setImage(Image image)
     {
-        this.image = image;
-        src = new Rect(0, 0, image.getWidth(), image.getHeight());
-        dst = new Rect(getWidth() - image.getWidth()/2, getHeight() - image.getHeight()/2,getWidth() + image.getWidth()/2,getHeight() + image.getHeight()/2);
-        contentCoords.x = getWidth()/2;
-        contentCoords.y = getHeight()/2;
-        invalidate();
+        if(!image.isEmpty()) {
+            this.image = image;
+            src = new Rect(0, 0, image.getWidth(), image.getHeight());
+            dst = new Rect(getWidth() - image.getWidth() / 2, getHeight() - image.getHeight() / 2, getWidth() + image.getWidth() / 2, getHeight() + image.getHeight() / 2);
+            contentCoords.x = getWidth() / 2;
+            contentCoords.y = getHeight() / 2;
+            invalidate();
+        }
     }
 
     @Override

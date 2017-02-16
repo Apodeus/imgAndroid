@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -46,7 +47,7 @@ public class CircleMenu extends View {
         this.isExtanded = false;
         this.shouldExtand = false;
         this.transisionLock = false;
-        this.position = Position.TOP_RIGHT;
+        this.position = Position.TOP_LEFT;
 
         this.paint = new Paint();
         paint.setAntiAlias(true);
@@ -79,7 +80,7 @@ public class CircleMenu extends View {
 
         if (isExtanded){
             for (int i = 0; i < itemList.size(); ++i){
-                angle = Math.toRadians(i * 15) - Math.toRadians(itemAngle);
+                angle = (Math.toRadians(i * 15) - Math.toRadians(itemAngle)) % (2 * Math.PI);
 
                 // ===== draw circle item ====
                 paint.setColor(getResources().getColor(R.color.colorPrimaryDark));
@@ -90,12 +91,53 @@ public class CircleMenu extends View {
 
                 // ==== Draw item name ====
                 paint.setColor(Color.WHITE);
+                /*
                 x2 = (int)(cornerX + (radius + initialRadius * 0.85) * Math.cos(angle));
                 y2 = (int)(cornerY + (radius + initialRadius * 0.85) * Math.sin(angle));
+                */
+
+
+                Rect bounds = new Rect();
+                String text = itemList.get(i).getName();
+
+                Paint border = new Paint();
+                border.setAntiAlias(true);
+                border.setTextSize(40);
+                border.setStyle(Paint.Style.STROKE);
+                border.setStrokeWidth(8);
+                border.setColor(Color.BLACK);
+
+                border.getTextBounds(text, 0, text.length() - 1, bounds);
+
+                int width_text = Math.abs(bounds.width());
+                int height_text = bounds.height();
+
+                x2 = (int)(cornerX  + radius * Math.cos(angle));
+                y2 = (int)(cornerY  + radius * Math.sin(angle));
+
+                double alpha = Math.toDegrees(angle);
+
+                int a = Math.abs((int)(Math.sin(alpha + 180) * width_text));
+                int b = Math.abs((int)(Math.cos(alpha + 180) * width_text));
+
+                if(i == 5)
+                {
+                    Log.i("", "width "  + width_text);
+                    Log.i("", "(" + x2 + ";" + y2 + ")");
+                }
 
                 canvas.save();
-                canvas.rotate((float)Math.toDegrees(angle) + 180, x2, y2);
-                canvas.drawText(itemList.get(i).getName(), x2, y2, paint);
+
+                if((angle >= 0 && angle < Math.PI / 2) || (angle <= 0 && angle > -1*(Math.PI / 2))
+                        || (angle < -1*(3*Math.PI /2) && angle >= -2 * Math.PI)|| (angle > 3*Math.PI/2 && angle <= 2*Math.PI)){
+                    canvas.rotate((float) Math.toDegrees(angle), x2, y2);
+                } else {
+                    canvas.rotate((float) Math.toDegrees(angle) + 180, x2, y2);
+                }
+
+                canvas.drawText(text, x2, y2, border);
+                canvas.drawText(text, x2, y2, paint);
+
                 canvas.restore();
             }
         }
@@ -183,7 +225,6 @@ public class CircleMenu extends View {
                         shouldExtand = true;
                     }
                 }
-
                 /*
                 * Handle click
                 */

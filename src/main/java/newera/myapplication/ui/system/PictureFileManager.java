@@ -38,6 +38,7 @@ public class PictureFileManager {
     private static FileDescriptor fileDescriptor;
     private static Uri TmpUriFile;
 
+
     /** Set the reference to MainActivity for systems calls.
      * @param activity the MainActivity.
      */
@@ -72,6 +73,21 @@ public class PictureFileManager {
     {
         Image result = new Image();
         Bitmap img;
+        try {
+            if (TmpUriFile != null) {
+                parcelFD = Activity.getContentResolver().openFileDescriptor(TmpUriFile, "r");
+                fileDescriptor = parcelFD.getFileDescriptor();
+                img = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+                result.setBitmap(img);
+                parcelFD.close();
+            } else {
+                Log.i("", "ERROR: TmpUriFile is empty.");
+            }
+        } catch(IOException e) {
+            Log.i("WARNING", "Cannot get file from Uri");
+        }
+
+        /*
         switch (LAST_REQUEST)
         {
             case REQUEST_IMAGE_CAPTURE:
@@ -93,16 +109,16 @@ public class PictureFileManager {
                 } catch (IOException e) {
                     Log.i("WARNING", "Cannot get file from Uri");
                 }
-                /*try {
-                img = BitmapFactory.decodeFileDescriptor(fileDescriptor);
-                result.setBitmap(img);
-                /*parcelFD.close();
-                } catch (IOException e){
-                    Log.i("WARNING", "Cannot close parcelFileDescriptor");
-                }*/
+                ///*try {
+                //img = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+                //result.setBitmap(img);
+                ///*parcelFD.close();
+                //} catch (IOException e){
+                //    Log.i("WARNING", "Cannot close parcelFileDescriptor");
+                //}
 
                 break;
-        }
+        }*/
 
         return result;
     }
@@ -157,7 +173,10 @@ public class PictureFileManager {
         );
 
         // Save a file: path for use with ACTION_VIEW intents
+
         TmpPicturePath = image.getAbsolutePath();
         TmpPictureFile = image;
+        TmpUriFile = Uri.fromFile(TmpPictureFile);
+
     }
 }
