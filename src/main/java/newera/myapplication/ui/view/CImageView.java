@@ -54,10 +54,10 @@ public class CImageView extends View {
         if (image == null || image.isEmpty()){
             canvas.drawColor(getResources().getColor(R.color.colorPrimaryDark));
         } else {
-            dst.left = contentCoords.x;
-            dst.top = contentCoords.y;
-            dst.right = contentCoords.x + (int) (image.getWidth() * contentScale);
-            dst.bottom =  contentCoords.y + (int) (image.getHeight() * contentScale);
+            dst.left = contentCoords.x - (int) (image.getWidth() * (contentScale/2));
+            dst.top = contentCoords.y - (int) (image.getHeight() * (contentScale/2));
+            dst.right = contentCoords.x + (int) (image.getWidth() * (contentScale/2));
+            dst.bottom =  contentCoords.y + (int) (image.getHeight() * (contentScale/2));
             canvas.drawBitmap(image.getBitmap(), src, dst, null);
         }
     }
@@ -68,8 +68,8 @@ public class CImageView extends View {
         if (event.getPointerCount() <= 1)
         {
             contentScale = touchHandler.onTouch(event, TouchMethod.DRAG, contentCoords, contentScale);
-            contentCoords.x = (int) (Math.min(contentCoords.x, getWidth() * MOVE_SAFEZONE));      // need the scale factor
-            contentCoords.y = (int) (Math.min(contentCoords.y, getHeight() * MOVE_SAFEZONE));   // somewhere here
+            contentCoords.x = (int) (Math.min(contentCoords.x, getWidth() * MOVE_SAFEZONE + (int) (image.getWidth() * (contentScale/2))));      // need the scale factor
+            contentCoords.y = (int) (Math.min(contentCoords.y, getHeight() * MOVE_SAFEZONE + (int) (image.getHeight() * (contentScale/2))));   // somewhere here
         }else{
             contentScale = touchHandler.onTouch(event, TouchMethod.ZOOM, contentCoords, contentScale);
         }
@@ -114,8 +114,8 @@ public class CImageView extends View {
                         } break;
 
                         case MotionEvent.ACTION_MOVE: {
-                            coord.x = (int) Math.max(0 - image.getWidth() * contentScale + getWidth() * MOVE_SAFEZONE , initialContentX + (touchList.get(0).x - initialX)); // need a scale factor somewhere here
-                            coord.y = (int) Math.max(0 - image.getHeight() * contentScale + getHeight() * MOVE_SAFEZONE, initialContentY + (touchList.get(0).y - initialY));
+                            coord.x = (int) Math.max(0 - image.getWidth() * contentScale + getWidth() * MOVE_SAFEZONE  + (int) (image.getWidth() * (contentScale/2)), initialContentX + (touchList.get(0).x - initialX)); // need a scale factor somewhere here
+                            coord.y = (int) Math.max(0 - image.getHeight() * contentScale + getHeight() * MOVE_SAFEZONE + (int) (image.getHeight() * (contentScale/2)), initialContentY + (touchList.get(0).y - initialY));
 
                         } break;
                     }
