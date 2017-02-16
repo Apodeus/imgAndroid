@@ -18,8 +18,8 @@ Schéma fonctionnel : [Mindomo](https://www.mindomo.com/mindmap/b9565ab1eb794d20
 - ~~Charger une image depuis la Galerie~~
 - ~~Charger une image depuis la caméra~~
 - ~~Afficher une image sur une ImageView custom~~
-- Zoomer
-- Scroller
+- ~~Zoomer~~
+- ~~Scroller~~
 - Réinitialiser l'image d'origine
 - Sauvegarder l'image modifiée
 
@@ -38,8 +38,8 @@ Schéma fonctionnel : [Mindomo](https://www.mindomo.com/mindmap/b9565ab1eb794d20
 - Restreindre la zone d'application d'un filtre
 
 ### Problèmes connues à résoudre
-- Problème de hitbox du menu circulaire
-- Resteindre le dépassement de l'image à l'écran
+- ~~Problème de hitbox du menu circulaire~~
+- ~~Resteindre le dépassement de l'image à l'écran~~
 - Meilleure orientation de l'image lorsqu'elle est chargée
 
 ## Membres
