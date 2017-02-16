@@ -45,15 +45,16 @@ public class CImageView extends View {
     {
         this.image = image;
         src = new Rect(0, 0, image.getWidth(), image.getHeight());
-        dst = new Rect(0,0,0,0);
+        dst = new Rect(getWidth() - image.getWidth()/2, getHeight() - image.getHeight()/2,getWidth() + image.getWidth()/2,getHeight() + image.getHeight()/2);
+        contentCoords.x = getWidth()/2;
+        contentCoords.y = getHeight()/2;
         invalidate();
     }
 
     @Override
     public void onDraw(Canvas canvas){
-        if (image == null || image.isEmpty()){
-            canvas.drawColor(getResources().getColor(R.color.colorPrimaryDark));
-        } else {
+        canvas.drawColor(getResources().getColor(R.color.colorPrimaryDark));
+        if (image != null && !image.isEmpty()){
             dst.left = contentCoords.x - (int) (image.getWidth() * (contentScale/2));
             dst.top = contentCoords.y - (int) (image.getHeight() * (contentScale/2));
             dst.right = contentCoords.x + (int) (image.getWidth() * (contentScale/2));
