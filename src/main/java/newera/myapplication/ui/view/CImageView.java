@@ -64,6 +64,7 @@ public class CImageView extends View {
             /*
              * Will be moved to Image.draw(canvas, x, y)
              */
+            Log.i("DBG", "w="+image.getWidth()+" h="+image.getHeight());
             for(int y = 0; y < image.getTileH(); ++y) {
                 for (int x = 0; x < image.getTileW(); ++x) {
                     src.set(0, 0, image.getWidth(x,y)-1, image.getHeight(x,y)-1);
@@ -89,11 +90,10 @@ public class CImageView extends View {
     {
         if (event.getPointerCount() <= 1)
         {
-            Log.i("DBG", "("+contentCoords.x+","+contentCoords.y+")");
             contentScale = touchHandler.onTouch(event, TouchMethod.DRAG, contentCoords, contentScale);
-            /*contentCoords.x = (int) (Math.min(contentCoords.x, getWidth() * MOVE_SAFEZONE + (int) (image.getWidth() * (contentScale/2))));      // need the scale factor
+            contentCoords.x = (int) (Math.min(contentCoords.x, getWidth() * MOVE_SAFEZONE + (int) (image.getWidth() * (contentScale/2))));      // need the scale factor
             contentCoords.y = (int) (Math.min(contentCoords.y, getHeight() * MOVE_SAFEZONE + (int) (image.getHeight() * (contentScale/2))));   // somewhere here
-            */
+
         }else{
             contentScale = touchHandler.onTouch(event, TouchMethod.ZOOM, contentCoords, contentScale);
         }
@@ -134,7 +134,6 @@ public class CImageView extends View {
                     initialDist = -1f;
                     initialScale = scale;
                     switch(event.getAction()) {
-
                         case MotionEvent.ACTION_DOWN: {
                             initialX = touchList.get(0).x;
                             initialY = touchList.get(0).y;
@@ -143,11 +142,12 @@ public class CImageView extends View {
                         } break;
 
                         case MotionEvent.ACTION_MOVE: {
-                            /*coord.x = (int) Math.max(0 - image.getWidth() * contentScale + getWidth() * MOVE_SAFEZONE  + (int) (image.getWidth() * (contentScale/2)), initialContentX + (touchList.get(0).x - initialX)); // need a scale factor somewhere here
+                            coord.x = (int) Math.max(0 - image.getWidth() * contentScale + getWidth() * MOVE_SAFEZONE  + (int) (image.getWidth() * (contentScale/2)), initialContentX + (touchList.get(0).x - initialX)); // need a scale factor somewhere here
                             coord.y = (int) Math.max(0 - image.getHeight() * contentScale + getHeight() * MOVE_SAFEZONE + (int) (image.getHeight() * (contentScale/2)), initialContentY + (touchList.get(0).y - initialY));
-                            */
+                            /*
                             coord.x = initialContentX + (touchList.get(0).x - initialX); // need a scale factor somewhere here
                             coord.y = initialContentY + (touchList.get(0).y - initialY);
+                            */
                         } break;
                     }
                 } break;
@@ -159,6 +159,8 @@ public class CImageView extends View {
                     }else{
                         float currentDist = touchList.get(0).distanceFromPoint(touchList.get(1));
                         scale = currentDist / initialDist * initialScale;
+                        /*coord.x =  (touchList.get(0).x +  touchList.get(1).x)/2 - image.getWidth()/2; // need a scale factor somewhere here
+                        coord.y = (touchList.get(0).x +  touchList.get(1).x)/2 - image.getHeight()/2;*/
                     }
 
                 } break;

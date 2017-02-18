@@ -84,17 +84,16 @@ public class PictureFileManager {
                 BitmapRegionDecoder decoder = BitmapRegionDecoder.newInstance(fileDescriptor, true);
                 int h = decoder.getHeight();
                 int w = decoder.getWidth();
-                Log.i("DBG", "h="+h+", w="+w);
                 int xm, xM, ym, yM;//4160*3120
                 Rect r = new Rect();
                 result.setDim((int)Math.ceil((double)w/(double)DECODE_TILE_SIZE), (int)Math.ceil((double)h/(double)DECODE_TILE_SIZE));
                 for(int y = 0; y < Math.ceil((double)h/(double)DECODE_TILE_SIZE); ++y){
                     for(int x = 0; x < Math.ceil((double)w/(double)DECODE_TILE_SIZE); ++x){
-                        xm = x*DECODE_TILE_SIZE+1;
+                        xm = x*DECODE_TILE_SIZE;
                         xM = Math.min( (x+1)*DECODE_TILE_SIZE, w );
-                        ym = y*DECODE_TILE_SIZE+1;
+                        ym = y*DECODE_TILE_SIZE;
                         yM = Math.min( (y+1)*DECODE_TILE_SIZE, h );
-                        Log.i("DBG", "rect= x("+xm +","+xM+"), y("+ym+","+yM+")");
+                        //Log.i("DBG", "rect= x("+xm +","+xM+"), y("+ym+","+yM+")");
                         r.set(xm, ym, xM, yM);
                         img = decoder.decodeRegion(r, null);
                         result.addBitmap(img, x, y);

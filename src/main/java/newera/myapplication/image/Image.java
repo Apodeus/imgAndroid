@@ -51,19 +51,19 @@ public class Image {
     }
 
     public int getWidth(){
-        int w = 0;
+        int bmp_w = 0;
         for (int x = 0; x < w; ++x) {
-            w += bitmap[x][0].getWidth();
+            bmp_w += bitmap[x][0].getWidth();
         }
-        return w;
+        return bmp_w;
     }
 
     public int getHeight() {
-        int h = 0;
+        int bmp_h = 0;
         for (int y = 0; y < h; ++y) {
-            h += bitmap[0][y].getHeight();
+            bmp_h += bitmap[0][y].getHeight();
         }
-        return h;
+        return bmp_h;
     }
 
     public int getWidth(int x, int y){
