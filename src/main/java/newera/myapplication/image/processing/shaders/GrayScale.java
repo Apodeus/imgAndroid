@@ -3,6 +3,7 @@ import android.graphics.Bitmap;
 import android.renderscript.Allocation;
 import android.renderscript.RenderScript;
 import newera.myapplication.MainActivity;
+import newera.myapplication.R;
 import newera.myapplication.ScriptC_mono;
 import newera.myapplication.image.Image;
 
@@ -12,7 +13,6 @@ import newera.myapplication.image.Image;
  */
 
 public class GrayScale extends Shader{
-
 
     public GrayScale(MainActivity activity) {
         super(activity);
@@ -37,6 +37,6 @@ public class GrayScale extends Shader{
 
     public String getName()
     {
-        return "GrayScale";
+        return activity.getResources().getString(R.string.shaderGrayScaleName);
     }
 }

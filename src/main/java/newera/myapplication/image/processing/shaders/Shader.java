@@ -12,6 +12,7 @@ import newera.myapplication.image.Image;
 public abstract class Shader {
 
     protected RenderScript renderScript;
+    protected MainActivity activity;
 
     public void ApplyFilter(Image image)
     {
@@ -24,6 +25,7 @@ public abstract class Shader {
     Shader(MainActivity activity)
     {
         renderScript = RenderScript.create(activity);
+        this.activity = activity;
     }
 
     public String getName()

@@ -10,6 +10,8 @@ public interface Clickable {
 
     String getName();
 
+    int getNameId();
+
     Bitmap getIcone();
 
     int onClick();

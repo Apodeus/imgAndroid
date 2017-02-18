@@ -2,6 +2,7 @@ package newera.myapplication.ui.view;
 
 import android.graphics.Bitmap;
 
+import newera.myapplication.R;
 import newera.myapplication.ui.Clickable;
 import newera.myapplication.ui.system.PictureFileManager;
 
@@ -12,11 +13,17 @@ import newera.myapplication.ui.system.PictureFileManager;
 public class ActionGallery implements Clickable{
 
     private Bitmap icone;
+    private int nameId = R.string.galleryName;
     private String name = "Gallery";
 
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public int getNameId() {
+        return nameId;
     }
 
     @Override
