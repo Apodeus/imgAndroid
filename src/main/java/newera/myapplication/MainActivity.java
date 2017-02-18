@@ -8,6 +8,7 @@ import android.view.View;
 import newera.myapplication.ui.system.SystemActionHandler;
 import newera.myapplication.ui.system.PictureFileManager;
 import newera.myapplication.ui.view.CImageView;
+import newera.myapplication.ui.view.CircleMenu;
 import newera.myapplication.ui.view.StartupView;
 
 public class MainActivity extends AppCompatActivity {
@@ -31,6 +32,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        CircleMenu menu = (CircleMenu) findViewById(R.id.circleMenu);
+        menu.setView((CImageView) findViewById(R.id.cImageView));
+        menu.setActivity(this);
+        menu.initialize();
     }
 
     @Override

@@ -1,4 +1,5 @@
 package newera.myapplication.image.processing.shaders;
+import android.graphics.Bitmap;
 import android.renderscript.Allocation;
 import android.renderscript.RenderScript;
 import newera.myapplication.MainActivity;
@@ -13,20 +14,29 @@ import newera.myapplication.image.Image;
 public class GrayScale extends Shader{
 
 
-    GrayScale(MainActivity activity) {
+    public GrayScale(MainActivity activity) {
         super(activity);
     }
 
     @Override
     public void ApplyFilter(Image image)
     {
-       /* Allocation in = Allocation.createFromBitmap(renderScript, image.getBitmap());
-        Allocation out = Allocation.createTyped(renderScript, in.getType());
+        for(Bitmap[] b1 : image.getBitmaps())
+            for(Bitmap b : b1)
+            {
+                Allocation in = Allocation.createFromBitmap(renderScript, b);
+                Allocation out = Allocation.createTyped(renderScript, in.getType());
 
-        ScriptC_mono mono = new ScriptC_mono(renderScript);
+                ScriptC_mono mono = new ScriptC_mono(renderScript);
 
-        mono.forEach_black_and_white(in, out);
+                mono.forEach_black_and_white(in, out);
 
-        out.copyTo(image.getBitmap());*/
+                out.copyTo(b);
+            }
+    }
+
+    public String getName()
+    {
+        return "GrayScale";
     }
 }

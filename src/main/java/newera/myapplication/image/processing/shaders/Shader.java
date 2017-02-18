@@ -26,4 +26,9 @@ public abstract class Shader {
         renderScript = RenderScript.create(activity);
     }
 
+    public String getName()
+    {
+        return null;
+    }
+
 }

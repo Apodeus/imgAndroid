@@ -1,6 +1,7 @@
 package newera.myapplication.image;
 
 import android.graphics.Bitmap;
+import newera.myapplication.image.processing.shaders.Shader;
 
 /**
  * Created by Emile Barjou-Suire on 09/02/2017.
@@ -15,6 +16,11 @@ public class Image {
      */
     public Bitmap getBitmap(int x, int y){
         return bitmap[x][y];
+    }
+
+    public Bitmap[][] getBitmaps()
+    {
+        return this.bitmap;
     }
 
     public void setDim(int w, int h){
@@ -33,6 +39,11 @@ public class Image {
             return;
         //this.bitmap = bitmap.copy(bitmap.getConfig(), bitmap.isMutable());
         this.bitmap[x][y] = bitmap.copy(bitmap.getConfig(), bitmap.isMutable());
+    }
+
+    public void applyShader(Shader shader)
+    {
+        shader.ApplyFilter(this);
     }
 
     public boolean isEmpty(){

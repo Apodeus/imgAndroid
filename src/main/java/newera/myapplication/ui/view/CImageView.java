@@ -102,6 +102,11 @@ public class CImageView extends View {
         return true;
     }
 
+    public Image getImage()
+    {
+        return this.image;
+    }
+
     private class TouchHandler{
         private int initialX, initialY;
         private int initialContentX, initialContentY;

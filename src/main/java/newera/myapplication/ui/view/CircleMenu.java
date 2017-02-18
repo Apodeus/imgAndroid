@@ -8,6 +8,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,10 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import newera.myapplication.MainActivity;
 import newera.myapplication.R;
+import newera.myapplication.image.processing.shaders.GrayScale;
+import newera.myapplication.image.processing.shaders.Shader;
 import newera.myapplication.ui.system.PictureFileManager;
 
 /**
@@ -23,6 +27,8 @@ import newera.myapplication.ui.system.PictureFileManager;
  */
 
 public class CircleMenu extends View {
+    private MainActivity activity;
+
     public enum Position {TOP_LEFT, TOP_RIGHT, BOT_LEFT, BOT_RIGHT};
 
     //Radius of menu minimized and extended, in percent of min(width, height)
@@ -47,6 +53,8 @@ public class CircleMenu extends View {
     private int initialTx, initialTy;
     private float initialItemAngle;
 
+    private CImageView view;
+
     public CircleMenu(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.isExtanded = false;
@@ -57,18 +65,41 @@ public class CircleMenu extends View {
         paint.setAntiAlias(true);
         paint.setTextSize(40);
 
-        /*
-            Following code only for testing purpose
-         */
+
         this.itemList = new ArrayList<MenuItem>();
-        for(int i = 0; i <20; ++i){
-            this.addItem(new MenuItem("Item n°"+i));
-        }
-        itemList.get(0).string = "Gallery";
-        itemList.get(1).string = "Camera";
+
         this.itemAngle = 0;
         /*
          */
+    }
+
+    /*
+           Following code only for testing purpose
+    */
+    public void initialize()
+    {
+        for(int i = 0; i <20; ++i){
+            if (i != 3)
+                this.addItem(new MenuItem("Item n°"+i));
+            else
+            {
+                Shader s = new GrayScale(this.activity);
+                this.addItem(new MenuItem(s.getName(), s));
+
+            }
+        }
+        itemList.get(0).string = "Gallery";
+        itemList.get(1).string = "Camera";
+    }
+
+    public void setView(CImageView view)
+    {
+        this.view = view;
+    }
+    
+    public void setActivity(MainActivity activity)
+    {
+        this.activity = activity;
     }
 
     @Override
@@ -222,6 +253,8 @@ public class CircleMenu extends View {
                                     PictureFileManager.CreatePictureFileFromCamera();
                                     break;
                                 default:
+                                    if (itemList.get(i).isShader())
+                                        itemList.get(i).getShader().ApplyFilter(view.getImage());
                                     break;
                             }
                             /*
@@ -290,10 +323,19 @@ public class CircleMenu extends View {
     private class MenuItem{
         private RectF rect;
         private String string;
+        private Shader shader;
 
         public MenuItem(String string){
             this.string = string;
             this.rect = new RectF();
+            this.shader = null;
+        }
+
+        public MenuItem(String string, Shader shader)
+        {
+            this.string = string;
+            this.rect = new RectF();
+            this.shader = shader;
         }
 
         public void setRect(float left, float top, float right, float bottom){
@@ -313,6 +355,16 @@ public class CircleMenu extends View {
 
         public boolean contains(int x, int y){
             return rect.contains(x, y);
+        }
+
+        public boolean isShader()
+        {
+            return shader != null;
+        }
+
+        public Shader getShader()
+        {
+            return this.shader;
         }
     }
 }
