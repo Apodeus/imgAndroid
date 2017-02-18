@@ -19,6 +19,7 @@ import java.util.List;
 import newera.myapplication.MainActivity;
 import newera.myapplication.R;
 import newera.myapplication.image.processing.shaders.GrayScale;
+import newera.myapplication.image.processing.shaders.InvertColor;
 import newera.myapplication.image.processing.shaders.Shader;
 import newera.myapplication.ui.system.PictureFileManager;
 
@@ -69,23 +70,25 @@ public class CircleMenu extends View {
         this.itemList = new ArrayList<MenuItem>();
 
         this.itemAngle = 0;
-        /*
-         */
     }
-
     /*
            Following code only for testing purpose
     */
     public void initialize()
     {
         for(int i = 0; i <20; ++i){
-            if (i != 3)
-                this.addItem(new MenuItem("Item n°"+i));
-            else
-            {
-                Shader s = new GrayScale(this.activity);
-                this.addItem(new MenuItem(s.getName(), s));
-
+            switch(i) {
+                case 3 :
+                    Shader s = new GrayScale(this.activity);
+                    this.addItem(new MenuItem(s.getName(), s));
+                    break;
+                case 4 :
+                    Shader invert = new InvertColor(this.activity);
+                    this.addItem(new MenuItem(invert.getName(), invert));
+                    break;
+                default :
+                    this.addItem(new MenuItem("Item n°" + i));
+                    break;
             }
         }
         itemList.get(0).string = "Gallery";

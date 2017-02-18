@@ -3,6 +3,7 @@
     <string name="startupGalleryHint">Select a picture from Gallery</string>
     <string name="startupCameraHint">Take a picture from Camera</string>
     <string name="shaderGrayScaleName">GrayScale</string>
+    <string name="shaderInvertColor">Invert Color</string>
     <string name="galleryName">Gallery</string>
     <string name="cameraName">Camera</string>
 </resources>

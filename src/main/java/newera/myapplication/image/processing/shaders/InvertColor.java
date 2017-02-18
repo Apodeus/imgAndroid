@@ -1,22 +1,21 @@
 package newera.myapplication.image.processing.shaders;
+
 import android.graphics.Bitmap;
 import android.renderscript.Allocation;
-import android.renderscript.RenderScript;
+
 import newera.myapplication.MainActivity;
 import newera.myapplication.R;
-import newera.myapplication.ScriptC_mono;
+import newera.myapplication.ScriptC_invert;
 import newera.myapplication.image.Image;
 
-
 /**
- * Created by romain on 09/02/17.
+ * Created by Romain on 18/02/2017.
  */
 
-public class GrayScale extends Shader{
+public class InvertColor extends Shader {
 
-    public GrayScale(MainActivity activity) {
-        super(activity);
-    }
+    private int nameId = 0;
+    private Bitmap icone = null;
 
     @Override
     public void ApplyFilter(Image image)
@@ -26,19 +25,19 @@ public class GrayScale extends Shader{
                 for (Bitmap b : b1) {
                     Allocation in = Allocation.createFromBitmap(renderScript, b);
                     Allocation out = Allocation.createTyped(renderScript, in.getType());
-
-                    ScriptC_mono mono = new ScriptC_mono(renderScript);
-
-                    mono.forEach_black_and_white(in, out);
-
+                    ScriptC_invert rsInvert = new ScriptC_invert(renderScript);
+                    rsInvert.forEach_invert(in, out);
                     out.copyTo(b);
                 }
         }
     }
 
-    public String getName()
-    {
-        return activity.getResources().getString(R.string.shaderGrayScaleName);
+    public InvertColor(MainActivity activity) {
+        super(activity);
+    }
+
+    public String getName(){
+        return activity.getResources().getString(R.string.shaderInvertColor);
     }
 
     @Override
@@ -55,5 +54,4 @@ public class GrayScale extends Shader{
     public int onClick() {
         return 0;
     }
-
 }

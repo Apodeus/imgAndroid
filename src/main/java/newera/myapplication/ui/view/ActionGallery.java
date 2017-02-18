@@ -12,9 +12,9 @@ import newera.myapplication.ui.system.PictureFileManager;
 
 public class ActionGallery implements Clickable{
 
-    private Bitmap icone;
-    private int nameId = R.string.galleryName;
     private String name = "Gallery";
+    private int nameId = R.string.galleryName;
+    private Bitmap icone = null;
 
     @Override
     public String getName() {
@@ -28,7 +28,7 @@ public class ActionGallery implements Clickable{
 
     @Override
     public Bitmap getIcone() {
-        return null;
+        return icone;
     }
 
     @Override

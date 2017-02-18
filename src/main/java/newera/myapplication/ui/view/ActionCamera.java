@@ -28,7 +28,7 @@ public class ActionCamera implements Clickable {
 
     @Override
     public Bitmap getIcone() {
-        return null;
+        return icone;
     }
 
     @Override
@@ -36,5 +36,4 @@ public class ActionCamera implements Clickable {
         PictureFileManager.CreatePictureFileFromCamera();
         return 0;
     }
-
 }
