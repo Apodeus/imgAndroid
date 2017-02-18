@@ -3,6 +3,8 @@ package newera.myapplication.ui.system;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.BitmapRegionDecoder;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
@@ -23,7 +25,7 @@ import java.util.Date;
  */
 
 public class PictureFileManager {
-
+    public static final int DECODE_TILE_SIZE = 2048;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int REQUEST_IMAGE_GALLERY = 2;
     private static int LAST_REQUEST;
@@ -73,12 +75,32 @@ public class PictureFileManager {
     {
         Image result = new Image();
         Bitmap img;
+
         try {
             if (TmpUriFile != null) {
                 parcelFD = Activity.getContentResolver().openFileDescriptor(TmpUriFile, "r");
                 fileDescriptor = parcelFD.getFileDescriptor();
-                img = BitmapFactory.decodeFileDescriptor(fileDescriptor);
-                result.setBitmap(img);
+                //img = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+                BitmapRegionDecoder decoder = BitmapRegionDecoder.newInstance(fileDescriptor, true);
+                int h = decoder.getHeight();
+                int w = decoder.getWidth();
+                Log.i("DBG", "h="+h+", w="+w);
+                int xm, xM, ym, yM;//4160*3120
+                Rect r = new Rect();
+                result.setDim((int)Math.ceil((double)w/(double)DECODE_TILE_SIZE), (int)Math.ceil((double)h/(double)DECODE_TILE_SIZE));
+                for(int y = 0; y < Math.ceil((double)h/(double)DECODE_TILE_SIZE); ++y){
+                    for(int x = 0; x < Math.ceil((double)w/(double)DECODE_TILE_SIZE); ++x){
+                        xm = x*DECODE_TILE_SIZE+1;
+                        xM = Math.min( (x+1)*DECODE_TILE_SIZE, w );
+                        ym = y*DECODE_TILE_SIZE+1;
+                        yM = Math.min( (y+1)*DECODE_TILE_SIZE, h );
+                        Log.i("DBG", "rect= x("+xm +","+xM+"), y("+ym+","+yM+")");
+                        r.set(xm, ym, xM, yM);
+                        img = decoder.decodeRegion(r, null);
+                        result.addBitmap(img, x, y);
+                    }
+                }
+                //result.setBitmap(img);
                 parcelFD.close();
             } else {
                 Log.i("", "ERROR: TmpUriFile is empty.");

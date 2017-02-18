@@ -20,13 +20,13 @@ public class GrayScale extends Shader{
     @Override
     public void ApplyFilter(Image image)
     {
-        Allocation in = Allocation.createFromBitmap(renderScript, image.getBitmap());
+       /* Allocation in = Allocation.createFromBitmap(renderScript, image.getBitmap());
         Allocation out = Allocation.createTyped(renderScript, in.getType());
 
         ScriptC_mono mono = new ScriptC_mono(renderScript);
 
         mono.forEach_black_and_white(in, out);
 
-        out.copyTo(image.getBitmap());
+        out.copyTo(image.getBitmap());*/
     }
 }

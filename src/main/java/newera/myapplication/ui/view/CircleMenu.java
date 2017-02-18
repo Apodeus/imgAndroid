@@ -153,12 +153,21 @@ public class CircleMenu extends View {
     {
         switch(event.getAction()) {
             case MotionEvent.ACTION_DOWN: {
+                if (dist((int)event.getX(), (int)event.getY(), cornerX, cornerY) > radius*TOUCH_MARGIN){
+                    if (isExtanded){
+                        shouldExtand = false;
+                    } else {
+                        return false;
+                    }
+                }
                 transisionLock = true;
 
                 initialTx = (int)event.getX();
                 initialTy = (int)event.getY();
                 initialItemAngle = itemAngle;
                 touchIsExt = false;
+
+
             } break;
 
             case MotionEvent.ACTION_MOVE: {
@@ -200,13 +209,6 @@ public class CircleMenu extends View {
                 * Handle click
                 */
                 if (!touchIsExt && dist(initialTx, initialTy, (int)event.getX(), (int)event.getY()) < CLICK_DEAD_ZONE){
-                    if (dist(initialTx, initialTy, cornerX, cornerY) > radius*TOUCH_MARGIN){
-                        if (isExtanded){
-                            shouldExtand = false;
-                        } else {
-                            return false;
-                        }
-                    }
                     for (int i = 0; i < itemList.size(); ++i){
                         if (itemList.get(i).contains((int)event.getX(), (int)event.getY())){
                             /*
