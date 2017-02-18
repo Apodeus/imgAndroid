@@ -61,22 +61,7 @@ public class CImageView extends View {
     public void onDraw(Canvas canvas){
         canvas.drawColor(getResources().getColor(R.color.colorPrimaryDark));
         if (image != null && !image.isEmpty()){
-            /*
-             * Will be moved to Image.draw(canvas, x, y)
-             */
-            Log.i("DBG", "w="+image.getWidth()+" h="+image.getHeight());
-            for(int y = 0; y < image.getTileH(); ++y) {
-                for (int x = 0; x < image.getTileW(); ++x) {
-                    src.set(0, 0, image.getWidth(x,y)-1, image.getHeight(x,y)-1);
-                    dst.left = (contentCoords.x - (int)(image.getWidth() * (contentScale/2))) + (int)(x*(PictureFileManager.DECODE_TILE_SIZE-1)*(contentScale));
-                    dst.top = (contentCoords.y - (int)(image.getHeight() * (contentScale/2))) + (int)(y*(PictureFileManager.DECODE_TILE_SIZE-1)*(contentScale));
-                    dst.right = dst.left + (int)((image.getWidth(x,y))*(contentScale));
-                    dst.bottom = dst.top + (int)((image.getHeight(x,y))*(contentScale));
-                    /*dst.right = contentCoords.x + (int) (image.getWidth() * (contentScale/2));
-                    dst.bottom =  contentCoords.y + (int) (image.getHeight() * (contentScale/2));*/
-                    canvas.drawBitmap(image.getBitmap(x, y), src, dst, null);
-                }
-            }
+            image.draw(canvas, contentCoords.x, contentCoords.y, contentScale);
             /*dst.left = contentCoords.x - (int) (image.getWidth() * (contentScale/2));
             dst.top = contentCoords.y - (int) (image.getHeight() * (contentScale/2));
             dst.right = contentCoords.x + (int) (image.getWidth() * (contentScale/2));
