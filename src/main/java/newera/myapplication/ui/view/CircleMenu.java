@@ -47,6 +47,7 @@ public class CircleMenu extends View {
     private final static int TEXT_SIZE = 50;
     private final static int TEXT_BORDER_SIZE = 4;
     private final static int PositionArray[][] = {{0,0}, {1,0}, {0,1}, {1,1},};
+    private final static int DIM_FACTOR = 128;
 
     private Paint paint;
     private int width, height, min_wh, cornerX, cornerY;
@@ -95,6 +96,7 @@ public class CircleMenu extends View {
         if (!movingCircle)
         {
 
+            canvas.drawARGB((isExtanded?DIM_FACTOR:0), 0, 0, 0);
             drawCircle(canvas, cornerX, cornerY, radius);
 
             if (isExtanded){
