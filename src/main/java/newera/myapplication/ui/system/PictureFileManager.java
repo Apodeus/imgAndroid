@@ -153,6 +153,8 @@ public class PictureFileManager {
         if(LAST_REQUEST == REQUEST_IMAGE_GALLERY) {
             TmpUriFile = data.getData();
         }
+
+        Activity.civ.setImage(RetrieveSavedPictureFromIntent());
     }
 
     private static void dispatchTakePictureIntent()

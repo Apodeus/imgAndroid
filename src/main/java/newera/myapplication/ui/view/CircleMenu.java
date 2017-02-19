@@ -245,7 +245,7 @@ public class CircleMenu extends View {
                     if (!right && !down)
                         position = Position.TOP_LEFT;
                     if (!right && down)
-                        position = Position.BOT_RIGHT;  //Until green refresh button is here
+                        position = Position.BOT_LEFT;
                     if (right && !down)
                         position = Position.TOP_RIGHT;
                     if (right && down)

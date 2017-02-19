@@ -13,6 +13,8 @@ import newera.myapplication.ui.view.StartupView;
 
 public class MainActivity extends AppCompatActivity {
 
+    public CImageView civ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //OnCreate
@@ -22,15 +24,7 @@ public class MainActivity extends AppCompatActivity {
         SystemActionHandler.setActivity(this);
         //PictureFileManager.CreatePictureFileFromCamera();
         //PictureFileManager.LoadPictureFromGallery();
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floatingActionButton);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CImageView civ = (CImageView) findViewById(R.id.cImageView);
-                civ.setImage(PictureFileManager.RetrieveSavedPictureFromIntent());
-
-            }
-        });
+        civ = (CImageView) findViewById(R.id.cImageView);
 
         CircleMenu menu = (CircleMenu) findViewById(R.id.circleMenu);
         menu.setView((CImageView) findViewById(R.id.cImageView));

@@ -14,15 +14,6 @@
     android:id="@+id/startupView"
     />
 
-    <android.support.design.widget.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        app:fabSize="normal" app:srcCompat="@color/colorAccent"
-        android:id="@+id/floatingActionButton"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
-
     <newera.myapplication.ui.view.CircleMenu
         android:layout_width="match_parent"
         android:layout_height="match_parent"
