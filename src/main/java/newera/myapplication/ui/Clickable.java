@@ -15,4 +15,5 @@ public interface Clickable {
     Bitmap getIcone();
 
     int onClick();
+
 }

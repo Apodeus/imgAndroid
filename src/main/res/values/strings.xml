@@ -8,4 +8,6 @@
     <string name="shaderChangeHueName">Change Hue</string>
     <string name="galleryName">Gallery</string>
     <string name="cameraName">Camera</string>
+    <string name="apply">Apply</string>
+    <string name="cancel">Cancel</string>
 </resources>

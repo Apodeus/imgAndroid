@@ -6,4 +6,6 @@
     <string name="shaderGrayScaleName">Nuances de gris</string>
     <string name="galleryName">Galerie</string>
     <string name="cameraName">Appareil photo</string>
+    <string name="apply">Appliquer</string>
+    <string name="cancel">Annuler</string>
 </resources>

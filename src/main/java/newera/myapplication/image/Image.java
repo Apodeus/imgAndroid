@@ -56,7 +56,6 @@ public class Image {
                 dst.top = (coordY - (int)((this.getHeight()-1) * (scale/2))) + (int)(y*(PictureFileManager.DECODE_TILE_SIZE-1)*(scale));
                 dst.right = dst.left + (int)((this.getWidth(x,y))*(scale));
                 dst.bottom = dst.top + (int)((this.getHeight(x,y))*(scale));
-                Log.i("DBG", ""+dst.toString());
                     /*dst.right = contentCoords.x + (int) (image.getWidth() * (contentScale/2));
                     dst.bottom =  contentCoords.y + (int) (image.getHeight() * (contentScale/2));*/
                 canvas.drawBitmap(this.getBitmap(x, y), src, dst, null);

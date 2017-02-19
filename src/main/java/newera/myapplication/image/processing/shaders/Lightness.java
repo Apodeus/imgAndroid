@@ -28,6 +28,7 @@ public class Lightness extends Shader {
                     out.copyTo(b);
                 }
         }
+        refreshImage();
     }
 
     public Lightness(MainActivity activity) {
@@ -46,10 +47,5 @@ public class Lightness extends Shader {
     @Override
     public Bitmap getIcone() {
         return icone;
-    }
-
-    @Override
-    public int onClick() {
-        return 0;
     }
 }

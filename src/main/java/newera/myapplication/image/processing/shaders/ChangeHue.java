@@ -8,6 +8,7 @@ import newera.myapplication.R;
 import newera.myapplication.ScriptC_hue;
 import newera.myapplication.ScriptC_lightness;
 import newera.myapplication.image.Image;
+import newera.myapplication.ui.view.CImageView;
 
 /**
  * Created by Romain on 19/02/2017.
@@ -29,6 +30,7 @@ public class ChangeHue extends Shader {
                     out.copyTo(b);
                 }
         }
+        refreshImage();
     }
 
     public ChangeHue(MainActivity activity) {
@@ -49,8 +51,4 @@ public class ChangeHue extends Shader {
         return icone;
     }
 
-    @Override
-    public int onClick() {
-        return 0;
-    }
 }

@@ -34,6 +34,7 @@ public class GrayScale extends Shader{
                     out.copyTo(b);
                 }
         }
+        refreshImage();
     }
 
     public String getName()
@@ -49,11 +50,6 @@ public class GrayScale extends Shader{
     @Override
     public Bitmap getIcone() {
         return null;
-    }
-
-    @Override
-    public int onClick() {
-        return 0;
     }
 
 }

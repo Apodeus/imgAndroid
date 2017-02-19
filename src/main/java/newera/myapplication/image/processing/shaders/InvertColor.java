@@ -30,6 +30,7 @@ public class InvertColor extends Shader {
                     out.copyTo(b);
                 }
         }
+        refreshImage();
     }
 
     public InvertColor(MainActivity activity) {
@@ -50,8 +51,4 @@ public class InvertColor extends Shader {
         return null;
     }
 
-    @Override
-    public int onClick() {
-        return 0;
-    }
 }

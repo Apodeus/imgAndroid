@@ -7,6 +7,7 @@ import android.graphics.LightingColorFilter;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.support.v4.app.FragmentActivity;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Menu;
@@ -234,8 +235,9 @@ public class CircleMenu extends View {
                                     PictureFileManager.CreatePictureFileFromCamera();
                                     break;
                                 default:
-                                    if (itemList.get(i).isShader())
-                                        itemList.get(i).getShader().ApplyFilter(view.getImage());
+                                    if (itemList.get(i).isShader()) {
+                                        itemList.get(i).getShader().onClick();
+                                    }
                                     break;
                             }
                             /*
