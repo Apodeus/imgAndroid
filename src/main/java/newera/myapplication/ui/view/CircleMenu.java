@@ -61,6 +61,10 @@ public class CircleMenu extends View {
     private int initialTx, initialTy;
     private float initialItemAngle;
 
+    private boolean movingCircle;
+    private int currentPositionX;
+    private int currentPositionY;
+
     private CImageView view;
 
     public CircleMenu(Context context, AttributeSet attrs) {
@@ -76,6 +80,8 @@ public class CircleMenu extends View {
         this.itemList = new ArrayList<MenuItem>();
 
         this.itemAngle = 0;
+
+        this.movingCircle = false;
     }
 
     @Override
@@ -86,45 +92,48 @@ public class CircleMenu extends View {
         transition();
 
         paint.setColor(getResources().getColor(R.color.colorAccent));
-        drawCircle(canvas, cornerX, cornerY, radius);
+        if (!movingCircle)
+        {
 
-        if (isExtanded){
-            for (int i = 0; i < itemList.size(); ++i){
-                angle = (Math.toRadians(i * itemListAngle) - Math.toRadians(itemAngle)) % (2 * Math.PI);
+            drawCircle(canvas, cornerX, cornerY, radius);
 
-                // ===== draw circle item ====
-                paint.setColor(getResources().getColor(R.color.colorPrimaryDark));
-                x = (int)(cornerX + (itemCircleRadius) * Math.cos(angle));
-                y = (int)(cornerY + (itemCircleRadius) * Math.sin(angle));
-                itemList.get(i).setRect(drawCircle(canvas, x, y, itemRadius));
+            if (isExtanded){
+                for (int i = 0; i < itemList.size(); ++i){
+                    angle = (Math.toRadians(i * itemListAngle) - Math.toRadians(itemAngle)) % (2 * Math.PI);
+
+                    // ===== draw circle item ====
+                    paint.setColor(getResources().getColor(R.color.colorPrimaryDark));
+                    x = (int)(cornerX + (itemCircleRadius) * Math.cos(angle));
+                    y = (int)(cornerY + (itemCircleRadius) * Math.sin(angle));
+                    itemList.get(i).setRect(drawCircle(canvas, x, y, itemRadius));
 
 
-                // ==== Draw item name ====
-                Paint border = new Paint();
-                border.setAntiAlias(true);
-                border.setTextSize(TEXT_SIZE);
-                border.setStyle(Paint.Style.STROKE);
-                border.setStrokeWidth(TEXT_BORDER_SIZE);
+                    // ==== Draw item name ====
+                    Paint border = new Paint();
+                    border.setAntiAlias(true);
+                    border.setTextSize(TEXT_SIZE);
+                    border.setStyle(Paint.Style.STROKE);
+                    border.setStrokeWidth(TEXT_BORDER_SIZE);
 
-                border.setColor(Color.BLACK);
-                paint.setColor(Color.WHITE);
-                String text = itemList.get(i).getName();
+                    border.setColor(Color.BLACK);
+                    paint.setColor(Color.WHITE);
+                    String text = itemList.get(i).getName();
 
-                x2 = (int)(cornerX + radius*DISPLAY_MARGIN * Math.cos(angle));
-                y2 = (int)(cornerY + radius*DISPLAY_MARGIN * Math.sin(angle));
+                    x2 = (int)(cornerX + radius*DISPLAY_MARGIN * Math.cos(angle));
+                    y2 = (int)(cornerY + radius*DISPLAY_MARGIN * Math.sin(angle));
 
-                canvas.save();
+                    canvas.save();
 
-                canvas.rotate((float) Math.toDegrees(angle) + 180*PositionArray[position.ordinal()][0], x2, y2);
-                if (PositionArray[position.ordinal()][0] == 0){
-                    border.setTextAlign(Paint.Align.LEFT);
-                    paint.setTextAlign(Paint.Align.LEFT);
-                } else {
-                    border.setTextAlign(Paint.Align.RIGHT);
-                    paint.setTextAlign(Paint.Align.RIGHT);
-                }
+                    canvas.rotate((float) Math.toDegrees(angle) + 180*PositionArray[position.ordinal()][0], x2, y2);
+                    if (PositionArray[position.ordinal()][0] == 0){
+                        border.setTextAlign(Paint.Align.LEFT);
+                        paint.setTextAlign(Paint.Align.LEFT);
+                    } else {
+                        border.setTextAlign(Paint.Align.RIGHT);
+                        paint.setTextAlign(Paint.Align.RIGHT);
+                    }
 
-                //canvas.drawText(text, x, y, paint);
+                    //canvas.drawText(text, x, y, paint);
 
                 /*if((angle >= 0 && angle < Math.PI / 2) || (angle <= 0 && angle > -1*(Math.PI / 2))
                         || (angle < -1*(3*Math.PI /2) && angle >= -2 * Math.PI)|| (angle > 3*Math.PI/2 && angle <= 2*Math.PI)){
@@ -135,11 +144,14 @@ public class CircleMenu extends View {
 
                     canvas.rotate((float) Math.toDegrees(angle) + 180, x2, y2);
                 }*/
-                canvas.drawText(text, x2, y2, border);
-                canvas.drawText(text, x2, y2, paint);
+                    canvas.drawText(text, x2, y2, border);
+                    canvas.drawText(text, x2, y2, paint);
 
-                canvas.restore();
+                    canvas.restore();
+                }
             }
+        }else{
+            drawCircle(canvas, currentPositionX, currentPositionY, initialRadius);
         }
     }
 
@@ -155,10 +167,17 @@ public class CircleMenu extends View {
 
         updateItemDisplay();
 
-        cornerX = width*PositionArray[position.ordinal()][0];
-        cornerY = height*PositionArray[position.ordinal()][1];
+        setCircleMenuMeasures();
 
         setMeasuredDimension(width, height);
+    }
+
+    private void setCircleMenuMeasures()
+    {
+        cornerX = width*PositionArray[position.ordinal()][0];
+        cornerY = height*PositionArray[position.ordinal()][1];
+        currentPositionX = cornerX;
+        currentPositionY = cornerY;
     }
 
     @Override
@@ -186,7 +205,7 @@ public class CircleMenu extends View {
             case MotionEvent.ACTION_MOVE: {
                 double distFromCorner = dist((int)event.getX(), (int)event.getY(), cornerX, cornerY);
                 double distFromCornerInit = dist(cornerX, cornerY, initialTx, initialTy);
-                if ( distFromCorner < extRadius*TOUCH_MARGIN && distFromCorner > initialRadius*(1.0/TOUCH_MARGIN) ) {
+                if ( distFromCorner < extRadius*TOUCH_MARGIN && distFromCorner > initialRadius*(1.0/TOUCH_MARGIN) && !movingCircle ) {
                     if (!isExtanded && Math.abs(distFromCorner-distFromCornerInit) > (initialRadius/2)*TOUCH_MARGIN) {
                         touchIsExt = true;
                         isExtanded = false;
@@ -195,9 +214,16 @@ public class CircleMenu extends View {
                         touchIsExt = true;
                         isExtanded = false;
                     }
+
                     if (touchIsExt) {
                         radius = (int)dist((int)event.getX(), (int)event.getY(), cornerX, cornerY);
                     }
+                }
+
+                if (!isExtanded && Math.abs(distFromCorner-distFromCornerInit) > (initialRadius*5)*TOUCH_MARGIN) {
+                    movingCircle = true;
+                    currentPositionX = (int) event.getX();
+                    currentPositionY = (int) event.getY();
                 }
 
                 if (!touchIsExt){
@@ -209,6 +235,24 @@ public class CircleMenu extends View {
 
             case MotionEvent.ACTION_UP: {
                 transisionLock = false;
+
+                if (movingCircle)
+                {
+                    boolean right = currentPositionX > getWidth() / 2;
+                    boolean down = currentPositionY > getHeight() / 2;
+                    if (!right && !down)
+                        position = Position.TOP_LEFT;
+                    if (!right && down)
+                        position = Position.BOT_RIGHT;  //Until green refresh button is here
+                    if (right && !down)
+                        position = Position.TOP_RIGHT;
+                    if (right && down)
+                        position = Position.BOT_RIGHT;
+
+                    movingCircle = false;
+                    setCircleMenuMeasures();
+                    invalidate();
+                }
 
                 if (touchIsExt){
                     if ((extRadius-initialRadius)/2 > dist((int)event.getX(), (int)event.getY(), cornerX, cornerY)){
