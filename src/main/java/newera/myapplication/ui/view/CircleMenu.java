@@ -38,7 +38,10 @@ public class CircleMenu extends View {
     private final static double TOUCH_MARGIN = 1.25;
     private final static double ITEM_CIRCLE_RADIUS = 0.90;
     private final static double ITEM_CIRCLE_MARGIN = 0.05;
+    private final static double DISPLAY_MARGIN = 1.03;
     private final static int CLICK_DEAD_ZONE = 5;
+    private final static int TEXT_SIZE = 50;
+    private final static int TEXT_BORDER_SIZE = 4;
     private final static int PositionArray[][] = {{0,0}, {1,0}, {0,1}, {1,1},};
 
     private Paint paint;
@@ -61,48 +64,14 @@ public class CircleMenu extends View {
         this.isExtanded = false;
         this.shouldExtand = false;
         this.transisionLock = false;
-        this.position = Position.BOT_RIGHT;
+        this.position = Position.TOP_RIGHT;
         this.paint = new Paint();
         paint.setAntiAlias(true);
-        paint.setTextSize(40);
-
+        paint.setTextSize(TEXT_SIZE);
 
         this.itemList = new ArrayList<MenuItem>();
 
         this.itemAngle = 0;
-    }
-    /*
-           Following code only for testing purpose
-    */
-    public void initialize()
-    {
-        for(int i = 0; i <20; ++i){
-            switch(i) {
-                case 3 :
-                    Shader s = new GrayScale(this.activity);
-                    this.addItem(new MenuItem(s.getName(), s));
-                    break;
-                case 4 :
-                    Shader invert = new InvertColor(this.activity);
-                    this.addItem(new MenuItem(invert.getName(), invert));
-                    break;
-                default :
-                    this.addItem(new MenuItem("Item n°" + i));
-                    break;
-            }
-        }
-        itemList.get(0).string = "Gallery";
-        itemList.get(1).string = "Camera";
-    }
-
-    public void setView(CImageView view)
-    {
-        this.view = view;
-    }
-    
-    public void setActivity(MainActivity activity)
-    {
-        this.activity = activity;
     }
 
     @Override
@@ -123,39 +92,45 @@ public class CircleMenu extends View {
                 paint.setColor(getResources().getColor(R.color.colorPrimaryDark));
                 x = (int)(cornerX + (itemCircleRadius) * Math.cos(angle));
                 y = (int)(cornerY + (itemCircleRadius) * Math.sin(angle));
-                itemList.get(i).setRect(x - itemRadius, y - itemRadius, x + itemRadius, y + itemRadius);
-                drawCircle(canvas, x, y, itemRadius);
+                itemList.get(i).setRect(drawCircle(canvas, x, y, itemRadius));
+
 
                 // ==== Draw item name ====
                 Paint border = new Paint();
                 border.setAntiAlias(true);
-                border.setTextSize(40);
+                border.setTextSize(TEXT_SIZE);
                 border.setStyle(Paint.Style.STROKE);
-                border.setStrokeWidth(8);
+                border.setStrokeWidth(TEXT_BORDER_SIZE);
 
                 border.setColor(Color.BLACK);
                 paint.setColor(Color.WHITE);
-
                 String text = itemList.get(i).getName();
 
-                x2 = (int)(cornerX + radius * Math.cos(angle));
-                y2 = (int)(cornerY + radius * Math.sin(angle));
+                x2 = (int)(cornerX + radius*DISPLAY_MARGIN * Math.cos(angle));
+                y2 = (int)(cornerY + radius*DISPLAY_MARGIN * Math.sin(angle));
 
                 canvas.save();
 
-                if((angle >= 0 && angle < Math.PI / 2) || (angle <= 0 && angle > -1*(Math.PI / 2))
-                        || (angle < -1*(3*Math.PI /2) && angle >= -2 * Math.PI)|| (angle > 3*Math.PI/2 && angle <= 2*Math.PI)){
+                canvas.rotate((float) Math.toDegrees(angle) + 180*PositionArray[position.ordinal()][0], x2, y2);
+                if (PositionArray[position.ordinal()][0] == 0){
+                    border.setTextAlign(Paint.Align.LEFT);
+                    paint.setTextAlign(Paint.Align.LEFT);
+                } else {
+                    border.setTextAlign(Paint.Align.RIGHT);
+                    paint.setTextAlign(Paint.Align.RIGHT);
+                }
 
+                //canvas.drawText(text, x, y, paint);
+
+                /*if((angle >= 0 && angle < Math.PI / 2) || (angle <= 0 && angle > -1*(Math.PI / 2))
+                        || (angle < -1*(3*Math.PI /2) && angle >= -2 * Math.PI)|| (angle > 3*Math.PI/2 && angle <= 2*Math.PI)){
                     border.setTextAlign(Paint.Align.LEFT);
                     paint.setTextAlign(Paint.Align.LEFT);
                     canvas.rotate((float) Math.toDegrees(angle), x2, y2);
                 } else {
 
-                    border.setTextAlign(Paint.Align.RIGHT);
-                    paint.setTextAlign(Paint.Align.RIGHT);
                     canvas.rotate((float) Math.toDegrees(angle) + 180, x2, y2);
-                }
-
+                }*/
                 canvas.drawText(text, x2, y2, border);
                 canvas.drawText(text, x2, y2, paint);
 
@@ -272,6 +247,40 @@ public class CircleMenu extends View {
         return true;
     }
 
+    /*
+           Following code only for testing purpose
+    */
+    public void initialize()
+    {
+        for(int i = 0; i <20; ++i){
+            switch(i) {
+                case 3 :
+                    Shader s = new GrayScale(this.activity);
+                    this.addItem(new MenuItem(s.getName(), s));
+                    break;
+                case 4 :
+                    Shader invert = new InvertColor(this.activity);
+                    this.addItem(new MenuItem(invert.getName(), invert));
+                    break;
+                default :
+                    this.addItem(new MenuItem("Item n°" + i));
+                    break;
+            }
+        }
+        itemList.get(0).string = "Gallery";
+        itemList.get(1).string = "Camera";
+    }
+
+    public void setView(CImageView view)
+    {
+        this.view = view;
+    }
+
+    public void setActivity(MainActivity activity)
+    {
+        this.activity = activity;
+    }
+
     private void transition(){
         if (!transisionLock ){
             if (shouldExtand && radius < extRadius) {
@@ -315,8 +324,10 @@ public class CircleMenu extends View {
         return new RectF(x - r, y - r, x + r, y + r);
     }
 
-    private void drawCircle(Canvas canvas, int x, int y, int r){
-        canvas.drawOval(rectFromCircle(x, y, r), paint);
+    private RectF drawCircle(Canvas canvas, int x, int y, int r){
+        RectF rect = rectFromCircle(x, y, r);
+        canvas.drawOval(rect, paint);
+        return rect;
     }
 
     private double dist(int x1, int y1, int x2, int y2){
@@ -343,6 +354,10 @@ public class CircleMenu extends View {
 
         public void setRect(float left, float top, float right, float bottom){
             rect.set(left, top, right, bottom);
+        }
+
+        public void setRect(RectF rectf){
+            rect.set(rectf.left, rectf.top, rectf.right, rectf.bottom);
         }
 
         /**
