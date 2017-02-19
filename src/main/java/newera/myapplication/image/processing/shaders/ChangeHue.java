@@ -5,16 +5,15 @@ import android.renderscript.Allocation;
 
 import newera.myapplication.MainActivity;
 import newera.myapplication.R;
-import newera.myapplication.ScriptC_invert;
+import newera.myapplication.ScriptC_hue;
+import newera.myapplication.ScriptC_lightness;
 import newera.myapplication.image.Image;
 
 /**
- * Created by Romain on 18/02/2017.
+ * Created by Romain on 19/02/2017.
  */
 
-public class InvertColor extends Shader {
-
-    private int nameId = 0;
+public class ChangeHue extends Shader {
     private Bitmap icone = null;
 
     @Override
@@ -25,19 +24,19 @@ public class InvertColor extends Shader {
                 for (Bitmap b : b1) {
                     Allocation in = Allocation.createFromBitmap(renderScript, b);
                     Allocation out = Allocation.createTyped(renderScript, in.getType());
-                    ScriptC_invert rsInvert = new ScriptC_invert(renderScript);
-                    rsInvert.forEach_invert(in, out);
+                    ScriptC_hue rsChangeHue = new ScriptC_hue(renderScript);
+                    rsChangeHue.forEach_ChangeHue(in, out);
                     out.copyTo(b);
                 }
         }
     }
 
-    public InvertColor(MainActivity activity) {
+    public ChangeHue(MainActivity activity) {
         super(activity);
     }
 
     public String getName(){
-        return activity.getResources().getString(R.string.shaderInvertColorName);
+        return activity.getResources().getString(R.string.shaderChangeHueName);
     }
 
     @Override
@@ -47,7 +46,7 @@ public class InvertColor extends Shader {
 
     @Override
     public Bitmap getIcone() {
-        return null;
+        return icone;
     }
 
     @Override

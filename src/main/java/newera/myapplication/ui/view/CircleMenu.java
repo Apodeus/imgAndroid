@@ -3,6 +3,7 @@ package newera.myapplication.ui.view;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.LightingColorFilter;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -18,8 +19,10 @@ import java.util.List;
 
 import newera.myapplication.MainActivity;
 import newera.myapplication.R;
+import newera.myapplication.image.processing.shaders.ChangeHue;
 import newera.myapplication.image.processing.shaders.GrayScale;
 import newera.myapplication.image.processing.shaders.InvertColor;
+import newera.myapplication.image.processing.shaders.Lightness;
 import newera.myapplication.image.processing.shaders.Shader;
 import newera.myapplication.ui.system.PictureFileManager;
 
@@ -261,6 +264,16 @@ public class CircleMenu extends View {
                 case 4 :
                     Shader invert = new InvertColor(this.activity);
                     this.addItem(new MenuItem(invert.getName(), invert));
+                    break;
+
+                case 5 :
+                    Shader lightness = new Lightness(this.activity);
+                    this.addItem(new MenuItem(lightness.getName(), lightness));
+                    break;
+
+                case 6 :
+                    Shader changeHue = new ChangeHue(this.activity);
+                    this.addItem(new MenuItem(changeHue.getName(), changeHue));
                     break;
                 default :
                     this.addItem(new MenuItem("Item n°" + i));
