@@ -22,7 +22,6 @@ public class HistogramEqualize extends Shader {
     public void ApplyFilter(Image image) {
         if(image != null && !image.isEmpty()) {
 
-
             int[] histo = new int[256];
             for(int i = 0; i < 256; i++)
                 histo[i] = 0;
@@ -32,7 +31,6 @@ public class HistogramEqualize extends Shader {
 
             Allocation arr = Allocation.createSized(renderScript, Element.I32(renderScript), histo.length);
             arr.copyFrom(histo);
-
 
             for (Bitmap[] b1 : image.getBitmaps()){
                 for (Bitmap b : b1) {
@@ -52,7 +50,6 @@ public class HistogramEqualize extends Shader {
 
                     rsHistogram.forEach_calculHistogram(in, out);
                     rsHistogram.set_histogram(histo);
-
                     rsHistogram.invoke_createRemapArray();
                     rsHistogram.forEach_YUVToRGB(out, in);
 
