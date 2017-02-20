@@ -6,6 +6,7 @@
     <string name="shaderInvertColorName">Invert Color</string>
     <string name="shaderLightnessName">Lightness</string>
     <string name="shaderChangeHueName">Change Hue</string>
+    <string name="shaderHistogramName">Equalize Histogram</string>
     <string name="galleryName">Gallery</string>
     <string name="cameraName">Camera</string>
     <string name="apply">Apply</string>
