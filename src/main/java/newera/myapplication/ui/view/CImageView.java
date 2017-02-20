@@ -73,8 +73,7 @@ public class CImageView extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
-        if (event.getPointerCount() <= 1)
-        {
+        if (event.getPointerCount() <= 1) {
             contentScale = touchHandler.onTouch(event, TouchMethod.DRAG, contentCoords, contentScale);
             contentCoords.x = (int) (Math.min(contentCoords.x, getWidth() * MOVE_SAFEZONE + (int) (image.getWidth() * (contentScale/2))));      // need the scale factor
             contentCoords.y = (int) (Math.min(contentCoords.y, getHeight() * MOVE_SAFEZONE + (int) (image.getHeight() * (contentScale/2))));   // somewhere here

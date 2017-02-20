@@ -49,15 +49,15 @@ public class Image {
     public void draw(Canvas canvas, int coordX, int coordY, float scale){
         Rect src = new Rect();
         Rect dst = new Rect();
+        int cx = (coordX - (int)((this.getWidth()-1) * (scale/2)));
+        int cy = (coordY - (int)((this.getHeight()-1) * (scale/2)));
         for(int y = 0; y < this.getTileH(); ++y) {
             for (int x = 0; x < this.getTileW(); ++x) {
                 src.set(0, 0, this.getWidth(x,y)-1, this.getHeight(x,y)-1);
-                dst.left = (coordX - (int)((this.getWidth()-1) * (scale/2))) + (int)(x*(PictureFileManager.DECODE_TILE_SIZE-1)*(scale));
-                dst.top = (coordY - (int)((this.getHeight()-1) * (scale/2))) + (int)(y*(PictureFileManager.DECODE_TILE_SIZE-1)*(scale));
+                dst.left = cx + x*(int)((PictureFileManager.DECODE_TILE_SIZE-1.0)*(scale));
+                dst.top = cy + y*(int)((PictureFileManager.DECODE_TILE_SIZE-1.0)*(scale));
                 dst.right = dst.left + (int)((this.getWidth(x,y))*(scale));
                 dst.bottom = dst.top + (int)((this.getHeight(x,y))*(scale));
-                    /*dst.right = contentCoords.x + (int) (image.getWidth() * (contentScale/2));
-                    dst.bottom =  contentCoords.y + (int) (image.getHeight() * (contentScale/2));*/
                 canvas.drawBitmap(this.getBitmap(x, y), src, dst, null);
             }
         }
