@@ -21,7 +21,7 @@ Schéma fonctionnel : [Mindomo](https://www.mindomo.com/mindmap/b9565ab1eb794d20
 - ~~Zoomer~~
 - ~~Scroller~~
 - Réinitialiser l'image d'origine
-- Sauvegarder l'image modifiée
+- ~~Sauvegarder l'image modifiée~~
 
 ### Filtres
 - Régler la luminosité
