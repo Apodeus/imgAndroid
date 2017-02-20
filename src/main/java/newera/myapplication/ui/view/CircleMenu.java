@@ -94,9 +94,7 @@ public class CircleMenu extends View {
         transition();
 
         paint.setColor(getResources().getColor(R.color.colorAccent));
-        if (!movingCircle)
-        {
-
+        if (!movingCircle) {
             canvas.drawARGB((isExtanded?DIM_FACTOR:0), 0, 0, 0);
             drawCircle(canvas, cornerX, cornerY, radius);
 
@@ -110,14 +108,12 @@ public class CircleMenu extends View {
                     y = (int)(cornerY + (itemCircleRadius) * Math.sin(angle));
                     itemList.get(i).setRect(drawCircle(canvas, x, y, itemRadius));
 
-
                     // ==== Draw item name ====
                     Paint border = new Paint();
                     border.setAntiAlias(true);
                     border.setTextSize(TEXT_SIZE);
                     border.setStyle(Paint.Style.STROKE);
                     border.setStrokeWidth(TEXT_BORDER_SIZE);
-
                     border.setColor(Color.BLACK);
                     paint.setColor(Color.WHITE);
                     String text = itemList.get(i).getName();
@@ -126,7 +122,6 @@ public class CircleMenu extends View {
                     y2 = (int)(cornerY + radius*DISPLAY_MARGIN * Math.sin(angle));
 
                     canvas.save();
-
                     canvas.rotate((float) Math.toDegrees(angle) + 180*PositionArray[position.ordinal()][0], x2, y2);
                     if (PositionArray[position.ordinal()][0] == 0){
                         border.setTextAlign(Paint.Align.LEFT);
@@ -154,6 +149,16 @@ public class CircleMenu extends View {
                 }
             }
         }else{
+            paint.setColor(getResources().getColor(R.color.colorAccent));
+            paint.setAlpha(DIM_FACTOR);
+            boolean right = currentPositionX > getWidth() / 2;
+            boolean down = currentPositionY > getHeight() / 2;
+            if (!right && !down) drawCircle(canvas, 0,0, initialRadius);
+            if (!right && down) drawCircle(canvas, 0, height, initialRadius);
+            if (right && !down) drawCircle(canvas, width, 0, initialRadius);
+            if (right && down) drawCircle(canvas, width, height, initialRadius);
+
+            paint.setColor(getResources().getColor(R.color.colorAccent));
             drawCircle(canvas, currentPositionX, currentPositionY, initialRadius);
         }
     }
@@ -175,14 +180,6 @@ public class CircleMenu extends View {
         setMeasuredDimension(width, height);
     }
 
-    private void setCircleMenuMeasures()
-    {
-        cornerX = width*PositionArray[position.ordinal()][0];
-        cornerY = height*PositionArray[position.ordinal()][1];
-        currentPositionX = cornerX;
-        currentPositionY = cornerY;
-    }
-
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
@@ -201,7 +198,7 @@ public class CircleMenu extends View {
                 initialTy = (int)event.getY();
                 initialItemAngle = itemAngle;
                 touchIsExt = false;
-
+                movingCircle = false;
 
             } break;
 
@@ -223,8 +220,10 @@ public class CircleMenu extends View {
                     }
                 }
 
-                if (!isExtanded && Math.abs(distFromCorner-distFromCornerInit) > (initialRadius*5)*TOUCH_MARGIN) {
+                if (!isExtanded && Math.abs(distFromCorner-distFromCornerInit) > ((extRadius)*TOUCH_MARGIN)*TOUCH_MARGIN) { //Margin over the normal radius*margin
                     movingCircle = true;
+                }
+                if (movingCircle){
                     currentPositionX = (int) event.getX();
                     currentPositionY = (int) event.getY();
                 }
@@ -239,8 +238,7 @@ public class CircleMenu extends View {
             case MotionEvent.ACTION_UP: {
                 transisionLock = false;
 
-                if (movingCircle)
-                {
+                if (movingCircle) {
                     boolean right = currentPositionX > getWidth() / 2;
                     boolean down = currentPositionY > getHeight() / 2;
                     if (!right && !down)
@@ -252,12 +250,11 @@ public class CircleMenu extends View {
                     if (right && down)
                         position = Position.BOT_RIGHT;
 
-                    movingCircle = false;
                     setCircleMenuMeasures();
                     invalidate();
                 }
 
-                if (touchIsExt){
+                if (!movingCircle && touchIsExt){
                     if ((extRadius-initialRadius)/2 > dist((int)event.getX(), (int)event.getY(), cornerX, cornerY)){
                         shouldExtand = false;
                     } else {
@@ -268,7 +265,7 @@ public class CircleMenu extends View {
                 /*
                 * Handle click
                 */
-                if (!touchIsExt && dist(initialTx, initialTy, (int)event.getX(), (int)event.getY()) < CLICK_DEAD_ZONE){
+                if (!movingCircle && !touchIsExt && dist(initialTx, initialTy, (int)event.getX(), (int)event.getY()) < CLICK_DEAD_ZONE){
                     for (int i = 0; i < itemList.size(); ++i){
                         if (itemList.get(i).contains((int)event.getX(), (int)event.getY())){
                             /*
@@ -349,6 +346,13 @@ public class CircleMenu extends View {
         this.activity = activity;
     }
 
+    private void setCircleMenuMeasures() {
+        cornerX = width*PositionArray[position.ordinal()][0];
+        cornerY = height*PositionArray[position.ordinal()][1];
+        currentPositionX = cornerX;
+        currentPositionY = cornerY;
+    }
+
     private void transition(){
         if (!transisionLock ){
             if (shouldExtand && radius < extRadius) {
@@ -380,7 +384,6 @@ public class CircleMenu extends View {
         itemRadius = (int)(((extRadius*2*Math.PI)/itemList.size())/2);
         itemCircleRadius = extRadius-itemRadius;
         itemRadius = (int)((((itemCircleRadius*2*Math.PI)/itemList.size())/2)*(1-ITEM_CIRCLE_MARGIN));
-        Log.i("DBG", "item : angle=" +itemListAngle+"°, r="+itemRadius);
     }
 
     private void addItem(MenuItem item){
