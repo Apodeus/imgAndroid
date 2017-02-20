@@ -4,6 +4,7 @@
 
 const static float3 grayScale = {0.299f, 0.587f, 0.114f};
 
+rs_allocation arr;
 int32_t histogram[256];
 float remapArray[256];
 int size;
@@ -11,11 +12,12 @@ int size;
 //restrein the value val between 0 and 1
 static float restrein(float val){
     float f = fmax(0.0f, val);
-    f = min(1.0f, f);
-    return f;
+    return fmin(1.0f, f);
 }
 
-void initArray() {
+
+
+void init() {
     //init the array with zeros
     for (int i = 0; i < 256; i++) {
         histogram[i] = 0;
@@ -32,6 +34,12 @@ void createRemapArray() {
     }
 }
 
+void copyHisto(int* t){
+    for(int i = 0; i < 256; i++){
+        t[i] = t[i] + histogram[i];
+    }
+}
+
 
 //MAINS
 uchar4 __attribute__((kernel)) calculHistogram(uchar4 in, uint32_t x, uint32_t y) {
@@ -45,6 +53,7 @@ uchar4 __attribute__((kernel)) calculHistogram(uchar4 in, uint32_t x, uint32_t y
   int32_t Yvalue = Y * 255;
 
   histogram[Yvalue]++;
+  rsSetElementAt_int(arr, histogram[Yvalue],Yvalue);
 
   float4 new = {Y, U, V, pixel.a};
   out = rsPackColorTo8888(new);
