@@ -6,7 +6,7 @@
 static float3 changeHue(float3 rgb, float factor){
     float3 hsl = rgbToHsl(rgb.x, rgb.y, rgb.z);
 
-    hsl.x = hsl.x * factor;
+    hsl.x = factor;
     if (hsl.x < 0){
         hsl.x = fabs(hsl.x);
     }

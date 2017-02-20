@@ -39,6 +39,16 @@ public class Image {
         }
     }
 
+    public Bitmap getBitmap(){
+        int nW = this.getWidth();
+        int nH = this.getHeight();
+        Bitmap newBitmap = Bitmap.createBitmap(nW, nH, bitmap[0][0].getConfig());
+        Canvas canvas = new Canvas(newBitmap);
+        //rework the following method for this call.
+        draw(canvas, (int)((this.getWidth()-1) * (1f/2)), (int)((this.getHeight()-1) * (1f/2)), 1f);
+        return newBitmap;
+    }
+
     public void addBitmap(Bitmap bitmap, int x, int y){
         if(bitmap == null)
             return;
@@ -54,9 +64,9 @@ public class Image {
         for(int y = 0; y < this.getTileH(); ++y) {
             for (int x = 0; x < this.getTileW(); ++x) {
                 src.set(0, 0, this.getWidth(x,y)-1, this.getHeight(x,y)-1);
-                dst.left = cx + x*(int)((PictureFileManager.DECODE_TILE_SIZE-1.0)*(scale));
-                dst.top = cy + y*(int)((PictureFileManager.DECODE_TILE_SIZE-1.0)*(scale));
-                dst.right = dst.left + (int)((this.getWidth(x,y))*(scale));
+                dst.left   = cx + x*(int)((PictureFileManager.DECODE_TILE_SIZE-1.0)*(scale));
+                dst.top    = cy + y*(int)((PictureFileManager.DECODE_TILE_SIZE-1.0)*(scale));
+                dst.right  = dst.left + (int)((this.getWidth(x,y))*(scale));
                 dst.bottom = dst.top + (int)((this.getHeight(x,y))*(scale));
                 canvas.drawBitmap(this.getBitmap(x, y), src, dst, null);
             }

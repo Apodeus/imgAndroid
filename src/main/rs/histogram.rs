@@ -60,10 +60,11 @@ uchar4 __attribute__((kernel)) calculHistogram(uchar4 in, uint32_t x, uint32_t y
   return out;
 }
 
+
+
 uchar4 __attribute__((kernel)) YUVToRGB(uchar4 in, uint32_t x, uint32_t y) {
 
     float4 pixel = rsUnpackColor8888(in);
-
     float Y = pixel.r;
 
     int32_t Yvalue = Y * 255;

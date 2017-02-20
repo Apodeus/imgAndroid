@@ -32,6 +32,7 @@ public class HistogramEqualize extends Shader {
             Allocation arr = Allocation.createSized(renderScript, Element.I32(renderScript), histo.length);
             arr.copyFrom(histo);
 
+            //Get the total histogram of all bitmaps of the Image
             for (Bitmap[] b1 : image.getBitmaps()){
                 for (Bitmap b : b1) {
                     Allocation in = Allocation.createFromBitmap(renderScript, b);
@@ -41,8 +42,10 @@ public class HistogramEqualize extends Shader {
                 }
             }
 
+            //Copy the new histogram in the array histo
             arr.copyTo(histo);
 
+            //Apply the equalization of the histogram
             for(Bitmap[] b1 : image.getBitmaps()){
                 for (Bitmap b : b1) {
                     Allocation in = Allocation.createFromBitmap(renderScript, b);

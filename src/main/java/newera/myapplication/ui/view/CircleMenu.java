@@ -15,6 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,7 +75,7 @@ public class CircleMenu extends View {
         this.isExtanded = false;
         this.shouldExtand = false;
         this.transisionLock = false;
-        this.position = Position.TOP_RIGHT;
+        this.position = Position.BOT_RIGHT;
         this.paint = new Paint();
         paint.setAntiAlias(true);
         paint.setTextSize(TEXT_SIZE);
@@ -278,6 +279,13 @@ public class CircleMenu extends View {
                                 case 1:
                                     PictureFileManager.CreatePictureFileFromCamera();
                                     break;
+                                case 2:
+                                    try {
+                                        PictureFileManager.SaveBitmap(activity.civ.getImage().getBitmap(), "test");
+                                    }catch(IOException e){
+                                        Log.i("", "Error: Save");
+                                    }
+
                                 default:
                                     if (itemList.get(i).isShader()) {
                                         itemList.get(i).getShader().onClick();
@@ -334,6 +342,7 @@ public class CircleMenu extends View {
         }
         itemList.get(0).string = "Gallery";
         itemList.get(1).string = "Camera";
+        itemList.get(2).string = "Save";
     }
 
     public void setView(CImageView view)

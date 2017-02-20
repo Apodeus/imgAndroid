@@ -11,14 +11,22 @@ import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
+import android.widget.Toast;
+
 import newera.myapplication.MainActivity;
 import newera.myapplication.image.Image;
 
 import java.io.File;
 import java.io.FileDescriptor;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import static android.R.attr.data;
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by Emile Barjou-Suire on 09/02/2017.
@@ -58,6 +66,53 @@ public class PictureFileManager {
         dispatchTakePictureIntent();
     }
 
+    public static void SaveBitmap(Bitmap bitmap, String filename) throws IOException {
+
+        File pictureFile = getOutputMediaFile();
+        if (pictureFile == null) {
+            Log.d(TAG,
+                    "Error creating media file, check storage permissions: ");// e.getMessage());
+            return;
+        }
+        try {
+            FileOutputStream fos = new FileOutputStream(pictureFile);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 85, fos);
+            fos.close();
+        } catch (FileNotFoundException e) {
+            Log.d(TAG, "File not found: " + e.getMessage());
+        } catch (IOException e) {
+            Log.d(TAG, "Error accessing file: " + e.getMessage());
+        }
+
+    }
+
+
+    /** Create a File for saving an image or video */
+    private static File getOutputMediaFile(){
+        // To be safe, you should check that the SDCard is mounted
+        // using Environment.getExternalStorageState() before doing this.
+        File mediaStorageDir = new File(Environment.getExternalStorageDirectory()
+                + "/Android/data/"
+                + Activity.getApplicationContext().getPackageName()
+                + "/Files");
+
+        // This location works best if you want the created images to be shared
+        // between applications and persist after your app has been uninstalled.
+
+        // Create the storage directory if it does not exist
+        if (! mediaStorageDir.exists()){
+            if (! mediaStorageDir.mkdirs()){
+                return null;
+            }
+        }
+        // Create a media file name
+        String timeStamp = new SimpleDateFormat("ddMMyyyy_HHmm").format(new Date());
+        File mediaFile;
+        String mImageName = "MI_"+ timeStamp +".jpg";
+        mediaFile = new File(mediaStorageDir.getPath() + File.separator + mImageName);
+        return mediaFile;
+    }
+
     /**
      * Calls Gallery app to pick an already saved picture from phone.
      * Picture can later be retrieved with RetrieveSavedPictureFromIntent().
@@ -80,6 +135,7 @@ public class PictureFileManager {
             if (TmpUriFile != null) {
                 parcelFD = Activity.getContentResolver().openFileDescriptor(TmpUriFile, "r");
                 fileDescriptor = parcelFD.getFileDescriptor();
+
                 //img = BitmapFactory.decodeFileDescriptor(fileDescriptor);
                 BitmapRegionDecoder decoder = BitmapRegionDecoder.newInstance(fileDescriptor, true);
                 int h = decoder.getHeight();
@@ -107,39 +163,6 @@ public class PictureFileManager {
         } catch(IOException e) {
             Log.i("WARNING", "Cannot get file from Uri");
         }
-
-        /*
-        switch (LAST_REQUEST)
-        {
-            case REQUEST_IMAGE_CAPTURE:
-                img = BitmapFactory.decodeFile(TmpPicturePath);
-                result.setBitmap(img);
-                break;
-
-            case REQUEST_IMAGE_GALLERY:
-                try {
-                    if(TmpUriFile != null) {
-                        parcelFD = Activity.getContentResolver().openFileDescriptor(TmpUriFile, "r");
-                        fileDescriptor = parcelFD.getFileDescriptor();
-                        img = BitmapFactory.decodeFileDescriptor(fileDescriptor);
-                        result.setBitmap(img);
-                        parcelFD.close();
-                    } else {
-                        Log.i("", "ERROR: TmpUriFile is empty.");
-                    }
-                } catch (IOException e) {
-                    Log.i("WARNING", "Cannot get file from Uri");
-                }
-                ///*try {
-                //img = BitmapFactory.decodeFileDescriptor(fileDescriptor);
-                //result.setBitmap(img);
-                ///*parcelFD.close();
-                //} catch (IOException e){
-                //    Log.i("WARNING", "Cannot close parcelFileDescriptor");
-                //}
-
-                break;
-        }*/
 
         return result;
     }

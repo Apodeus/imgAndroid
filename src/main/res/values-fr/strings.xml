@@ -4,6 +4,10 @@
     <string name="startupGalleryHint">Prendre une image de la Galerie</string>
     <string name="startupCameraHint">Prendre une photo avec l\'Appareil Photo</string>
     <string name="shaderGrayScaleName">Nuances de gris</string>
+    <string name="shaderInvertColorName">Inverser les couleurs</string>
+    <string name="shaderLightnessName">Luminosité</string>
+    <string name="shaderChangeHueName">Teinte</string>
+    <string name="shaderHistogramName">Egalisation d\'histogramme</string>
     <string name="galleryName">Galerie</string>
     <string name="cameraName">Appareil photo</string>
     <string name="apply">Appliquer</string>
