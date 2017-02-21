@@ -12,6 +12,7 @@ import android.view.View;
 import newera.myapplication.R;
 import newera.myapplication.image.Image;
 import newera.myapplication.ui.system.PictureFileManager;
+import newera.myapplication.ui.view.inputs.IntegerSeekBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,8 @@ public class CImageView extends View {
     private Rect src;
     private Rect dst;
 
+    private IntegerSeekBar bar;
+
     public CImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
         image = null;
@@ -39,6 +42,8 @@ public class CImageView extends View {
         this.contentScale = 1f;
         this.src = new Rect();
         this.dst = new Rect();
+
+        this.bar = new IntegerSeekBar(this);
     }
 
     /**
@@ -67,6 +72,7 @@ public class CImageView extends View {
             dst.right = contentCoords.x + (int) (image.getWidth() * (contentScale/2));
             dst.bottom =  contentCoords.y + (int) (image.getHeight() * (contentScale/2));
             canvas.drawBitmap(image.getBitmap(), src, dst, null);*/
+            bar.drawBox(canvas);
         }
     }
 
