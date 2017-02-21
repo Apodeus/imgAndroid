@@ -25,6 +25,7 @@ import newera.myapplication.image.processing.shaders.ChangeHue;
 import newera.myapplication.image.processing.shaders.GrayScale;
 import newera.myapplication.image.processing.shaders.HistogramEqualize;
 import newera.myapplication.image.processing.shaders.InvertColor;
+import newera.myapplication.image.processing.shaders.KeepHue;
 import newera.myapplication.image.processing.shaders.Lightness;
 import newera.myapplication.image.processing.shaders.Shader;
 import newera.myapplication.ui.system.PictureFileManager;
@@ -333,6 +334,11 @@ public class CircleMenu extends View {
                 case 7 :
                     Shader histo = new HistogramEqualize(this.activity);
                     this.addItem(new MenuItem(histo.getName(), histo));
+                    break;
+
+                case 8 :
+                    Shader keepHue = new KeepHue(this.activity);
+                    this.addItem(new MenuItem(keepHue.getName(), keepHue));
                     break;
 
                 default :
