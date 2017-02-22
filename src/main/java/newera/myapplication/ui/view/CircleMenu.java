@@ -23,6 +23,7 @@ import newera.myapplication.image.processing.shaders.HistogramEqualize;
 import newera.myapplication.image.processing.shaders.InvertColor;
 import newera.myapplication.image.processing.shaders.KeepHue;
 import newera.myapplication.image.processing.shaders.Lightness;
+import newera.myapplication.image.processing.shaders.Sepia;
 import newera.myapplication.image.processing.shaders.Shader;
 import newera.myapplication.ui.system.PictureFileManager;
 
@@ -340,6 +341,11 @@ public class CircleMenu extends View {
                 case 9 :
                     Shader convolution = new Convolution(this.activity);
                     this.addItem(new MenuItem(convolution.getName(), convolution));
+                    break;
+
+                case 10 :
+                    Shader sepia = new Sepia(this.activity);
+                    this.addItem(new MenuItem(sepia.getName(), sepia));
                     break;
 
                 default :
