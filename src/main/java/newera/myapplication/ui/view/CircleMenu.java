@@ -22,6 +22,7 @@ import java.util.List;
 import newera.myapplication.MainActivity;
 import newera.myapplication.R;
 import newera.myapplication.image.processing.shaders.ChangeHue;
+import newera.myapplication.image.processing.shaders.Convolution;
 import newera.myapplication.image.processing.shaders.GrayScale;
 import newera.myapplication.image.processing.shaders.HistogramEqualize;
 import newera.myapplication.image.processing.shaders.InvertColor;
@@ -339,6 +340,11 @@ public class CircleMenu extends View {
                 case 8 :
                     Shader keepHue = new KeepHue(this.activity);
                     this.addItem(new MenuItem(keepHue.getName(), keepHue));
+                    break;
+
+                case 9 :
+                    Shader convolution = new Convolution(this.activity);
+                    this.addItem(new MenuItem(convolution.getName(), convolution));
                     break;
 
                 default :

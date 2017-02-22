@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">My Application</string>
     <string name="startupGalleryHint">Prendre une image de la Galerie</string>
     <string name="startupCameraHint">Prendre une photo avec l\'Appareil Photo</string>
     <string name="shaderGrayScaleName">Nuances de gris</string>
