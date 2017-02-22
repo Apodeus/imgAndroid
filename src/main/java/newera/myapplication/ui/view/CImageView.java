@@ -44,6 +44,7 @@ public class CImageView extends View {
         this.dst = new Rect();
 
         this.bar = new IntegerSeekBar(this);
+        this.bar.displayPlus(true);
     }
 
     /**

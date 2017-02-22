@@ -14,7 +14,7 @@ public class IntegerSeekBar {
     private View view;
     private int currentValue = 50;
     private int initialValue = 50;
-    private int minValue = 0;
+    private int minValue = -100;
     private int maxValue = 100;
     private int length;
     private int viewWidth;
@@ -24,6 +24,7 @@ public class IntegerSeekBar {
     private float initialX;
 
     private String label;
+    private String plusSign;
     private Bitmap cursorIconBitmap;
     private Bitmap applyIconBitmap;
     private Bitmap cancelIconBitmap;
@@ -69,6 +70,7 @@ public class IntegerSeekBar {
         this.length = maxValue - minValue;
 
         this.label = label;
+        this.plusSign = "";
 
         this.boxBackgroundColor = view.getResources().getColor(R.color.colorPrimaryMild);
         this.boxBorderColor = view.getResources().getColor(R.color.colorAccent);
@@ -109,12 +111,20 @@ public class IntegerSeekBar {
         this.init = true;
     }
 
+    public void displayPlus(boolean on)
+    {
+        if (on)
+            plusSign = "+";
+        else
+            plusSign = "";
+    }
+
     public void drawBox(Canvas canvas)
     {
         if (!init)
-            initialize(canvas, "Luminosité : +0");
+            initialize(canvas, "Label");
 
-        barForeground.right = barBackground.left + (int) (currentValue * barTik);
+        barForeground.right = barBackground.left + (int) ((currentValue + length - maxValue) * barTik);
         paint.setColor(boxBackgroundColor);
         paint.setAlpha((int) (PAINT_ALPHA * 255));
         canvas.drawRect(boxBackground, paint);
@@ -134,7 +144,7 @@ public class IntegerSeekBar {
         paint.setColor(textColor);
         paint.setTextSize(TEXT_SIZE);
         paint.setTextAlign(Paint.Align.CENTER);
-        canvas.drawText(label, viewWidth / 2, boxBackground.top + (boxBackground.bottom - boxBackground.top) / 2, paint);
+        canvas.drawText(label + " : " + (currentValue>0?plusSign:"") + currentValue, viewWidth / 2, boxBackground.top + (boxBackground.bottom - boxBackground.top) / 2, paint);
     }
 
     public boolean handleTouch(MotionEvent event)
@@ -150,7 +160,7 @@ public class IntegerSeekBar {
 
         if (isEdit && event.getAction() == MotionEvent.ACTION_MOVE)
         {
-            currentValue = Math.min(100, (int) ((event.getRawX() - barBackground.left) / barTik));
+            currentValue =  Math.max(minValue, Math.min(maxValue, (int) ( minValue +(event.getRawX() - barBackground.left) / barTik)));
         }
 
         if (event.getAction() == MotionEvent.ACTION_UP)
