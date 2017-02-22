@@ -21,11 +21,13 @@ public class ChangeHue extends Shader {
     public void ApplyFilter(Image image)
     {
         if(image != null && !image.isEmpty()) {
+
+            ScriptC_hue rsChangeHue = new ScriptC_hue(renderScript);
+            rsChangeHue.set_factor(6.25f);
             for (Bitmap[] b1 : image.getBitmaps())
                 for (Bitmap b : b1) {
                     Allocation in = Allocation.createFromBitmap(renderScript, b);
                     Allocation out = Allocation.createTyped(renderScript, in.getType());
-                    ScriptC_hue rsChangeHue = new ScriptC_hue(renderScript);
                     rsChangeHue.forEach_ChangeHue(in, out);
                     out.copyTo(b);
                 }

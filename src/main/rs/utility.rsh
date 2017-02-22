@@ -17,6 +17,16 @@ static float hue2rgb(float p, float q, float t){
     return p;
 }
 
+static float restreinHue(float h){
+    float newHue = h;
+    if (newHue < 0){
+        newHue = 1.0f - fabs(fmod(newHue, 1.0f));
+    }
+    if(newHue > 1.0f){
+        newHue = 0 + fabs(fmod(newHue, 1.0f));
+    }
+}
+
 static int3 convertGrayScale(int r, int g, int b){
       int grayscale = r * gBlackWhiteMult.r +  g * gBlackWhiteMult.g + b * gBlackWhiteMult.b;
       int3 new;

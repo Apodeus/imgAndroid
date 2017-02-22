@@ -3,18 +3,16 @@
 
 #include "utility.rsh"
 
+float factor;
 static float3 changeHue(float3 pixel, float factor){
     float3 hsl = rgbToHsl(pixel.r, pixel.g, pixel.b);
-
+    //hue is between [0;2.0[
     hsl.x = factor;
-    if (hsl.x < 0){
-        hsl.x = fabs(hsl.x);
-    }
-    if(hsl.x > 6.0f){
-        hsl.x = 0;
-    }
+
+    hsl.x = restreinHue(hsl.x);
 
     float3 new = hslToRGB(hsl.x, hsl.y, hsl.z);
+
     //new.a = pixel.a;
     return new;
 }
@@ -25,7 +23,6 @@ static float3 changeHue(float3 pixel, float factor){
 uchar4 __attribute__((kernel)) ChangeHue(uchar4 in, uint32_t x, uint32_t y) {
   //float4 pixel = rsUnpackColor8888(in);
   float3 rgb = {in.r, in.g, in.b};
-  float factor = 1.2f;
   float3 new = changeHue(rgb, factor);
 
   uchar4 out;

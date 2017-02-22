@@ -26,7 +26,7 @@ public class KeepHue extends Shader{
     {
         if(image != null && !image.isEmpty()) {
             ScriptC_keepHue rsKeepHue = new ScriptC_keepHue(renderScript);
-            rsKeepHue.set_epsilon(0.5f);
+            rsKeepHue.set_epsilon(0.05f);
             rsKeepHue.set_newHue(0f);
 
             for (Bitmap[] b1 : image.getBitmaps())
