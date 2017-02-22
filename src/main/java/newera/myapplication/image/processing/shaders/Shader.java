@@ -9,6 +9,8 @@ import newera.myapplication.ui.Clickable;
 import newera.myapplication.ui.view.CImageView;
 import newera.myapplication.ui.view.ShaderDialogBox;
 
+import java.util.Map;
+
 /**
  * Created by Emile Barjou-Suire on 09/02/2017.
  */
@@ -17,7 +19,7 @@ public abstract class Shader implements Clickable{
 
     protected RenderScript renderScript;
     protected MainActivity activity;
-    protected Object[] params;
+    protected Map<String, Object> params;
 
     Shader(MainActivity activity)
     {
@@ -47,5 +49,10 @@ public abstract class Shader implements Clickable{
         dial.setName(this.getName());
         dial.show(this.activity.getFragmentManager(), "ShaderDialog");
         return 0;
+    }
+
+    public void setParameters(Map<String, Object> params)
+    {
+        this.params = params;
     }
 }

@@ -12,6 +12,8 @@ import android.view.View;
 import newera.myapplication.R;
 import newera.myapplication.image.Image;
 import newera.myapplication.ui.system.PictureFileManager;
+import newera.myapplication.ui.view.inputs.EInputBox;
+import newera.myapplication.ui.view.inputs.IInputBox;
 import newera.myapplication.ui.view.inputs.IntegerSeekBar;
 
 import java.util.ArrayList;
@@ -32,7 +34,7 @@ public class CImageView extends View {
     private Rect src;
     private Rect dst;
 
-    private IntegerSeekBar bar;
+    private InputManager inputManager;
 
     public CImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -43,8 +45,7 @@ public class CImageView extends View {
         this.src = new Rect();
         this.dst = new Rect();
 
-        this.bar = new IntegerSeekBar(this);
-        this.bar.displayPlus(true);
+        this.inputManager = new InputManager(this);
     }
 
     /**
@@ -59,7 +60,9 @@ public class CImageView extends View {
             //dst = new Rect(getWidth() - image.getWidth() / 2, getHeight() - image.getHeight() / 2, getWidth() + image.getWidth() / 2, getHeight() + image.getHeight() / 2);
             contentCoords.x = getWidth() / 2;
             contentCoords.y = getHeight() / 2;
+            inputManager.createBox(EInputBox.INTEGER_VARIABLE, "test", new int[] {0, 100, 50});
             invalidate();
+
         }
     }
 
@@ -73,14 +76,14 @@ public class CImageView extends View {
             dst.right = contentCoords.x + (int) (image.getWidth() * (contentScale/2));
             dst.bottom =  contentCoords.y + (int) (image.getHeight() * (contentScale/2));
             canvas.drawBitmap(image.getBitmap(), src, dst, null);*/
-            bar.drawBox(canvas);
+            inputManager.draw(canvas);
         }
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
-        if (!bar.handleTouch(event))
+        if (!inputManager.handleTouch(event))
         {
 
             if (event.getPointerCount() <= 1) {
@@ -96,6 +99,16 @@ public class CImageView extends View {
 
         invalidate();
         return true;
+    }
+
+    public void onApplyFilter(int value)
+    {
+
+    }
+
+    public void onCancelFilter()
+    {
+
     }
 
     public Image getImage()
