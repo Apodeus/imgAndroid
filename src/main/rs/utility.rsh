@@ -25,6 +25,7 @@ static float restreinHue(float h){
     if(newHue > 1.0f){
         newHue = 0 + fabs(fmod(newHue, 1.0f));
     }
+    return newHue;
 }
 
 static int3 convertGrayScale(int r, int g, int b){
