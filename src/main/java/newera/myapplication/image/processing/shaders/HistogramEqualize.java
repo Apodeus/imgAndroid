@@ -3,15 +3,11 @@ package newera.myapplication.image.processing.shaders;
 import android.graphics.Bitmap;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
-import android.util.Log;
 
 import newera.myapplication.MainActivity;
 import newera.myapplication.R;
 import newera.myapplication.ScriptC_histogram;
-import newera.myapplication.ScriptC_hue;
 import newera.myapplication.image.Image;
-import newera.myapplication.ui.view.CImageView;
-import newera.myapplication.ui.view.InputManager;
 
 /**
  * Created by Romain on 19/02/2017.

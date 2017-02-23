@@ -7,8 +7,6 @@ import newera.myapplication.MainActivity;
 import newera.myapplication.R;
 import newera.myapplication.ScriptC_invert;
 import newera.myapplication.image.Image;
-import newera.myapplication.ui.view.CImageView;
-import newera.myapplication.ui.view.InputManager;
 
 /**
  * Created by Romain on 18/02/2017.

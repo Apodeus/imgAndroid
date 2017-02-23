@@ -19,9 +19,9 @@ import java.util.Map;
 
 public abstract class Shader implements Clickable{
 
-    protected RenderScript renderScript;
-    protected MainActivity activity;
-    protected Map<String, Object> params;
+    RenderScript renderScript;
+    MainActivity activity;
+    Map<String, Object> params;
 
     Shader(MainActivity activity)
     {
@@ -37,9 +37,6 @@ public abstract class Shader implements Clickable{
 
     public void ApplyFilter(Image image)
     {
-        if (renderScript == null)
-            return;
-        return;
     }
 
     public void ApplyPreviewFilter(Image image, Object param)
@@ -47,8 +44,8 @@ public abstract class Shader implements Clickable{
 
     }
 
-    protected void refreshImage(){
-        ((CImageView)activity.findViewById(R.id.cImageView)).invalidate();
+    void refreshImage(){
+        activity.findViewById(R.id.cImageView).invalidate();
     }
 
     public String getName(){

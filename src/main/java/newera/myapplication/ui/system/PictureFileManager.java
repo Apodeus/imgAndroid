@@ -2,7 +2,6 @@ package newera.myapplication.ui.system;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.BitmapRegionDecoder;
 import android.graphics.Rect;
 import android.net.Uri;
@@ -11,7 +10,6 @@ import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
-import android.widget.Toast;
 
 import newera.myapplication.MainActivity;
 import newera.myapplication.image.Image;
@@ -21,11 +19,9 @@ import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static android.R.attr.data;
 import static android.content.ContentValues.TAG;
 
 /**

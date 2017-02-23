@@ -4,11 +4,9 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.renderscript.Allocation;
 
-import android.renderscript.Sampler;
 import newera.myapplication.MainActivity;
 import newera.myapplication.R;
 import newera.myapplication.ScriptC_hue;
-import newera.myapplication.ScriptC_lightness;
 import newera.myapplication.image.Image;
 import newera.myapplication.image.processing.EItems;
 import newera.myapplication.ui.view.CImageView;

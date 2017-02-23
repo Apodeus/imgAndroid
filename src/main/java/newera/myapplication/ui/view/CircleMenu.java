@@ -16,11 +16,8 @@ import java.util.List;
 
 import newera.myapplication.MainActivity;
 import newera.myapplication.R;
-import newera.myapplication.image.processing.EItems;
 import newera.myapplication.image.processing.shaders.*;
 import newera.myapplication.ui.system.PictureFileManager;
-import newera.myapplication.ui.view.inputs.EInputBox;
-import newera.myapplication.ui.view.inputs.EInputType;
 
 /**
  * Created by Emile Barjou-Suire on 11/02/2017.
@@ -33,7 +30,7 @@ public class CircleMenu extends View {
         this.manager = manager;
     }
 
-    public enum Position {TOP_LEFT, TOP_RIGHT, BOT_LEFT, BOT_RIGHT};
+    public enum Position {TOP_LEFT, TOP_RIGHT, BOT_LEFT, BOT_RIGHT}
 
     //Radius of menu minimized and extended, in percent of min(width, height)
     private final static double RADIUS_MIN = 0.10;
@@ -78,7 +75,7 @@ public class CircleMenu extends View {
         paint.setAntiAlias(true);
         paint.setTextSize(TEXT_SIZE);
 
-        this.itemList = new ArrayList<MenuItem>();
+        this.itemList = new ArrayList<>();
 
         this.itemAngle = 0;
 
@@ -88,7 +85,7 @@ public class CircleMenu extends View {
     @Override
     public void onDraw(Canvas canvas){
         double angle;
-        int x, y, x2, y2;;
+        int x, y, x2, y2;
 
         transition();
 
@@ -254,11 +251,7 @@ public class CircleMenu extends View {
                 }
 
                 if (!movingCircle && touchIsExt){
-                    if ((extRadius-initialRadius)/2 > dist((int)event.getX(), (int)event.getY(), cornerX, cornerY)){
-                        shouldExtand = false;
-                    } else {
-                        shouldExtand = true;
-                    }
+                    shouldExtand = !((extRadius - initialRadius) / 2 > dist((int) event.getX(), (int) event.getY(), cornerX, cornerY));
                 }
 
                 /*

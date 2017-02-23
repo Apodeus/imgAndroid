@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.*;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.view.CollapsibleActionView;
 import android.view.MotionEvent;
 import android.view.View;
 import newera.myapplication.R;

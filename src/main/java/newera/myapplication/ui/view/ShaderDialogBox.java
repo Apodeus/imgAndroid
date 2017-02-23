@@ -1,15 +1,12 @@
 package newera.myapplication.ui.view;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
-import newera.myapplication.MainActivity;
 import newera.myapplication.R;
 import newera.myapplication.image.Image;
 import newera.myapplication.image.processing.shaders.Shader;
@@ -19,10 +16,10 @@ import newera.myapplication.image.processing.shaders.Shader;
  */
 
 public class ShaderDialogBox extends DialogFragment{
-    Shader shader;
-    String name;
-    Image image;
-    Context context;
+    private Shader shader;
+    private String name;
+    private Image image;
+    private Context context;
 
     public void setOnClick(Shader shader){
         this.shader = shader;

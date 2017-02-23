@@ -12,7 +12,6 @@ import newera.myapplication.image.Image;
 import newera.myapplication.image.processing.EItems;
 import newera.myapplication.image.processing.shaders.ChangeHue;
 import newera.myapplication.image.processing.shaders.Shader;
-import newera.myapplication.ui.view.inputs.EInputBox;
 import newera.myapplication.ui.view.inputs.EInputType;
 
 import java.util.ArrayList;
@@ -32,7 +31,7 @@ public class CImageView extends View {
         return inputManager;
     }
 
-    private enum TouchMethod {DRAG, ZOOM, TOOL;}
+    private enum TouchMethod {DRAG, ZOOM, TOOL}
 
 
     private Image image;
@@ -176,8 +175,8 @@ public class CImageView extends View {
 
 
         TouchHandler(){
-            this.touchList = new ArrayList<Point>();
-            this.touchList = new ArrayList<Point>();
+            this.touchList = new ArrayList<>();
+            this.touchList = new ArrayList<>();
         }
 
         float onTouch(MotionEvent event, TouchMethod method, Point coord, float scale){

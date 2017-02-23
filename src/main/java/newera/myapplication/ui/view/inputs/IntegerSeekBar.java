@@ -3,9 +3,7 @@ package newera.myapplication.ui.view.inputs;
 import android.graphics.*;
 import android.graphics.drawable.Drawable;
 import android.view.MotionEvent;
-import android.view.View;
 import newera.myapplication.R;
-import newera.myapplication.ui.view.CImageView;
 import newera.myapplication.ui.view.InputManager;
 
 import java.util.HashMap;
