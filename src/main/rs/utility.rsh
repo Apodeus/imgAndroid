@@ -1,6 +1,8 @@
 #pragma version(1)
 #pragma rs java_package_name(newera.myapplication)
 
+const static float3 gBlackWhiteMult = {0.299f, 0.587f, 0.114f};
+
 static float hue2rgb(float p, float q, float t){
     if(t < 0)
         t += 1.0f;
@@ -15,7 +17,28 @@ static float hue2rgb(float p, float q, float t){
     return p;
 }
 
+static float restreinHue(float h){
+    float newHue = h;
+    if (newHue < 0){
+        newHue = 1.0f - fabs(fmod(newHue, 1.0f));
+    }
+    if(newHue > 1.0f){
+        newHue = 0 + fabs(fmod(newHue, 1.0f));
+    }
+    return newHue;
+}
+
+static int3 convertGrayScale(int r, int g, int b){
+      int grayscale = r * gBlackWhiteMult.r +  g * gBlackWhiteMult.g + b * gBlackWhiteMult.b;
+      int3 new;
+      new.x = grayscale;
+      new.y = grayscale;
+      new.z = grayscale;
+      return new;
+}
+
 static float3 hslToRGB(float h, float s, float l){
+    //float4 pixel;
     float r, g, b;
     if(s == 0){
         r = l;

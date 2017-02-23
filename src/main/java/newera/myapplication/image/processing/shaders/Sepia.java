@@ -1,46 +1,47 @@
 package newera.myapplication.image.processing.shaders;
-
 import android.graphics.Bitmap;
 import android.renderscript.Allocation;
 
 import newera.myapplication.MainActivity;
 import newera.myapplication.R;
-import newera.myapplication.ScriptC_hue;
-import newera.myapplication.ScriptC_lightness;
+import newera.myapplication.ScriptC_mono;
+import newera.myapplication.ScriptC_sepia;
 import newera.myapplication.image.Image;
-import newera.myapplication.ui.view.CImageView;
+
 
 /**
- * Created by Romain on 19/02/2017.
+ * Created by romain on 09/02/17.
  */
 
-public class ChangeHue extends Shader {
-    private Bitmap icone = null;
+public class Sepia extends Shader{
+
+    public Sepia(MainActivity activity) {
+        super(activity);
+    }
 
     @Override
     public void ApplyFilter(Image image)
     {
         if(image != null && !image.isEmpty()) {
+            ScriptC_sepia rsSepia = new ScriptC_sepia(renderScript);
 
-            ScriptC_hue rsChangeHue = new ScriptC_hue(renderScript);
-            rsChangeHue.set_factor(6.25f);
             for (Bitmap[] b1 : image.getBitmaps())
                 for (Bitmap b : b1) {
+
                     Allocation in = Allocation.createFromBitmap(renderScript, b);
                     Allocation out = Allocation.createTyped(renderScript, in.getType());
-                    rsChangeHue.forEach_ChangeHue(in, out);
+
+                    rsSepia.forEach_sepia(in, out);
+
                     out.copyTo(b);
                 }
         }
         refreshImage();
     }
 
-    public ChangeHue(MainActivity activity) {
-        super(activity);
-    }
-
-    public String getName(){
-        return activity.getResources().getString(R.string.shaderChangeHueName);
+    public String getName()
+    {
+        return activity.getResources().getString(R.string.shaderSepiaName);
     }
 
     @Override
@@ -50,7 +51,7 @@ public class ChangeHue extends Shader {
 
     @Override
     public Bitmap getIcone() {
-        return icone;
+        return null;
     }
 
 }

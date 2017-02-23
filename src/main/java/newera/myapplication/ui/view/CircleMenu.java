@@ -3,17 +3,12 @@ package newera.myapplication.ui.view;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.LightingColorFilter;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.RectF;
-import android.support.v4.app.FragmentActivity;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,10 +17,13 @@ import java.util.List;
 import newera.myapplication.MainActivity;
 import newera.myapplication.R;
 import newera.myapplication.image.processing.shaders.ChangeHue;
+import newera.myapplication.image.processing.shaders.Convolution;
 import newera.myapplication.image.processing.shaders.GrayScale;
 import newera.myapplication.image.processing.shaders.HistogramEqualize;
 import newera.myapplication.image.processing.shaders.InvertColor;
+import newera.myapplication.image.processing.shaders.KeepHue;
 import newera.myapplication.image.processing.shaders.Lightness;
+import newera.myapplication.image.processing.shaders.Sepia;
 import newera.myapplication.image.processing.shaders.Shader;
 import newera.myapplication.ui.system.PictureFileManager;
 
@@ -333,6 +331,21 @@ public class CircleMenu extends View {
                 case 7 :
                     Shader histo = new HistogramEqualize(this.activity);
                     this.addItem(new MenuItem(histo.getName(), histo));
+                    break;
+
+                case 8 :
+                    Shader keepHue = new KeepHue(this.activity);
+                    this.addItem(new MenuItem(keepHue.getName(), keepHue));
+                    break;
+
+                case 9 :
+                    Shader convolution = new Convolution(this.activity);
+                    this.addItem(new MenuItem(convolution.getName(), convolution));
+                    break;
+
+                case 10 :
+                    Shader sepia = new Sepia(this.activity);
+                    this.addItem(new MenuItem(sepia.getName(), sepia));
                     break;
 
                 default :
