@@ -1,6 +1,8 @@
 package newera.myapplication.ui;
 
 import android.graphics.Bitmap;
+import newera.myapplication.ui.view.CImageView;
+import newera.myapplication.ui.view.InputManager;
 
 /**
  * Created by Romain on 17/02/2017.
@@ -14,6 +16,6 @@ public interface Clickable {
 
     Bitmap getIcone();
 
-    int onClick();
+    int onClick(InputManager manager, CImageView view);
 
 }

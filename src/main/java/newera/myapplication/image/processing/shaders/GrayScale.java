@@ -6,6 +6,8 @@ import newera.myapplication.MainActivity;
 import newera.myapplication.R;
 import newera.myapplication.ScriptC_mono;
 import newera.myapplication.image.Image;
+import newera.myapplication.ui.view.CImageView;
+import newera.myapplication.ui.view.InputManager;
 
 
 /**

@@ -8,6 +8,8 @@ import newera.myapplication.MainActivity;
 import newera.myapplication.R;
 import newera.myapplication.ScriptC_convolution;
 import newera.myapplication.image.Image;
+import newera.myapplication.ui.view.CImageView;
+import newera.myapplication.ui.view.InputManager;
 
 
 /**
@@ -73,6 +75,7 @@ public class Convolution extends Shader{
     public Bitmap getIcone() {
         return null;
     }
+
 
     private void setupMatrix(ScriptC_convolution conv, ConvType type){
         float[][] target = null;

@@ -9,7 +9,11 @@ import newera.myapplication.R;
 import newera.myapplication.ScriptC_hue;
 import newera.myapplication.ScriptC_lightness;
 import newera.myapplication.image.Image;
+import newera.myapplication.image.processing.EItems;
 import newera.myapplication.ui.view.CImageView;
+import newera.myapplication.ui.view.InputManager;
+import newera.myapplication.ui.view.inputs.EInputBox;
+import newera.myapplication.ui.view.inputs.EInputType;
 
 /**
  * Created by Romain on 19/02/2017.
@@ -57,6 +61,13 @@ public class ChangeHue extends Shader {
     @Override
     public Bitmap getIcone() {
         return icone;
+    }
+
+    @Override
+    public int onClick(InputManager manager, CImageView view) {
+        manager.createBox(EInputBox.INTEGER, "Hue", new int[] {0, 360, 0});
+        view.setCurrentAction(EInputType.SHADER, EItems.F_CHANGE_HUE);
+        return 0;
     }
 
 }

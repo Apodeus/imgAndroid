@@ -285,12 +285,11 @@ public class CircleMenu extends View {
                                     }
                                     break;
                                 case 6:
-                                    manager.createBox(EInputBox.INTEGER, "Hue", new int[] {0, 360, 0});
-                                    view.setCurrentAction(EInputType.SHADER, EItems.F_CHANGE_HUE);
+
                                     break;
                                 default:
                                     if (itemList.get(i).isShader()) {
-                                        itemList.get(i).getShader().onClick();
+                                        itemList.get(i).getShader() .onClick(manager, view);
                                     }
                                     break;
                             }

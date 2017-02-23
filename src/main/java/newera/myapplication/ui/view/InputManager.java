@@ -25,7 +25,7 @@ public class InputManager {
         this.view = view;
     }
 
-    void createBox(EInputBox type, String label, int[] bounds)
+    public void createBox(EInputBox type, String label, int[] bounds)
     {
         switch (type) {
             case INTEGER:

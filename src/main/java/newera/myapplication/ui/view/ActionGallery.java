@@ -32,7 +32,7 @@ public class ActionGallery implements Clickable{
     }
 
     @Override
-    public int onClick() {
+    public int onClick(InputManager manager, CImageView view) {
         PictureFileManager.LoadPictureFromGallery();
         return 0;
     }

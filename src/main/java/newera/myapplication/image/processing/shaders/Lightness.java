@@ -7,6 +7,8 @@ import newera.myapplication.MainActivity;
 import newera.myapplication.R;
 import newera.myapplication.ScriptC_lightness;
 import newera.myapplication.image.Image;
+import newera.myapplication.ui.view.CImageView;
+import newera.myapplication.ui.view.InputManager;
 
 /**
  * Created by Romain on 19/02/2017.
@@ -48,4 +50,5 @@ public class Lightness extends Shader {
     public Bitmap getIcone() {
         return icone;
     }
+
 }

@@ -32,7 +32,7 @@ public class ActionCamera implements Clickable {
     }
 
     @Override
-    public int onClick() {
+    public int onClick(InputManager manager, CImageView view) {
         PictureFileManager.CreatePictureFileFromCamera();
         return 0;
     }

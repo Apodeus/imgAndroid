@@ -8,6 +8,7 @@ import newera.myapplication.R;
 import newera.myapplication.image.Image;
 import newera.myapplication.ui.Clickable;
 import newera.myapplication.ui.view.CImageView;
+import newera.myapplication.ui.view.InputManager;
 import newera.myapplication.ui.view.ShaderDialogBox;
 
 import java.util.Map;
@@ -49,7 +50,7 @@ public abstract class Shader implements Clickable{
         return null;
     }
 
-    public int onClick() {
+    public int onClick(InputManager manager, CImageView view) {
         ShaderDialogBox dial = new ShaderDialogBox();
         dial.setOnClick(this);
         dial.setImage(((CImageView)activity.findViewById(R.id.cImageView)).getImage());
