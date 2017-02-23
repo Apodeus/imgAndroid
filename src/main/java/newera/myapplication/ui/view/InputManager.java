@@ -19,6 +19,7 @@ public class InputManager {
     private IInputBox currentBox;
 
     private Map<String, Object> currentParams;
+    private Map<String, Object> currentPreviewParams;
 
     InputManager(CImageView view)
     {
@@ -80,11 +81,21 @@ public class InputManager {
         snackbar.show();
     }
 
+    public void onPreviewFilter(int value, Map<String, Object> params)
+    {
+        this.currentPreviewParams = params;
+        view.onPreviewFilter(value);
+    }
+
     public CImageView getView() {
         return view;
     }
 
     public Map<String, Object> getParams() {
         return currentParams;
+    }
+
+    public Object getPreviewParams() {
+        return currentPreviewParams;
     }
 }

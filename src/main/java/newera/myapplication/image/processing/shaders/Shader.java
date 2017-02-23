@@ -42,6 +42,11 @@ public abstract class Shader implements Clickable{
         return;
     }
 
+    public void ApplyPreviewFilter(Image image, Object param)
+    {
+
+    }
+
     protected void refreshImage(){
         ((CImageView)activity.findViewById(R.id.cImageView)).invalidate();
     }

@@ -32,8 +32,9 @@ public class CImageView extends View {
         return inputManager;
     }
 
-
     private enum TouchMethod {DRAG, ZOOM, TOOL;}
+
+
     private Image image;
     private Point contentCoords;
     private float contentScale;
@@ -41,7 +42,6 @@ public class CImageView extends View {
     private Rect src;
     private Rect dst;
     private InputManager inputManager;
-
     public CImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
         image = null;
@@ -132,6 +132,27 @@ public class CImageView extends View {
     public void onCancelFilter()
     {
 
+    }
+
+    public void onPreviewFilter(int value) {
+        switch (currentInputType) {
+            case NONE:
+                return;
+            case SHADER:
+                switch (currentInputItem) {
+                    case NONE:
+                        return;
+                    case F_CHANGE_HUE:
+                        Shader s = new ChangeHue(getContext());
+                        s.ApplyPreviewFilter(image, inputManager.getPreviewParams());
+                        break;
+                }
+                break;
+            case TOOL:
+                break;
+            case SYSTEM:
+                break;
+        }
     }
 
     public Image getImage()

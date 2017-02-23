@@ -170,6 +170,7 @@ public class IntegerSeekBar implements IInputBox{
         if (event.getAction() == MotionEvent.ACTION_UP)
         {
             isEdit = false;
+            manager.onPreviewFilter(currentValue, getParams());
             if (event.getY() > boxBackground.bottom - ICON_SIZE && event.getY() < boxBackground.bottom)
             if (event.getX() > boxBackground.left && event.getX() < boxBackground.left + ICON_SIZE)
             {

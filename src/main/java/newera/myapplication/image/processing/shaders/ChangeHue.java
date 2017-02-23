@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.renderscript.Allocation;
 
+import android.renderscript.Sampler;
 import newera.myapplication.MainActivity;
 import newera.myapplication.R;
 import newera.myapplication.ScriptC_hue;
@@ -14,6 +15,8 @@ import newera.myapplication.ui.view.CImageView;
 import newera.myapplication.ui.view.InputManager;
 import newera.myapplication.ui.view.inputs.EInputBox;
 import newera.myapplication.ui.view.inputs.EInputType;
+
+import java.util.Map;
 
 /**
  * Created by Romain on 19/02/2017.
@@ -38,6 +41,13 @@ public class ChangeHue extends Shader {
                 }
         }
         //refreshImage();
+    }
+
+    public void ApplyPreviewFilter(Image image, Object param)
+    {
+        //!! Overwrite current image even if canceled !!
+        params = (Map<String, Object>) param;
+        ApplyFilter(image);
     }
 
     public ChangeHue(MainActivity activity) {

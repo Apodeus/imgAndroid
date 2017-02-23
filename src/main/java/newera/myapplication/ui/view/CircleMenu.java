@@ -284,9 +284,6 @@ public class CircleMenu extends View {
                                         Log.i("", "Error: Save");
                                     }
                                     break;
-                                case 6:
-
-                                    break;
                                 default:
                                     if (itemList.get(i).isShader()) {
                                         itemList.get(i).getShader() .onClick(manager, view);
