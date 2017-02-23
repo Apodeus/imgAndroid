@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         CircleMenu menu = (CircleMenu) findViewById(R.id.circleMenu);
         menu.setView((CImageView) findViewById(R.id.cImageView));
         menu.setActivity(this);
+        menu.setManager(civ.getManager());
         menu.initialize();
     }
 

@@ -3,18 +3,17 @@ package newera.myapplication.ui.view;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.text.method.Touch;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
 import newera.myapplication.R;
 import newera.myapplication.image.Image;
-import newera.myapplication.ui.system.PictureFileManager;
+import newera.myapplication.image.processing.EItems;
+import newera.myapplication.image.processing.shaders.ChangeHue;
+import newera.myapplication.image.processing.shaders.Shader;
 import newera.myapplication.ui.view.inputs.EInputBox;
-import newera.myapplication.ui.view.inputs.IInputBox;
-import newera.myapplication.ui.view.inputs.IntegerSeekBar;
+import newera.myapplication.ui.view.inputs.EInputType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,14 +25,21 @@ import java.util.List;
 public class CImageView extends View {
     private final static float MOVE_SAFEZONE = 0.5f;
     private final static float LERP_FACTOR = 3f;
-    private enum TouchMethod {DRAG, ZOOM, TOOL}
+    private EInputType currentInputType;
+    private EItems currentInputItem;
+
+    public InputManager getManager() {
+        return inputManager;
+    }
+
+
+    private enum TouchMethod {DRAG, ZOOM, TOOL;}
     private Image image;
     private Point contentCoords;
     private float contentScale;
     private TouchHandler touchHandler;
     private Rect src;
     private Rect dst;
-
     private InputManager inputManager;
 
     public CImageView(Context context, AttributeSet attrs) {
@@ -60,7 +66,6 @@ public class CImageView extends View {
             //dst = new Rect(getWidth() - image.getWidth() / 2, getHeight() - image.getHeight() / 2, getWidth() + image.getWidth() / 2, getHeight() + image.getHeight() / 2);
             contentCoords.x = getWidth() / 2;
             contentCoords.y = getHeight() / 2;
-            inputManager.createBox(EInputBox.INTEGER_VARIABLE, "test", new int[] {0, 100, 50});
             invalidate();
 
         }
@@ -103,7 +108,25 @@ public class CImageView extends View {
 
     public void onApplyFilter(int value)
     {
-
+        switch (currentInputType) {
+            case NONE:
+                return;
+            case SHADER:
+                switch (currentInputItem) {
+                    case NONE:
+                        return;
+                    case F_CHANGE_HUE:
+                        Shader s = new ChangeHue(getContext());
+                        s.setParameters(inputManager.getParams());
+                        s.ApplyFilter(image);
+                        break;
+                }
+                break;
+            case TOOL:
+                break;
+            case SYSTEM:
+                break;
+        }
     }
 
     public void onCancelFilter()
@@ -114,6 +137,12 @@ public class CImageView extends View {
     public Image getImage()
     {
         return this.image;
+    }
+
+    public void setCurrentAction(EInputType type, EItems item) {
+        this.currentInputType = type;
+        this.currentInputItem = item;
+
     }
 
     private class TouchHandler{

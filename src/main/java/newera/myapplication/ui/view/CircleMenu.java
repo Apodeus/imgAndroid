@@ -16,16 +16,11 @@ import java.util.List;
 
 import newera.myapplication.MainActivity;
 import newera.myapplication.R;
-import newera.myapplication.image.processing.shaders.ChangeHue;
-import newera.myapplication.image.processing.shaders.Convolution;
-import newera.myapplication.image.processing.shaders.GrayScale;
-import newera.myapplication.image.processing.shaders.HistogramEqualize;
-import newera.myapplication.image.processing.shaders.InvertColor;
-import newera.myapplication.image.processing.shaders.KeepHue;
-import newera.myapplication.image.processing.shaders.Lightness;
-import newera.myapplication.image.processing.shaders.Sepia;
-import newera.myapplication.image.processing.shaders.Shader;
+import newera.myapplication.image.processing.EItems;
+import newera.myapplication.image.processing.shaders.*;
 import newera.myapplication.ui.system.PictureFileManager;
+import newera.myapplication.ui.view.inputs.EInputBox;
+import newera.myapplication.ui.view.inputs.EInputType;
 
 /**
  * Created by Emile Barjou-Suire on 11/02/2017.
@@ -33,6 +28,10 @@ import newera.myapplication.ui.system.PictureFileManager;
 
 public class CircleMenu extends View {
     private MainActivity activity;
+
+    public void setManager(InputManager manager) {
+        this.manager = manager;
+    }
 
     public enum Position {TOP_LEFT, TOP_RIGHT, BOT_LEFT, BOT_RIGHT};
 
@@ -67,6 +66,7 @@ public class CircleMenu extends View {
     private int currentPositionY;
 
     private CImageView view;
+    private InputManager manager;
 
     public CircleMenu(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -283,7 +283,11 @@ public class CircleMenu extends View {
                                     }catch(IOException e){
                                         Log.i("", "Error: Save");
                                     }
-
+                                    break;
+                                case 6:
+                                    manager.createBox(EInputBox.INTEGER, "Hue", new int[] {0, 360, 0});
+                                    view.setCurrentAction(EInputType.SHADER, EItems.F_CHANGE_HUE);
+                                    break;
                                 default:
                                     if (itemList.get(i).isShader()) {
                                         itemList.get(i).getShader().onClick();

@@ -1,6 +1,7 @@
 package newera.myapplication.image.processing.shaders;
 
 
+import android.content.Context;
 import android.renderscript.RenderScript;
 import newera.myapplication.MainActivity;
 import newera.myapplication.R;
@@ -25,6 +26,12 @@ public abstract class Shader implements Clickable{
     {
         renderScript = RenderScript.create(activity);
         this.activity = activity;
+    }
+
+    Shader(Context context)
+    {
+        renderScript = RenderScript.create(context);
+        this.activity = null;
     }
 
     public void ApplyFilter(Image image)
