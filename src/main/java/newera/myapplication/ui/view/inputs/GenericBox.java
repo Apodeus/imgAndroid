@@ -40,7 +40,7 @@ public class GenericBox {
     private boolean init = false;
 
     private final static float BOX_BOTTOM_OFFSET_Y = 0.05f;
-    private final static float BOX_HEIGHT_COVERAGE = 0.10f;
+    private final static float BOX_HEIGHT_COVERAGE = 0.05f;
     private final static float BOX_WIDTH_COVERAGE = 0.85f;
     private final static float BOX_BORDER_THICKNESS = 0.7f;
     private final static int TEXT_SIZE = 40;
@@ -65,7 +65,7 @@ public class GenericBox {
         this.boxBorderColor = manager.getView().getResources().getColor(R.color.colorAccent);
         this.textColor = manager.getView().getResources().getColor(R.color.colorLight);
 
-        this.collapsedBoxBackground = new Rect((int) (viewWidth * (1 - BOX_WIDTH_COVERAGE)) / 2, (int) (viewHeight * (1 - BOX_BOTTOM_OFFSET_Y - BOX_HEIGHT_COVERAGE)), (int) (viewWidth - viewWidth * (1 - BOX_WIDTH_COVERAGE) / 2), (int) (viewHeight * (1 - BOX_BOTTOM_OFFSET_Y)));
+        this.collapsedBoxBackground = new Rect((int) (viewWidth * (1 - BOX_WIDTH_COVERAGE)) / 2, (int) (viewHeight * (1 - BOX_BOTTOM_OFFSET_Y) - ICON_SIZE), (int) (viewWidth - viewWidth * (1 - BOX_WIDTH_COVERAGE) / 2), (int) (viewHeight * (1 - BOX_BOTTOM_OFFSET_Y)));
 
         this.paint = new Paint();
 
@@ -100,7 +100,7 @@ public class GenericBox {
         collapseD.setBounds(0,0,ICON_SIZE,ICON_SIZE);
         collapseD.draw(collapseIconCanvas);
 
-        int currentAdditionnalHeight = 0;
+        int currentAdditionalHeight = 0;
         this.components = new ArrayList<>();
         for (int i = 0; i < askedValues.size(); i++)
         {
@@ -120,12 +120,13 @@ public class GenericBox {
 
             c.setIndex(i);
             c.setLabel(d.getLabel());
+            c.setStartingHeight(currentAdditionalHeight + ICON_SIZE);
             c.initialize(d.getSettings());
-            currentAdditionnalHeight += c.getHeight();
+            currentAdditionalHeight += c.getHeight();
             components.add(c);
         }
 
-        this.extendedBoxBackground = new Rect(collapsedBoxBackground.left, collapsedBoxBackground.top + currentAdditionnalHeight, collapsedBoxBackground.right, collapsedBoxBackground.bottom);
+        this.extendedBoxBackground = new Rect(collapsedBoxBackground.left, collapsedBoxBackground.top + currentAdditionalHeight, collapsedBoxBackground.right, collapsedBoxBackground.bottom);
         this.currentBoxBackground = extendedBoxBackground;
 
         this.init = true;
@@ -133,7 +134,7 @@ public class GenericBox {
 
     public void drawBox(Canvas canvas) {
         if (!init)
-            initialize(canvas, label);
+            initialize(canvas, "test");
 
         paint.setColor(boxBackgroundColor);
         paint.setAlpha((int) (PAINT_ALPHA * 255));
@@ -186,6 +187,21 @@ public class GenericBox {
         }
 
         return isEdit;
+    }
+
+    public int getCanvasWidth()
+    {
+        return this.viewWidth;
+    }
+
+    public int getCanvasHeight()
+    {
+        return this.viewHeight;
+    }
+
+    public InputManager getInputManager()
+    {
+        return this.manager;
     }
 
 }

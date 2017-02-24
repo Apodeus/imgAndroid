@@ -7,6 +7,7 @@ import android.graphics.Canvas;
  */
 public interface IGenericBoxComponent {
     int getHeight();
+    void setStartingHeight(int height);
     Object getValue();
     void initialize(int[] settings);
     void setIndex(int index);

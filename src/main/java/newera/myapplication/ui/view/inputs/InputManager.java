@@ -8,6 +8,8 @@ import newera.myapplication.ui.view.inputs.EInputBox;
 import newera.myapplication.ui.view.inputs.IInputBox;
 import newera.myapplication.ui.view.inputs.IntegerSeekBar;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,6 +20,7 @@ public class InputManager {
     private CImageView view;
 
     private IInputBox currentBox;
+    private GenericBox box;
 
     private Map<String, Object> currentParams;
     private Map<String, Object> currentPreviewParams;
@@ -31,10 +34,17 @@ public class InputManager {
     {
         switch (type) {
             case INTEGER:
-                currentBox = new IntegerSeekBar(this);
-                currentBox.setLabel(label);
-                ((IntegerSeekBar) currentBox).displayPlus(bounds[0] < 0);
-                ((IntegerSeekBar) currentBox).setBounds(bounds[0], bounds[1], bounds[2]);
+                List<InputDataType> l = new ArrayList<>();
+                InputDataType n = new InputDataType();
+                n.setInputType(EInputType.INTEGER_SEEKBAR);
+                n.setLabel("toast");
+                n.setSettings(new int[] {0, 100, 50});
+                l.add(n);
+                //currentBox = new IntegerSeekBar(this);
+                //currentBox.setLabel(label);
+                //((IntegerSeekBar) currentBox).displayPlus(bounds[0] < 0);
+                //((IntegerSeekBar) currentBox).setBounds(bounds[0], bounds[1], bounds[2]);
+                box = new GenericBox(this, l);
                 break;
 
             case STRING_X_Y:
@@ -55,6 +65,8 @@ public class InputManager {
     {
         if (currentBox != null)
             currentBox.drawBox(canvas);
+        if (box != null)
+            box.drawBox(canvas);
     }
 
     int getValue()

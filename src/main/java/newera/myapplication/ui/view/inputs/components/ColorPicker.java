@@ -21,6 +21,11 @@ public class ColorPicker implements IGenericBoxComponent {
     }
 
     @Override
+    public void setStartingHeight(int height) {
+
+    }
+
+    @Override
     public Object getValue() {
         return null;
     }
