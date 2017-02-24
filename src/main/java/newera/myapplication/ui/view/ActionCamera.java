@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import newera.myapplication.R;
 import newera.myapplication.ui.Clickable;
 import newera.myapplication.ui.system.PictureFileManager;
+import newera.myapplication.ui.view.inputs.InputManager;
 
 /**
  * Created by Romain on 17/02/2017.

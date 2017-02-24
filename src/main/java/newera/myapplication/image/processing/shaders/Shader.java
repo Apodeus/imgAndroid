@@ -8,7 +8,7 @@ import newera.myapplication.R;
 import newera.myapplication.image.Image;
 import newera.myapplication.ui.Clickable;
 import newera.myapplication.ui.view.CImageView;
-import newera.myapplication.ui.view.InputManager;
+import newera.myapplication.ui.view.inputs.InputManager;
 import newera.myapplication.ui.view.ShaderDialogBox;
 
 import java.util.Map;

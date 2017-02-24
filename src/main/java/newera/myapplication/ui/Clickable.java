@@ -2,7 +2,7 @@ package newera.myapplication.ui;
 
 import android.graphics.Bitmap;
 import newera.myapplication.ui.view.CImageView;
-import newera.myapplication.ui.view.InputManager;
+import newera.myapplication.ui.view.inputs.InputManager;
 
 /**
  * Created by Romain on 17/02/2017.

@@ -4,7 +4,6 @@ import android.graphics.*;
 import android.graphics.drawable.Drawable;
 import android.view.MotionEvent;
 import newera.myapplication.R;
-import newera.myapplication.ui.view.InputManager;
 
 import java.util.HashMap;
 import java.util.Map;

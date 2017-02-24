@@ -13,6 +13,7 @@ import newera.myapplication.image.processing.EItems;
 import newera.myapplication.image.processing.shaders.ChangeHue;
 import newera.myapplication.image.processing.shaders.Shader;
 import newera.myapplication.ui.view.inputs.EInputType;
+import newera.myapplication.ui.view.inputs.InputManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,7 +108,7 @@ public class CImageView extends View {
 
     public void onApplyFilter(int value)
     {
-        switch (currentInputType) {
+        /*switch (currentInputType) {
             case NONE:
                 return;
             case SHADER:
@@ -125,16 +126,16 @@ public class CImageView extends View {
                 break;
             case SYSTEM:
                 break;
-        }
+        }*/
     }
 
     public void onCancelFilter()
     {
 
     }
-
+    //TODO
     public void onPreviewFilter(int value) {
-        switch (currentInputType) {
+        /*switch (currentInputType) {
             case NONE:
                 return;
             case SHADER:
@@ -151,7 +152,7 @@ public class CImageView extends View {
                 break;
             case SYSTEM:
                 break;
-        }
+        }*/
     }
 
     public Image getImage()
@@ -160,8 +161,8 @@ public class CImageView extends View {
     }
 
     public void setCurrentAction(EInputType type, EItems item) {
-        this.currentInputType = type;
-        this.currentInputItem = item;
+        /*this.currentInputType = type;
+        this.currentInputItem = item;*/
 
     }
 

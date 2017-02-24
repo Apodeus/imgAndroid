@@ -10,7 +10,7 @@ import newera.myapplication.ScriptC_hue;
 import newera.myapplication.image.Image;
 import newera.myapplication.image.processing.EItems;
 import newera.myapplication.ui.view.CImageView;
-import newera.myapplication.ui.view.InputManager;
+import newera.myapplication.ui.view.inputs.InputManager;
 import newera.myapplication.ui.view.inputs.EInputBox;
 import newera.myapplication.ui.view.inputs.EInputType;
 
@@ -74,7 +74,7 @@ public class ChangeHue extends Shader {
     @Override
     public int onClick(InputManager manager, CImageView view) {
         manager.createBox(EInputBox.INTEGER, "Hue", new int[] {0, 360, 0});
-        view.setCurrentAction(EInputType.SHADER, EItems.F_CHANGE_HUE);
+        //view.setCurrentAction(EInputType.SHADER, EItems.F_CHANGE_HUE);
         return 0;
     }
 

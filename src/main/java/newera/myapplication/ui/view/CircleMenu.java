@@ -18,6 +18,7 @@ import newera.myapplication.MainActivity;
 import newera.myapplication.R;
 import newera.myapplication.image.processing.shaders.*;
 import newera.myapplication.ui.system.PictureFileManager;
+import newera.myapplication.ui.view.inputs.InputManager;
 
 /**
  * Created by Emile Barjou-Suire on 11/02/2017.

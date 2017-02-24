@@ -1,8 +1,9 @@
-package newera.myapplication.ui.view;
+package newera.myapplication.ui.view.inputs;
 
 import android.graphics.Canvas;
 import android.support.design.widget.Snackbar;
 import android.view.MotionEvent;
+import newera.myapplication.ui.view.CImageView;
 import newera.myapplication.ui.view.inputs.EInputBox;
 import newera.myapplication.ui.view.inputs.IInputBox;
 import newera.myapplication.ui.view.inputs.IntegerSeekBar;
@@ -21,7 +22,7 @@ public class InputManager {
     private Map<String, Object> currentParams;
     private Map<String, Object> currentPreviewParams;
 
-    InputManager(CImageView view)
+    public InputManager(CImageView view)
     {
         this.view = view;
     }
@@ -43,12 +44,14 @@ public class InputManager {
         view.invalidate();
     }
 
-    boolean handleTouch(MotionEvent event) {
+
+
+    public boolean handleTouch(MotionEvent event) {
         return currentBox != null && currentBox.handleTouch(event);
 
     }
 
-    void draw(Canvas canvas)
+    public void draw(Canvas canvas)
     {
         if (currentBox != null)
             currentBox.drawBox(canvas);
