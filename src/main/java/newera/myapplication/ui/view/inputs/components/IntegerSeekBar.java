@@ -2,6 +2,7 @@ package newera.myapplication.ui.view.inputs.components;
 
 import android.graphics.*;
 import android.graphics.drawable.Drawable;
+import android.view.MotionEvent;
 import newera.myapplication.R;
 import newera.myapplication.ui.view.inputs.GenericBox;
 
@@ -140,5 +141,25 @@ public class IntegerSeekBar implements IGenericBoxComponent {
         paint.setTextAlign(Paint.Align.CENTER);
         canvas.drawText(label + " : " + (currentValue > 0 ? plusSign : "") + currentValue, viewWidth / 2, boxBackground.top + getHeight()/2 + TEXT_SIZE, paint);
 
+    }
+
+    @Override
+    public void enableEdit(MotionEvent event) {
+        if (event.getX() > barForeground.right && event.getX() < barForeground.right + CURSOR_SIZE)
+            if (event.getY() > barForeground.top + BAR_THICKNESS / 2 - CURSOR_SIZE * 0.75f && event.getY() < barForeground.top + BAR_THICKNESS / 2 + CURSOR_SIZE * 0.75f)
+                isEdit = true;
+    }
+
+    @Override
+    public void disableEdit() {
+        isEdit = false;
+    }
+
+    @Override
+    public void handleEdit(MotionEvent event) {
+        if (isEdit)
+        {
+            currentValue =  Math.max(minValue, Math.min(maxValue, (int) ( minValue +(event.getRawX() - barBackground.left - CURSOR_SIZE/2.5f) / barTik)));
+        }
     }
 }

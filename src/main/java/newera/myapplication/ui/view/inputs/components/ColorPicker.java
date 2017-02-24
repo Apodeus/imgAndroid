@@ -1,6 +1,7 @@
 package newera.myapplication.ui.view.inputs.components;
 
 import android.graphics.Canvas;
+import android.view.MotionEvent;
 import newera.myapplication.ui.view.inputs.GenericBox;
 
 /**
@@ -52,6 +53,21 @@ public class ColorPicker implements IGenericBoxComponent {
 
     @Override
     public void draw(Canvas canvas) {
+
+    }
+
+    @Override
+    public void enableEdit(MotionEvent event) {
+
+    }
+
+    @Override
+    public void disableEdit() {
+
+    }
+
+    @Override
+    public void handleEdit(MotionEvent event) {
 
     }
 }

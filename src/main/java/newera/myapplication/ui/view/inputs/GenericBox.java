@@ -162,19 +162,26 @@ public class GenericBox {
 
     public boolean handleTouch(MotionEvent event)
     {
-        if (event.getY() > currentBoxBackground.top && event.getY() < currentBoxBackground.bottom)
+        if (event.getY() > currentBoxBackground.top && event.getY() < currentBoxBackground.bottom && event.getAction() == MotionEvent.ACTION_DOWN)
             if (event.getX() > currentBoxBackground.left && event.getX() < currentBoxBackground.right) {
+                isEdit = true;
+                for (IGenericBoxComponent c : components)
+                    c.enableEdit(event);
                 //Handle action_down
             }
 
         if (isEdit && event.getAction() == MotionEvent.ACTION_MOVE)
         {
             //Handle edit
+            for (IGenericBoxComponent c : components)
+                c.handleEdit(event);
         }
 
         if (event.getAction() == MotionEvent.ACTION_UP)
         {
             isEdit = false;
+            for (IGenericBoxComponent c : components)
+                c.disableEdit();
             //manager.onPreviewFilter(currentValue, getParams());
             if (event.getY() > currentBoxBackground.bottom - ICON_SIZE && event.getY() < currentBoxBackground.bottom)
                 if (event.getX() > currentBoxBackground.left && event.getX() < currentBoxBackground.left + ICON_SIZE)
