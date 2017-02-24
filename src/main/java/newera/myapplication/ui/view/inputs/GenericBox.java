@@ -120,7 +120,7 @@ public class GenericBox {
             }
 
             c.setIndex(i);
-            c.setLabel(d.getLabel());
+            c.setLabel(d.getUserLabel());
             c.setStartingHeight(currentAdditionalHeight + ICON_SIZE);
             c.initialize(d.getSettings());
             currentAdditionalHeight += c.getHeight();
@@ -194,7 +194,7 @@ public class GenericBox {
                     Map<String, Object> params = new HashMap<>();
                     for (int i = 0; i < components.size(); i++)
                     {
-                        String label = askedValues.get(i).getLabel();
+                        String label = askedValues.get(i).getDataLabel();
                         Object value = components.get(i).getValue();
                         params.put(label, value);
                     }

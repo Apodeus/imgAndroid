@@ -6,7 +6,21 @@ package newera.myapplication.ui.view.inputs;
 public class InputDataType {
     private EInputType inputType;
     private int[] settings;
-    private String label;
+    private String userLabel;
+    private String dataLabel;
+
+    public InputDataType()
+    {
+
+    }
+
+    public InputDataType(EInputType inputType, String dataLabel, String userLabel, int[] settings)
+    {
+        this.inputType = inputType;
+        this.dataLabel = dataLabel;
+        this.userLabel = userLabel;
+        this.settings = settings;
+    }
 
     public EInputType getInputType() {
         return inputType;
@@ -24,11 +38,19 @@ public class InputDataType {
         this.settings = settings;
     }
 
-    public String getLabel() {
-        return label;
+    public String getDataLabel() {
+        return dataLabel;
     }
 
-    public void setLabel(String label) {
-        this.label = label;
+    public void setDataLabel(String dataLabel) {
+        this.dataLabel = dataLabel;
+    }
+
+    public String getUserLabel() {
+        return userLabel;
+    }
+
+    public void setUserLabel(String userLabel) {
+        this.userLabel = userLabel;
     }
 }

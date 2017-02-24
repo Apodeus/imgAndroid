@@ -11,8 +11,6 @@ import newera.myapplication.image.Image;
 import newera.myapplication.image.processing.EItems;
 import newera.myapplication.ui.view.CImageView;
 import newera.myapplication.ui.view.inputs.InputManager;
-import newera.myapplication.ui.view.inputs.EInputBox;
-import newera.myapplication.ui.view.inputs.EInputType;
 
 import java.util.Map;
 
@@ -73,7 +71,7 @@ public class ChangeHue extends Shader {
 
     @Override
     public int onClick(InputManager manager, CImageView view) {
-        manager.createBox(EInputBox.INTEGER, "Hue");
+        manager.createBox(EItems.F_CHANGE_HUE, view.getResources().getString(R.string.shaderChangeHueName));
         view.setCurrentAction(EItems.F_CHANGE_HUE);
         return 0;
     }

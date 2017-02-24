@@ -3,10 +3,8 @@ package newera.myapplication.ui.view.inputs;
 import android.graphics.Canvas;
 import android.support.design.widget.Snackbar;
 import android.view.MotionEvent;
+import newera.myapplication.image.processing.EItems;
 import newera.myapplication.ui.view.CImageView;
-import newera.myapplication.ui.view.inputs.EInputBox;
-import newera.myapplication.ui.view.inputs.IInputBox;
-import newera.myapplication.ui.view.inputs.IntegerSeekBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,37 +17,27 @@ public class InputManager {
 
     private CImageView view;
 
-    private IInputBox currentBox;
-    private GenericBox box;
+    private GenericBox currentBox;
 
     private Map<String, Object> currentParams;
     private Map<String, Object> currentPreviewParams;
-
-    private EInputBox currentFilter;
 
     public InputManager(CImageView view)
     {
         this.view = view;
     }
 
-    public void createBox(EInputBox type, String label)
+    public void createBox(EItems type, String label)
     {
         switch (type) {
-            case INTEGER:
+            case F_CHANGE_HUE:
                 List<InputDataType> l = new ArrayList<>();
-                InputDataType n = new InputDataType();
-                n.setInputType(EInputType.INTEGER_SEEKBAR);
-                n.setLabel("value");
-                n.setSettings(new int[] {0, 360, 0});
+                InputDataType n = new InputDataType(EInputType.INTEGER_SEEKBAR, "value", "Hue", new int[] {0, 360, 0});
                 l.add(n);
-                //currentBox = new IntegerSeekBar(this);
-                //currentBox.setLabel(label);
-                //((IntegerSeekBar) currentBox).displayPlus(bounds[0] < 0);
-                //((IntegerSeekBar) currentBox).setBounds(bounds[0], bounds[1], bounds[2]);
-                box = new GenericBox(this, label, l);
+                currentBox = new GenericBox(this, label, l);
                 break;
 
-            case STRING_X_Y:
+            case NONE:
                 break;
         }
 
@@ -59,7 +47,7 @@ public class InputManager {
 
 
     public boolean handleTouch(MotionEvent event) {
-        return box != null && box.handleTouch(event);
+        return currentBox != null && currentBox.handleTouch(event);
 
     }
 
@@ -67,32 +55,13 @@ public class InputManager {
     {
         if (currentBox != null)
             currentBox.drawBox(canvas);
-        if (box != null)
-            box.drawBox(canvas);
     }
-
-    int getValue()
-    {
-        return currentBox.getValue();
-    }
-
-    /*public void onApplyFilter(int value, Map<String, Object> params)
-    {
-        this.currentParams = params;
-        view.onApplyFilter(value);
-        currentBox = null;
-        Snackbar snackbar = Snackbar
-                .make(view, "Filter applied", Snackbar.LENGTH_SHORT);
-
-        snackbar.show();
-
-    }*/
 
     public void onApplyFilter(Map<String, Object> params)
     {
         this.currentParams = params;
         view.onApplyFilter(params);
-        box = null;
+        currentBox = null;
         Snackbar snackbar = Snackbar
                 .make(view, "Filter applied", Snackbar.LENGTH_SHORT);
 
