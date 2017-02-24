@@ -146,16 +146,16 @@ public class GenericBox {
         paint.setColor(textColor);
         paint.setTextSize(TEXT_SIZE);
         paint.setTextAlign(Paint.Align.CENTER);
-        canvas.drawText(label, viewWidth/2, currentBoxBackground.bottom - TEXT_SIZE, paint);
+        canvas.drawText(label, viewWidth/2, currentBoxBackground.top + TEXT_SIZE * 1.5f, paint);
 
         if (isExtended)
         {
             for (IGenericBoxComponent c : components)
                 c.draw(canvas);
 
-            canvas.drawBitmap(collapseIconBitmap, viewWidth / 2, currentBoxBackground.top, paint);
+            canvas.drawBitmap(collapseIconBitmap, (viewWidth - ICON_SIZE) / 2, currentBoxBackground.bottom - ICON_SIZE / 1.3f, paint);
         }else{
-            canvas.drawBitmap(extendIconBitmap, viewWidth / 2, currentBoxBackground.top, paint);
+            canvas.drawBitmap(extendIconBitmap, (viewWidth - ICON_SIZE) / 2, currentBoxBackground.bottom - ICON_SIZE / 1.3f , paint);
         }
     }
 
