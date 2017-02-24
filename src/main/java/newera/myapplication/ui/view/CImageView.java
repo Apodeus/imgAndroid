@@ -17,6 +17,7 @@ import newera.myapplication.ui.view.inputs.InputManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Emile Barjou-Suire on 09/02/2017.
@@ -25,7 +26,6 @@ import java.util.List;
 public class CImageView extends View {
     private final static float MOVE_SAFEZONE = 0.5f;
     private final static float LERP_FACTOR = 3f;
-    private EInputType currentInputType;
     private EItems currentInputItem;
 
     public InputManager getManager() {
@@ -106,27 +106,17 @@ public class CImageView extends View {
         return true;
     }
 
-    public void onApplyFilter(int value)
+    public void onApplyFilter(Map<String, Object> params)
     {
-        /*switch (currentInputType) {
+        switch (currentInputItem) {
             case NONE:
                 return;
-            case SHADER:
-                switch (currentInputItem) {
-                    case NONE:
-                        return;
-                    case F_CHANGE_HUE:
-                        Shader s = new ChangeHue(getContext());
-                        s.setParameters(inputManager.getParams());
-                        s.ApplyFilter(image);
-                        break;
+            case F_CHANGE_HUE:
+                Shader s = new ChangeHue(getContext());
+                s.setParameters(params);
+                s.ApplyFilter(image);
+                break;
                 }
-                break;
-            case TOOL:
-                break;
-            case SYSTEM:
-                break;
-        }*/
     }
 
     public void onCancelFilter()
@@ -160,9 +150,8 @@ public class CImageView extends View {
         return this.image;
     }
 
-    public void setCurrentAction(EInputType type, EItems item) {
-        /*this.currentInputType = type;
-        this.currentInputItem = item;*/
+    public void setCurrentAction(EItems item) {
+        this.currentInputItem = item;
 
     }
 

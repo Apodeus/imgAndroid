@@ -67,7 +67,7 @@ public class IntegerSeekBar implements IGenericBoxComponent {
 
     @Override
     public Object getValue() {
-        return null;
+        return currentValue;
     }
 
     @Override

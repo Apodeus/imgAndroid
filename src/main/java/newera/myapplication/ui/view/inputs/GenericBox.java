@@ -8,7 +8,9 @@ import newera.myapplication.ui.view.inputs.components.*;
 import newera.myapplication.ui.view.inputs.components.IntegerSeekBar;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by echo on 24/02/2017.
@@ -48,18 +50,17 @@ public class GenericBox {
 
     private final static float PAINT_ALPHA = 0.8f;
 
-    public GenericBox(InputManager manager, List<InputDataType> askedValues)
+    public GenericBox(InputManager manager, String label, List<InputDataType> askedValues)
     {
         this.manager = manager;
+        this.label = label;
         this.askedValues = askedValues;
     }
 
-    private void initialize(Canvas canvas, String label)
+    private void initialize(Canvas canvas)
     {
         this.viewWidth = canvas.getWidth();
         this.viewHeight = canvas.getHeight();
-
-        this.label = label;
 
         this.boxBackgroundColor = manager.getView().getResources().getColor(R.color.colorPrimaryMild);
         this.boxBorderColor = manager.getView().getResources().getColor(R.color.colorAccent);
@@ -134,7 +135,7 @@ public class GenericBox {
 
     public void drawBox(Canvas canvas) {
         if (!init)
-            initialize(canvas, "test");
+            initialize(canvas);
 
         paint.setColor(boxBackgroundColor);
         paint.setAlpha((int) (PAINT_ALPHA * 255));
@@ -162,9 +163,9 @@ public class GenericBox {
 
     public boolean handleTouch(MotionEvent event)
     {
-        if (event.getY() > currentBoxBackground.top && event.getY() < currentBoxBackground.bottom && event.getAction() == MotionEvent.ACTION_DOWN)
+        if (event.getY() > currentBoxBackground.top && event.getY() < collapsedBoxBackground.top && event.getAction() == MotionEvent.ACTION_DOWN)
             if (event.getX() > currentBoxBackground.left && event.getX() < currentBoxBackground.right) {
-                isEdit = true;
+            isEdit = true;
                 for (IGenericBoxComponent c : components)
                     c.enableEdit(event);
                 //Handle action_down
@@ -179,25 +180,36 @@ public class GenericBox {
 
         if (event.getAction() == MotionEvent.ACTION_UP)
         {
-            isEdit = false;
+
             for (IGenericBoxComponent c : components)
                 c.disableEdit();
             //manager.onPreviewFilter(currentValue, getParams());
-            if (event.getY() > currentBoxBackground.bottom - ICON_SIZE && event.getY() < currentBoxBackground.bottom)
+            if (!isEdit && event.getY() > currentBoxBackground.bottom - ICON_SIZE && event.getY() < currentBoxBackground.bottom)
                 if (event.getX() > currentBoxBackground.left && event.getX() < currentBoxBackground.left + ICON_SIZE)
                 {
                     manager.onCancelFilter();
-                } else if (event.getX() < currentBoxBackground.right && event.getX() > currentBoxBackground.right - ICON_SIZE)
+                }
+                else if (!isEdit && event.getX() < currentBoxBackground.right && event.getX() > currentBoxBackground.right - ICON_SIZE)
                 {
-                    //manager.onApplyFilter(currentValue, getParams());
-                } else {
+                    Map<String, Object> params = new HashMap<>();
+                    for (int i = 0; i < components.size(); i++)
+                    {
+                        String label = askedValues.get(i).getLabel();
+                        Object value = components.get(i).getValue();
+                        params.put(label, value);
+                    }
+
+                    manager.onApplyFilter(params);
+                } else if (!isEdit){
                     isExtended = !isExtended;
+
                     if (currentBoxBackground.equals(extendedBoxBackground))
                         currentBoxBackground = collapsedBoxBackground;
                     else
                         currentBoxBackground = extendedBoxBackground;
                 }
 
+            isEdit = false;
         }
 
         return isEdit;

@@ -174,7 +174,7 @@ public class IntegerSeekBar implements IInputBox{
                 manager.onCancelFilter();
             } else if (event.getX() < boxBackground.right && event.getX() > boxBackground.right - ICON_SIZE)
             {
-                manager.onApplyFilter(currentValue, getParams());
+                //manager.onApplyFilter(currentValue, getParams());
             }
 
         }

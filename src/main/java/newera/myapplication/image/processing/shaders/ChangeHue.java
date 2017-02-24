@@ -73,8 +73,8 @@ public class ChangeHue extends Shader {
 
     @Override
     public int onClick(InputManager manager, CImageView view) {
-        manager.createBox(EInputBox.INTEGER, "Hue", new int[] {0, 360, 0});
-        //view.setCurrentAction(EInputType.SHADER, EItems.F_CHANGE_HUE);
+        manager.createBox(EInputBox.INTEGER, "Hue");
+        view.setCurrentAction(EItems.F_CHANGE_HUE);
         return 0;
     }
 
