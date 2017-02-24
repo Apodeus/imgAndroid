@@ -32,7 +32,7 @@ public class InputManager {
         switch (type) {
             case F_CHANGE_HUE:
                 List<InputDataType> l = new ArrayList<>();
-                InputDataType n = new InputDataType(EInputType.INTEGER_SEEKBAR, "value", "Hue", new int[] {0, 360, 0});
+                InputDataType n = new InputDataType(EInputType.COLOR_PICKER, "value", "Hue", new int[] {0, 360, 0});
                 l.add(n);
                 currentBox = new GenericBox(this, label, l);
                 break;
