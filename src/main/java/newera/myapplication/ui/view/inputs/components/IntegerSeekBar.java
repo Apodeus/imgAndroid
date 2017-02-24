@@ -38,7 +38,7 @@ public class IntegerSeekBar implements IGenericBoxComponent {
     private final static float BAR_WIDTH_COVERAGE = 0.75f;
     private final static int BAR_THICKNESS = 25;
     private final static float BOX_BOTTOM_OFFSET_Y = 0.05f;
-    private final static float BOX_HEIGHT_COVERAGE = 0.05f;
+    private final static float BOX_HEIGHT_COVERAGE = 0.08f;
     private final static float BOX_WIDTH_COVERAGE = 0.85f;
     private final static float BOX_BORDER_THICKNESS = 0.7f;
     private final static float PAINT_ALPHA = 0.8f;
@@ -94,12 +94,15 @@ public class IntegerSeekBar implements IGenericBoxComponent {
         this.paint = new Paint();
 
         Drawable cursorD = box.getInputManager().getView().getResources().getDrawable(R.drawable.ic_location_on_black_24dp);
-        cursorIconBitmap = Bitmap.createBitmap(CURSOR_SIZE, CURSOR_SIZE, Bitmap.Config.ARGB_8888);
-        Canvas cursorIconCanvas = new Canvas(cursorIconBitmap);
+        Matrix m = new Matrix();
+        m.postRotate(90);
+        Bitmap o = Bitmap.createBitmap(CURSOR_SIZE, CURSOR_SIZE, Bitmap.Config.ARGB_8888);
+        Canvas cursorIconCanvas = new Canvas(o);
 
         cursorD.setColorFilter(box.getInputManager().getView().getResources().getColor(R.color.colorLight), PorterDuff.Mode.SRC_ATOP);
         cursorD.setBounds(0,0,CURSOR_SIZE,CURSOR_SIZE);
         cursorD.draw(cursorIconCanvas);
+        cursorIconBitmap = Bitmap.createBitmap(o, 0, 0, CURSOR_SIZE, CURSOR_SIZE, m, true);
     }
 
     @Override
@@ -129,12 +132,13 @@ public class IntegerSeekBar implements IGenericBoxComponent {
         paint.setAlpha((int) (PAINT_ALPHA * 255));
         canvas.drawRect(barForeground, paint);
 
-        canvas.drawBitmap(cursorIconBitmap, barForeground.right - CURSOR_SIZE / 2, barBackground.top - CURSOR_SIZE, paint);
+        //canvas.drawBitmap(cursorIconBitmap, barForeground.right - CURSOR_SIZE / 2, barBackground.top - CURSOR_SIZE, paint);
+        canvas.drawBitmap(cursorIconBitmap, barForeground.right - CURSOR_SIZE / 12.5f, barBackground.top + BAR_THICKNESS / 2 - CURSOR_SIZE/2, paint);
 
         paint.setColor(textColor);
         paint.setTextSize(TEXT_SIZE);
         paint.setTextAlign(Paint.Align.CENTER);
-        canvas.drawText(label + " : " + (currentValue > 0 ? plusSign : "") + currentValue, viewWidth / 2, barBackground.bottom + TEXT_SIZE * 1.1f, paint);
+        canvas.drawText(label + " : " + (currentValue > 0 ? plusSign : "") + currentValue, viewWidth / 2, boxBackground.top + getHeight()/2 + TEXT_SIZE, paint);
 
     }
 }
