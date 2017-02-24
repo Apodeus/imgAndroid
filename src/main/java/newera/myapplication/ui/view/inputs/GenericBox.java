@@ -157,6 +157,7 @@ public class GenericBox {
         }else{
             canvas.drawBitmap(extendIconBitmap, (viewWidth - ICON_SIZE) / 2, currentBoxBackground.bottom - ICON_SIZE / 1.3f , paint);
         }
+
     }
 
     public boolean handleTouch(MotionEvent event)
@@ -182,6 +183,12 @@ public class GenericBox {
                 } else if (event.getX() < currentBoxBackground.right && event.getX() > currentBoxBackground.right - ICON_SIZE)
                 {
                     //manager.onApplyFilter(currentValue, getParams());
+                } else {
+                    isExtended = !isExtended;
+                    if (currentBoxBackground.equals(extendedBoxBackground))
+                        currentBoxBackground = collapsedBoxBackground;
+                    else
+                        currentBoxBackground = extendedBoxBackground;
                 }
 
         }

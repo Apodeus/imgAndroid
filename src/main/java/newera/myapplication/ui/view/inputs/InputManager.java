@@ -62,7 +62,7 @@ public class InputManager {
 
 
     public boolean handleTouch(MotionEvent event) {
-        return currentBox != null && currentBox.handleTouch(event);
+        return box != null && box.handleTouch(event);
 
     }
 
