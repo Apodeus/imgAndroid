@@ -126,7 +126,7 @@ public class GenericBox {
             components.add(c);
         }
 
-        this.extendedBoxBackground = new Rect(collapsedBoxBackground.left, collapsedBoxBackground.top + currentAdditionalHeight, collapsedBoxBackground.right, collapsedBoxBackground.bottom);
+        this.extendedBoxBackground = new Rect(collapsedBoxBackground.left, collapsedBoxBackground.top - currentAdditionalHeight, collapsedBoxBackground.right, collapsedBoxBackground.bottom);
         this.currentBoxBackground = extendedBoxBackground;
 
         this.init = true;
@@ -146,7 +146,7 @@ public class GenericBox {
         paint.setColor(textColor);
         paint.setTextSize(TEXT_SIZE);
         paint.setTextAlign(Paint.Align.CENTER);
-        canvas.drawText(label, viewWidth/2, currentBoxBackground.top + TEXT_SIZE * 1.5f, paint);
+        canvas.drawText(label, viewWidth/2, currentBoxBackground.bottom - ICON_SIZE / 1.75f, paint);
 
         if (isExtended)
         {

@@ -56,7 +56,7 @@ public class IntegerSeekBar implements IGenericBoxComponent {
 
     @Override
     public int getHeight() {
-        return 0;
+        return boxBackground.bottom - boxBackground.top;
     }
 
     @Override
@@ -120,9 +120,6 @@ public class IntegerSeekBar implements IGenericBoxComponent {
     @Override
     public void draw(Canvas canvas) {
         barForeground.right = barBackground.left + (int) ((currentValue + length - maxValue) * barTik);
-        paint.setColor(boxBackgroundColor);
-        paint.setAlpha((int) (PAINT_ALPHA * 255));
-        canvas.drawRect(boxBackground, paint);
 
         paint.setColor(barBackgroundColor);
         paint.setAlpha((int) (PAINT_ALPHA * 255));
@@ -137,7 +134,7 @@ public class IntegerSeekBar implements IGenericBoxComponent {
         paint.setColor(textColor);
         paint.setTextSize(TEXT_SIZE);
         paint.setTextAlign(Paint.Align.CENTER);
-        canvas.drawText(label + " : " + (currentValue > 0 ? plusSign : "") + currentValue, viewWidth / 2, boxBackground.bottom, paint);
+        canvas.drawText(label + " : " + (currentValue > 0 ? plusSign : "") + currentValue, viewWidth / 2, barBackground.bottom + TEXT_SIZE * 1.1f, paint);
 
     }
 }

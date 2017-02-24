@@ -40,6 +40,11 @@ public class InputManager {
                 n.setLabel("toast");
                 n.setSettings(new int[] {0, 100, 50});
                 l.add(n);
+                InputDataType m = new InputDataType();
+                m.setInputType(EInputType.INTEGER_SEEKBAR);
+                m.setLabel("toast 2");
+                m.setSettings(new int[] {0, 100, 50});
+                l.add(m);
                 //currentBox = new IntegerSeekBar(this);
                 //currentBox.setLabel(label);
                 //((IntegerSeekBar) currentBox).displayPlus(bounds[0] < 0);
