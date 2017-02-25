@@ -36,7 +36,6 @@ public class CImageView extends View {
 
     private enum TouchMethod {DRAG, ZOOM, TOOL}
 
-
     private Image image;
     private Point contentCoords;
     private float contentScale;
@@ -71,6 +70,10 @@ public class CImageView extends View {
             invalidate();
 
         }
+    }
+
+    public void reinitialize(){
+        this.image.reinitializeBitmap();
     }
 
     @Override

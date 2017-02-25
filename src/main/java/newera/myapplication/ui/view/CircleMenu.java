@@ -278,6 +278,9 @@ public class CircleMenu extends View {
                                         Log.i("", "Error: Save");
                                     }
                                     break;
+                                case 3:
+                                    view.reinitialize();
+                                    break;
                                 default:
                                     if (itemList.get(i).isShader()) {
                                         itemList.get(i).getShader() .onClick(manager, view);
@@ -303,41 +306,41 @@ public class CircleMenu extends View {
     {
         for(int i = 0; i <20; ++i){
             switch(i) {
-                case 3 :
+                case 4 :
                     Shader s = new GrayScale(this.activity);
                     this.addItem(new MenuItem(s.getName(), s));
                     break;
-                case 4 :
+                case 5 :
                     Shader invert = new InvertColor(this.activity);
                     this.addItem(new MenuItem(invert.getName(), invert));
                     break;
 
-                case 5 :
+                case 6 :
                     Shader lightness = new Lightness(this.activity);
                     this.addItem(new MenuItem(lightness.getName(), lightness));
                     break;
 
-                case 6 :
+                case 7 :
                     Shader changeHue = new ChangeHue(this.activity);
                     this.addItem(new MenuItem(changeHue.getName(), changeHue));
                     break;
 
-                case 7 :
+                case 8 :
                     Shader histo = new HistogramEqualize(this.activity);
                     this.addItem(new MenuItem(histo.getName(), histo));
                     break;
 
-                case 8 :
+                case 9 :
                     Shader keepHue = new KeepHue(this.activity);
                     this.addItem(new MenuItem(keepHue.getName(), keepHue));
                     break;
 
-                case 9 :
+                case 10 :
                     Shader convolution = new Convolution(this.activity);
                     this.addItem(new MenuItem(convolution.getName(), convolution));
                     break;
 
-                case 10 :
+                case 11 :
                     Shader sepia = new Sepia(this.activity);
                     this.addItem(new MenuItem(sepia.getName(), sepia));
                     break;
@@ -350,6 +353,7 @@ public class CircleMenu extends View {
         itemList.get(0).string = "Gallery";
         itemList.get(1).string = "Camera";
         itemList.get(2).string = "Save";
+        itemList.get(3).string = "Reinitialize";
     }
 
     public void setView(CImageView view)

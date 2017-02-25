@@ -13,7 +13,9 @@ import newera.myapplication.ui.system.PictureFileManager;
 
 public class Image {
     private Bitmap[][] bitmap;
+    private Bitmap[][] originalBitmap;
     private int w, h;
+    private static boolean isInitialized = false;
 
     /**
      * @return bitmap's reference
@@ -31,11 +33,21 @@ public class Image {
         this.w = w;
         this.h = h;
         this.bitmap = new Bitmap[w][h];
+        if(isInitialized == false){
+            this.originalBitmap = new Bitmap[w][h];
+        }
         for(int y = 0; y < h; ++y) {
             for (int x = 0; x < w; ++x) {
                 bitmap[x][y] = null;
+                if(isInitialized == false){
+                    originalBitmap[x][y] = null;
+                }
             }
         }
+    }
+
+    public void finished(){
+        this.isInitialized = true;
     }
 
     public Bitmap getBitmap(){
@@ -53,6 +65,13 @@ public class Image {
             return;
         //this.bitmap = bitmap.copy(bitmap.getConfig(), bitmap.isMutable());
         this.bitmap[x][y] = bitmap.copy(bitmap.getConfig(), bitmap.isMutable());
+        if(isInitialized == false){
+            this.originalBitmap[x][y] = bitmap.copy(bitmap.getConfig(), bitmap.isMutable());
+        }
+    }
+
+    public void reinitializeBitmap(){
+        this.bitmap = originalBitmap.clone();
     }
 
     public void draw(Canvas canvas, int coordX, int coordY, float scale){

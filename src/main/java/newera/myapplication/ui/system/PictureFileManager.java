@@ -157,6 +157,7 @@ public class PictureFileManager {
                         result.addBitmap(img, x, y);
                     }
                 }
+                result.finished();
                 //result.setBitmap(img);
                 parcelFD.close();
             } else {
