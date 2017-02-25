@@ -143,8 +143,12 @@ public class PictureFileManager {
                 int h = decoder.getHeight();
                 int w = decoder.getWidth();
                 int xm, xM, ym, yM;//4160*3120
+
                 Rect r = new Rect();
+
                 result.setDim((int)Math.ceil((double)w/(double)DECODE_TILE_SIZE), (int)Math.ceil((double)h/(double)DECODE_TILE_SIZE));
+                result.initDimOriginalBitmap((int)Math.ceil((double)w/(double)DECODE_TILE_SIZE), (int)Math.ceil((double)h/(double)DECODE_TILE_SIZE));
+
                 for(int y = 0; y < Math.ceil((double)h/(double)DECODE_TILE_SIZE); ++y){
                     for(int x = 0; x < Math.ceil((double)w/(double)DECODE_TILE_SIZE); ++x){
                         xm = x*DECODE_TILE_SIZE;
@@ -155,9 +159,9 @@ public class PictureFileManager {
                         r.set(xm, ym, xM, yM);
                         img = decoder.decodeRegion(r, null);
                         result.addBitmap(img, x, y);
+                        result.initOriginalBitmap(img, x, y);
                     }
                 }
-                result.finished();
                 //result.setBitmap(img);
                 parcelFD.close();
             } else {

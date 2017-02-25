@@ -280,6 +280,8 @@ public class CircleMenu extends View {
                                     break;
                                 case 3:
                                     view.reinitialize();
+                                    invalidate();
+
                                     break;
                                 default:
                                     if (itemList.get(i).isShader()) {

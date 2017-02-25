@@ -15,7 +15,6 @@ public class Image {
     private Bitmap[][] bitmap;
     private Bitmap[][] originalBitmap;
     private int w, h;
-    private static boolean isInitialized = false;
 
     /**
      * @return bitmap's reference
@@ -33,22 +32,13 @@ public class Image {
         this.w = w;
         this.h = h;
         this.bitmap = new Bitmap[w][h];
-        if(isInitialized == false){
-            this.originalBitmap = new Bitmap[w][h];
-        }
-        for(int y = 0; y < h; ++y) {
-            for (int x = 0; x < w; ++x) {
+        for(int x = 0; x < w; ++x) {
+            for (int y = 0; y < h; ++y) {
                 bitmap[x][y] = null;
-                if(isInitialized == false){
-                    originalBitmap[x][y] = null;
-                }
             }
         }
     }
 
-    public void finished(){
-        this.isInitialized = true;
-    }
 
     public Bitmap getBitmap(){
         int nW = this.getWidth();
@@ -65,13 +55,35 @@ public class Image {
             return;
         //this.bitmap = bitmap.copy(bitmap.getConfig(), bitmap.isMutable());
         this.bitmap[x][y] = bitmap.copy(bitmap.getConfig(), bitmap.isMutable());
-        if(isInitialized == false){
-            this.originalBitmap[x][y] = bitmap.copy(bitmap.getConfig(), bitmap.isMutable());
+        //this.originalBitmap[x][y] = bitmap.copy(bitmap.getConfig(), bitmap.isMutable());
+    }
+
+    public void initOriginalBitmap(Bitmap bitmap, int x, int y){
+        if(bitmap == null)
+            return;
+        this.originalBitmap[x][y] = bitmap.copy(bitmap.getConfig(), bitmap.isMutable());
+    }
+
+    public void initDimOriginalBitmap(int w, int h){
+        this.w = w;
+        this.h = h;
+        this.originalBitmap = new Bitmap[w][h];
+        for(int y = 0; y < h; ++y) {
+            for (int x = 0; x < w; ++x) {
+                originalBitmap[x][y] = null;
+            }
         }
     }
 
     public void reinitializeBitmap(){
-        this.bitmap = originalBitmap.clone();
+        for(int x = 0; x < w; x++){
+            for(int y = 0; y < h; y++){
+                this.bitmap[x][y] = this.originalBitmap[x][y].copy(
+                        this.originalBitmap[x][y].getConfig(),
+                        this.originalBitmap[x][y].isMutable()
+                );
+            }
+        }
     }
 
     public void draw(Canvas canvas, int coordX, int coordY, float scale){
