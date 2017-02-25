@@ -100,7 +100,7 @@ public class Convolution extends Shader{
 
     public String getName()
     {
-        return activity.getResources().getString(R.string.shaderConvolutionName) + this.matrix.name();
+        return activity.getResources().getString(R.string.shaderConvolutionName) + " " +  this.matrix.name();
     }
 
     @Override
