@@ -20,7 +20,7 @@ public class Convolution extends Shader{
     public ConvType matrix = ConvType.EDGE;
     public int kernel_size = 3;
 
-    private float factor_gauss = 3;
+    private float factor_gauss = 1;
     private float[][] matrix_gauss = {
             {0.077847f, 0.123317f, 0.077847f},
             {0.123317f, 0.195346f, 0.123317f},
