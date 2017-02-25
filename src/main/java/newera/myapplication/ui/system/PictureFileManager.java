@@ -1,13 +1,18 @@
 package newera.myapplication.ui.system;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapRegionDecoder;
 import android.graphics.Rect;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
 
@@ -32,6 +37,7 @@ public class PictureFileManager {
     public static final int DECODE_TILE_SIZE = 2048;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int REQUEST_IMAGE_GALLERY = 2;
+    private static final int REQUEST_CREATE_DIRECTORY = 3;
     private static int LAST_REQUEST;
 
     private static MainActivity Activity;
@@ -71,6 +77,7 @@ public class PictureFileManager {
             return;
         }
         try {
+            MediaScannerConnection.scanFile(Activity, new String[] { pictureFile.getPath() }, new String[] { "image/jpeg" }, null);
             FileOutputStream fos = new FileOutputStream(pictureFile);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 85, fos);
             fos.close();
@@ -82,15 +89,14 @@ public class PictureFileManager {
 
     }
 
-
     /** Create a File for saving an image or video */
     private static File getOutputMediaFile(){
         // To be safe, you should check that the SDCard is mounted
         // using Environment.getExternalStorageState() before doing this.
         File mediaStorageDir = new File(Environment.getExternalStorageDirectory()
-                + "/Android/data/"
+                + "/Pictures/"
                 + Activity.getApplicationContext().getPackageName()
-                + "/Files");
+        );
 
         // This location works best if you want the created images to be shared
         // between applications and persist after your app has been uninstalled.
@@ -104,7 +110,7 @@ public class PictureFileManager {
         // Create a media file name
         String timeStamp = new SimpleDateFormat("ddMMyyyy_HHmm").format(new Date());
         File mediaFile;
-        String mImageName = "MI_"+ timeStamp +".jpg";
+        String mImageName = "IMG_"+ timeStamp +".jpg";
         mediaFile = new File(mediaStorageDir.getPath() + File.separator + mImageName);
         return mediaFile;
     }
@@ -198,7 +204,8 @@ public class PictureFileManager {
 
     private static void dispatchPickPictureFromGallery()
     {
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         Activity.startActivityForResult(intent, REQUEST_IMAGE_GALLERY);
         LAST_REQUEST = REQUEST_IMAGE_GALLERY;
     }
