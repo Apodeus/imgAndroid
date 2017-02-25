@@ -20,7 +20,7 @@ Schéma fonctionnel : [Mindomo](https://www.mindomo.com/mindmap/b9565ab1eb794d20
 - ~~Afficher une image sur une ImageView custom~~
 - ~~Zoomer~~
 - ~~Scroller~~
-- Réinitialiser l'image d'origine
+- ~~Réinitialiser l'image d'origine~~
 - ~~Sauvegarder l'image modifiée~~
 
 ### Filtres
@@ -41,6 +41,7 @@ Schéma fonctionnel : [Mindomo](https://www.mindomo.com/mindmap/b9565ab1eb794d20
 - ~~Problème de hitbox du menu circulaire~~
 - ~~Resteindre le dépassement de l'image à l'écran~~
 - Meilleure orientation de l'image lorsqu'elle est chargée
+- Certaines images ne se chargent pas. (Problème en fonction de l'appareil utilisé ?)
 
 ## Membres
 
