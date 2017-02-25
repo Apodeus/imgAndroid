@@ -6,4 +6,6 @@ package newera.myapplication.image.processing;
 public enum EItems {
     NONE,
     F_CHANGE_HUE,
+    F_LIGHTNESS,
+    F_KEEP_HUE
 }

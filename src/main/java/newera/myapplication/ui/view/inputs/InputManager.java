@@ -37,6 +37,22 @@ public class InputManager {
                 currentBox = new GenericBox(this, label, l);
                 break;
 
+            case F_LIGHTNESS:
+                List<InputDataType> lstLightness = new ArrayList<>();
+                InputDataType seekBar = new InputDataType(EInputType.INTEGER_SEEKBAR, "value", "Lightness", new int[] {0, 200, 100});
+                lstLightness.add(seekBar);
+                currentBox = new GenericBox(this, label, lstLightness);
+                break;
+
+            case F_KEEP_HUE:
+                List<InputDataType> lstKeepHue = new ArrayList<>();
+                InputDataType seekBarHue = new InputDataType(EInputType.COLOR_PICKER, "valueHue", "Hue", new int[] {0, 360, 0});
+                InputDataType seekBarTolerance = new InputDataType(EInputType.INTEGER_SEEKBAR, "valueTolerance", "Tolerance", new int[] {0, 180, 0});
+                lstKeepHue.add(seekBarHue);
+                lstKeepHue.add(seekBarTolerance);
+                currentBox = new GenericBox(this, label, lstKeepHue);
+                break;
+
             case NONE:
                 break;
         }

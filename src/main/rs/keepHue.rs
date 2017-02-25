@@ -23,6 +23,11 @@ static int3 keepHue(float3 pixel, float hue){
 
     borneSup =  fmod(newHue + epsilon, 1.0f);
 
+    if(epsilon >= 0.5f){
+        borneInf = 0;
+        borneSup = 1.0f;
+    }
+
     //case 1
     if(borneInf > borneSup){
         if((hsl.x > borneSup && hsl.x < borneInf)){

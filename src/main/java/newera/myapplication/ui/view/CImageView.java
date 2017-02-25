@@ -11,6 +11,8 @@ import newera.myapplication.R;
 import newera.myapplication.image.Image;
 import newera.myapplication.image.processing.EItems;
 import newera.myapplication.image.processing.shaders.ChangeHue;
+import newera.myapplication.image.processing.shaders.KeepHue;
+import newera.myapplication.image.processing.shaders.Lightness;
 import newera.myapplication.image.processing.shaders.Shader;
 import newera.myapplication.ui.view.inputs.EInputType;
 import newera.myapplication.ui.view.inputs.InputManager;
@@ -108,15 +110,24 @@ public class CImageView extends View {
 
     public void onApplyFilter(Map<String, Object> params)
     {
+        Shader shader = null;
         switch (currentInputItem) {
             case NONE:
                 return;
             case F_CHANGE_HUE:
-                Shader s = new ChangeHue(getContext());
-                s.setParameters(params);
-                s.ApplyFilter(image);
+                shader = new ChangeHue(getContext());
                 break;
-                }
+            case F_LIGHTNESS:
+                shader = new Lightness(getContext());
+                break;
+            case F_KEEP_HUE:
+                shader = new KeepHue(getContext());
+                break;
+        }
+
+        shader.setParameters(params);
+        shader.ApplyFilter(image);
+
     }
 
     public void onCancelFilter()
