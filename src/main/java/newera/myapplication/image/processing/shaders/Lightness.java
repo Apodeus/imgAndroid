@@ -19,13 +19,14 @@ public class Lightness extends Shader {
     public void ApplyFilter(Image image)
     {
         if(image != null && !image.isEmpty()) {
-            for (Bitmap[] b1 : image.getBitmaps())
-                for (Bitmap b : b1) {
-                    Allocation in = Allocation.createFromBitmap(renderScript, b);
+            ScriptC_lightness rsLightness = new ScriptC_lightness(renderScript);
+
+            for (Bitmap[] arrBitmap : image.getBitmaps())
+                for (Bitmap bitmap : arrBitmap) {
+                    Allocation in = Allocation.createFromBitmap(renderScript, bitmap);
                     Allocation out = Allocation.createTyped(renderScript, in.getType());
-                    ScriptC_lightness rsLightness = new ScriptC_lightness(renderScript);
                     rsLightness.forEach_ChangeLightness(in, out);
-                    out.copyTo(b);
+                    out.copyTo(bitmap);
                 }
         }
         refreshImage();

@@ -27,26 +27,26 @@ public class HistogramEqualize extends Shader {
             ScriptC_histogram rsHistogram = new ScriptC_histogram(renderScript);
             rsHistogram.set_size(image.getWidth() * image.getHeight());
 
-            Allocation arr = Allocation.createSized(renderScript, Element.I32(renderScript), histo.length);
-            arr.copyFrom(histo);
+            Allocation tmpArrayHistogram = Allocation.createSized(renderScript, Element.I32(renderScript), histo.length);
+            tmpArrayHistogram.copyFrom(histo);
 
             //Get the total histogram of all bitmaps of the Image
-            for (Bitmap[] b1 : image.getBitmaps()){
-                for (Bitmap b : b1) {
-                    Allocation in = Allocation.createFromBitmap(renderScript, b);
+            for (Bitmap[] arrBitmap : image.getBitmaps()){
+                for (Bitmap bitmap : arrBitmap) {
+                    Allocation in = Allocation.createFromBitmap(renderScript, bitmap);
                     Allocation out = Allocation.createTyped(renderScript, in.getType());
-                    rsHistogram.set_arr(arr);
+                    rsHistogram.set_arr(tmpArrayHistogram);
                     rsHistogram.forEach_calculHistogram(in, out);
                 }
             }
 
             //Copy the new histogram in the array histo
-            arr.copyTo(histo);
+            tmpArrayHistogram.copyTo(histo);
 
             //Apply the equalization of the histogram
-            for(Bitmap[] b1 : image.getBitmaps()){
-                for (Bitmap b : b1) {
-                    Allocation in = Allocation.createFromBitmap(renderScript, b);
+            for (Bitmap[] arrBitmap : image.getBitmaps()){
+                for (Bitmap bitmap : arrBitmap) {
+                    Allocation in = Allocation.createFromBitmap(renderScript, bitmap);
                     Allocation out = Allocation.createTyped(renderScript, in.getType());
 
                     rsHistogram.forEach_calculHistogram(in, out);
@@ -54,10 +54,9 @@ public class HistogramEqualize extends Shader {
                     rsHistogram.invoke_createRemapArray();
                     rsHistogram.forEach_YUVToRGB(out, in);
 
-                    in.copyTo(b);
+                    in.copyTo(bitmap);
                 }
             }
-
         }
         refreshImage();
     }

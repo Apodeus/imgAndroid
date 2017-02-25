@@ -21,13 +21,14 @@ public class InvertColor extends Shader {
     public void ApplyFilter(Image image)
     {
         if(image != null && !image.isEmpty()) {
-            for (Bitmap[] b1 : image.getBitmaps())
-                for (Bitmap b : b1) {
-                    Allocation in = Allocation.createFromBitmap(renderScript, b);
+            ScriptC_invert rsInvert = new ScriptC_invert(renderScript);
+
+            for (Bitmap[] arrBitmap : image.getBitmaps())
+                for (Bitmap bitmap : arrBitmap) {
+                    Allocation in = Allocation.createFromBitmap(renderScript, bitmap);
                     Allocation out = Allocation.createTyped(renderScript, in.getType());
-                    ScriptC_invert rsInvert = new ScriptC_invert(renderScript);
                     rsInvert.forEach_invert(in, out);
-                    out.copyTo(b);
+                    out.copyTo(bitmap);
                 }
         }
         refreshImage();

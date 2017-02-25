@@ -3,7 +3,7 @@ import android.graphics.Bitmap;
 import android.renderscript.Allocation;
 import newera.myapplication.MainActivity;
 import newera.myapplication.R;
-import newera.myapplication.ScriptC_mono;
+import newera.myapplication.ScriptC_grayscale;
 import newera.myapplication.image.Image;
 
 
@@ -21,16 +21,16 @@ public class GrayScale extends Shader{
     public void ApplyFilter(Image image)
     {
         if(image != null && !image.isEmpty()) {
-            for (Bitmap[] b1 : image.getBitmaps())
-                for (Bitmap b : b1) {
-                    Allocation in = Allocation.createFromBitmap(renderScript, b);
+
+            ScriptC_grayscale rsGrayscale = new ScriptC_grayscale(renderScript);
+            for (Bitmap[] arrBitmap : image.getBitmaps())
+                for (Bitmap bitmap : arrBitmap) {
+                    Allocation in = Allocation.createFromBitmap(renderScript, bitmap);
                     Allocation out = Allocation.createTyped(renderScript, in.getType());
 
-                    ScriptC_mono mono = new ScriptC_mono(renderScript);
+                    rsGrayscale.forEach_Grayscale(in, out);
 
-                    mono.forEach_black_and_white(in, out);
-
-                    out.copyTo(b);
+                    out.copyTo(bitmap);
                 }
         }
         refreshImage();

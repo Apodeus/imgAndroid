@@ -24,15 +24,14 @@ public class Sepia extends Shader{
         if(image != null && !image.isEmpty()) {
             ScriptC_sepia rsSepia = new ScriptC_sepia(renderScript);
 
-            for (Bitmap[] b1 : image.getBitmaps())
-                for (Bitmap b : b1) {
+            for (Bitmap[] arrBitmap : image.getBitmaps())
+                for (Bitmap bitmap : arrBitmap) {
 
-                    Allocation in = Allocation.createFromBitmap(renderScript, b);
+                    Allocation in = Allocation.createFromBitmap(renderScript, bitmap);
                     Allocation out = Allocation.createTyped(renderScript, in.getType());
 
                     rsSepia.forEach_sepia(in, out);
-
-                    out.copyTo(b);
+                    out.copyTo(bitmap);
                 }
         }
         refreshImage();

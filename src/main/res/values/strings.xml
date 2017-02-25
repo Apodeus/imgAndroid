@@ -9,6 +9,7 @@
     <string name="shaderHistogramName">Equalize Histogram</string>
     <string name="shaderKeepHueName">Keep specific Hue</string>
     <string name="shaderSepiaName">Sepia</string>
+    <string name="shaderContrastName">Contrast</string>
     <string name="galleryName">Gallery</string>
     <string name="cameraName">Camera</string>
     <string name="apply">Apply</string>

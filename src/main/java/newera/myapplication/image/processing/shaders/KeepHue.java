@@ -29,13 +29,13 @@ public class KeepHue extends Shader{
             rsKeepHue.set_epsilon(0.05f);
             rsKeepHue.set_newHue(0f);
 
-            for (Bitmap[] b1 : image.getBitmaps())
-                for (Bitmap b : b1) {
-                    Allocation in = Allocation.createFromBitmap(renderScript, b);
+            for (Bitmap[] arrBitmap : image.getBitmaps())
+                for (Bitmap bitmap : arrBitmap) {
+                    Allocation in = Allocation.createFromBitmap(renderScript, bitmap);
                     Allocation out = Allocation.createTyped(renderScript, in.getType());
 
                     rsKeepHue.forEach_KeepSpecificHue(in, out);
-                    out.copyTo(b);
+                    out.copyTo(bitmap);
                 }
         }
         refreshImage();

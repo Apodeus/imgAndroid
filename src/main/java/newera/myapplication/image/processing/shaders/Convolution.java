@@ -38,21 +38,21 @@ public class Convolution extends Shader{
     public void ApplyFilter(Image image)
     {
         if(image != null && !image.isEmpty()) {
-            for (Bitmap[] b1 : image.getBitmaps())
-                for (Bitmap b : b1) {
-                    Allocation in = Allocation.createFromBitmap(renderScript, b);
+            ScriptC_convolution rsConv = new ScriptC_convolution(renderScript);
+
+            for (Bitmap[] arrBitmap : image.getBitmaps())
+                for (Bitmap bitmap : arrBitmap) {
+                    Allocation in = Allocation.createFromBitmap(renderScript, bitmap);
                     Allocation out = Allocation.createTyped(renderScript, in.getType());
 
-                    ScriptC_convolution conv = new ScriptC_convolution(renderScript);
+                    rsConv.set_h(bitmap.getHeight());
+                    rsConv.set_w(bitmap.getWidth());
+                    rsConv.set_in(in);
+                    setupMatrix(rsConv, ConvType.EDGE);
 
-                    conv.set_h(b.getHeight());
-                    conv.set_w(b.getWidth());
-                    conv.set_in(in);
-                    setupMatrix(conv, ConvType.EDGE);
+                    rsConv.forEach_convolution(out);
 
-                    conv.forEach_convolution(out);
-
-                    out.copyTo(b);
+                    out.copyTo(bitmap);
                 }
         }
         refreshImage();

@@ -8,9 +8,9 @@ const static float3 sepiaBlue = {0.272f, 0.534f, 0.131f};
 //MAINS
 uchar4 __attribute__((kernel)) sepia(uchar4 in, uint32_t x, uint32_t y) {
 
-  uchar red   = min((int)(in.r * sepiaRed.r   + in.g * sepiaRed.g   + in.b * sepiaRed.b), 255);
+  uchar red   = min((int)(in.r * sepiaRed.r   + in.g * sepiaRed.g   + in.b * sepiaRed.b)  , 255);
   uchar green = min((int)(in.r * sepiaGreen.r + in.g * sepiaGreen.g + in.b * sepiaGreen.b), 255);
-  uchar blue   = min((int)(in.r * sepiaBlue.r + in.g * sepiaBlue.g  + in.b * sepiaBlue.b), 255);
+  uchar blue  = min((int)(in.r * sepiaBlue.r  + in.g * sepiaBlue.g  + in.b * sepiaBlue.b) , 255);
 
   uchar4 out;
   out.a = in.a;
