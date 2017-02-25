@@ -24,11 +24,11 @@ Schéma fonctionnel : [Mindomo](https://www.mindomo.com/mindmap/b9565ab1eb794d20
 - ~~Sauvegarder l'image modifiée~~
 
 ### Filtres
-- Régler la luminosité
+- ~~Régler la luminosité~~
 - Régler le contraste
 - ~~Egalisation d'histogramme~~
-- Filtrage de couleur
-- Convolution
+- ~~Filtrage de couleur~~
+- ~~Convolution~~
 
 ### Bonus
 - Effet dessin au crayon
