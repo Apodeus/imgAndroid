@@ -6,6 +6,7 @@ import android.renderscript.Element;
 import newera.myapplication.MainActivity;
 import newera.myapplication.R;
 import newera.myapplication.ScriptC_convolution;
+import newera.myapplication.ScriptC_sobel;
 import newera.myapplication.image.Image;
 
 
@@ -14,7 +15,9 @@ import newera.myapplication.image.Image;
  */
 
 public class Convolution extends Shader{
-    public enum ConvType{GAUSS, EDGE}
+    public enum ConvType{GAUSS, EDGE, LAPL, SOBEL, SOBEL_H, SOBEL_V}
+    public ConvType matrix = ConvType.SOBEL;
+    public int kernel_size = 3;
 
     private float factor_gauss = 1;
     private float[][] matrix_gauss = {
@@ -28,6 +31,23 @@ public class Convolution extends Shader{
             {0, 1, 0},
             {1, -4, 1},
             {0, 1, 0},
+    };
+
+    private float factor_lapl = 1;
+    private float[][] matrix_lapl = {
+            {-1, -1, -1},
+            {-1, 8, -1},
+            {-1, -1, -1},
+    };
+
+    private float factor_sobel = 1;
+    private float[][][] matrix_sobel = {
+            {{-1, -2, -1,},
+             {0, 0, 0},
+             {1, 2, 1},},
+            {{-1, 0, 1,},
+             {-2, 0, 2},
+             {-1, 0, 1},},
     };
 
     public Convolution(MainActivity activity) {
@@ -48,10 +68,24 @@ public class Convolution extends Shader{
                     rsConv.set_h(bitmap.getHeight());
                     rsConv.set_w(bitmap.getWidth());
                     rsConv.set_in(in);
-                    setupMatrix(rsConv, ConvType.EDGE);
+                    if(matrix != ConvType.SOBEL) {
+                        setupMatrix(rsConv, matrix);
+                        rsConv.forEach_convolution(out);
 
-                    rsConv.forEach_convolution(out);
+                    } else {
+                        Allocation sob_h = Allocation.createTyped(renderScript, in.getType());
+                        Allocation sob_v = Allocation.createTyped(renderScript, in.getType());
 
+                        setupMatrix(rsConv, ConvType.SOBEL_H);
+                        rsConv.forEach_convolution(sob_h);
+                        setupMatrix(rsConv, ConvType.SOBEL_V);
+                        rsConv.forEach_convolution(sob_v);
+
+                        ScriptC_sobel sobel = new ScriptC_sobel(renderScript);
+                        sobel.set_in_h(sob_h);
+                        sobel.set_in_v(sob_v);
+                        sobel.forEach_sobel(out);
+                    }
                     out.copyTo(bitmap);
                 }
         }
@@ -84,6 +118,15 @@ public class Convolution extends Shader{
         } else if (type == ConvType.GAUSS){
             target = matrix_gauss;
             factor = factor_gauss;
+        } else if (type == ConvType.LAPL){
+            target = matrix_lapl;
+            factor = factor_lapl;
+        } else if (type == ConvType.SOBEL_H){
+            target = matrix_sobel[0];
+            factor = factor_sobel;
+        } else if (type == ConvType.SOBEL_V){
+            target = matrix_sobel[1];
+            factor = factor_sobel;
         }
         conv.set_matrix_size(target.length);
         conv.set_matrix_factor(factor);

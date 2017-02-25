@@ -75,6 +75,7 @@ public class CImageView extends View {
 
     public void reinitialize(){
         this.image.reinitializeBitmap();
+        invalidate();
     }
 
     @Override
