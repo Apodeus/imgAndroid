@@ -8,6 +8,7 @@ import newera.myapplication.R;
 import newera.myapplication.ScriptC_convolution;
 import newera.myapplication.ScriptC_sobel;
 import newera.myapplication.image.Image;
+import newera.myapplication.ui.view.ActionCamera;
 
 
 /**
@@ -16,10 +17,10 @@ import newera.myapplication.image.Image;
 
 public class Convolution extends Shader{
     public enum ConvType{GAUSS, EDGE, LAPL, SOBEL, SOBEL_H, SOBEL_V}
-    public ConvType matrix = ConvType.SOBEL;
+    public ConvType matrix = ConvType.EDGE;
     public int kernel_size = 3;
 
-    private float factor_gauss = 1;
+    private float factor_gauss = 3;
     private float[][] matrix_gauss = {
             {0.077847f, 0.123317f, 0.077847f},
             {0.123317f, 0.195346f, 0.123317f},
@@ -52,6 +53,11 @@ public class Convolution extends Shader{
 
     public Convolution(MainActivity activity) {
         super(activity);
+    }
+
+    public Convolution(MainActivity activity, ConvType type){
+        super(activity);
+        matrix = type;
     }
 
     @Override
@@ -94,7 +100,7 @@ public class Convolution extends Shader{
 
     public String getName()
     {
-        return activity.getResources().getString(R.string.shaderConvolutionName);
+        return activity.getResources().getString(R.string.shaderConvolutionName) + this.matrix.name();
     }
 
     @Override

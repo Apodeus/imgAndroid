@@ -20,6 +20,7 @@ import newera.myapplication.image.processing.shaders.*;
 import newera.myapplication.ui.system.PictureFileManager;
 import newera.myapplication.ui.view.inputs.InputManager;
 
+
 /**
  * Created by Emile Barjou-Suire on 11/02/2017.
  */
@@ -338,13 +339,28 @@ public class CircleMenu extends View {
                     break;
 
                 case 10 :
-                    Shader convolution = new Convolution(this.activity);
-                    this.addItem(new MenuItem(convolution.getName(), convolution));
+                    Shader sepia = new Sepia(this.activity);
+                    this.addItem(new MenuItem(sepia.getName(), sepia));
                     break;
 
                 case 11 :
-                    Shader sepia = new Sepia(this.activity);
-                    this.addItem(new MenuItem(sepia.getName(), sepia));
+                    Shader basicEdge = new Convolution(this.activity, Convolution.ConvType.EDGE);
+                    this.addItem(new MenuItem(basicEdge.getName(), basicEdge));
+                    break;
+
+                case 12 :
+                    Shader laplacien = new Convolution(this.activity, Convolution.ConvType.LAPL);
+                    this.addItem(new MenuItem(laplacien.getName(), laplacien));
+                    break;
+
+                case 13 :
+                    Shader sobel = new Convolution(this.activity, Convolution.ConvType.SOBEL);
+                    this.addItem(new MenuItem(sobel.getName(), sobel));
+                    break;
+
+                case 14 :
+                    Shader gaussBlur = new Convolution(this.activity, Convolution.ConvType.GAUSS);
+                    this.addItem(new MenuItem(gaussBlur.getName(), gaussBlur));
                     break;
 
                 default :
