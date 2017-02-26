@@ -77,9 +77,10 @@ public class Image {
                 dst.right  = dst.left + (int)((this.getWidth(x,y))*(scale));
                 dst.bottom = dst.top + (int)((this.getHeight(x,y))*(scale));
 
-                Log.i("DRAW", "rect= x("+ dst.left+","+dst.right+"), y("+dst.top+","+dst.bottom+"), bitmap : w="+this.getWidth(x,y)+", h="+this.getHeight(x,y));
+                //Log.i("DRAW", "rect= x("+ dst.left+","+dst.right+"), y("+dst.top+","+dst.bottom+"), bitmap : w="+this.getWidth(x,y)+", h="+this.getHeight(x,y));
 
                 canvas.drawBitmap(this.getBitmap(x, y), null, dst, null);
+
             }
         }
     }
