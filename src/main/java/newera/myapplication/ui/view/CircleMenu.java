@@ -16,6 +16,7 @@ import java.util.List;
 
 import newera.myapplication.MainActivity;
 import newera.myapplication.R;
+import newera.myapplication.image.processing.EItems;
 import newera.myapplication.image.processing.shaders.*;
 import newera.myapplication.ui.system.PictureFileManager;
 import newera.myapplication.ui.view.inputs.InputManager;
@@ -274,7 +275,9 @@ public class CircleMenu extends View {
                                     break;
                                 case 2:
                                     try {
-                                        PictureFileManager.SaveBitmap(activity.civ.getImage().getBitmap(), "test");
+                                        //improve this using a seekbar
+                                        int quality = 85;
+                                        PictureFileManager.SaveBitmap(activity.civ.getImage().getBitmap(), quality);
                                     }catch(IOException e){
                                         Log.i("", "Error: Save");
                                     }

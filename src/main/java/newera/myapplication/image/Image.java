@@ -3,6 +3,7 @@ package newera.myapplication.image;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.util.Log;
 
 import newera.myapplication.image.processing.shaders.Shader;
 import newera.myapplication.ui.system.PictureFileManager;
@@ -43,19 +44,64 @@ public class Image {
     public Bitmap getBitmap(){
         int nW = this.getWidth();
         int nH = this.getHeight();
+
         Bitmap newBitmap = Bitmap.createBitmap(nW, nH, bitmap[0][0].getConfig());
         Canvas canvas = new Canvas(newBitmap);
+
         //rework the following method for this call.
-        draw(canvas, (int)((this.getWidth()-1) * (1f/2)), (int)((this.getHeight()-1) * (1f/2)), 1f);
+        drawOriginalBitmap(canvas, (int)((this.getWidth()-1) * (1f/2)), (int)((this.getHeight()-1) * (1f/2)), 1f);
+
         return newBitmap;
     }
 
     public void addBitmap(Bitmap bitmap, int x, int y){
         if(bitmap == null)
             return;
-        //this.bitmap = bitmap.copy(bitmap.getConfig(), bitmap.isMutable());
         this.bitmap[x][y] = bitmap.copy(bitmap.getConfig(), bitmap.isMutable());
-        //this.originalBitmap[x][y] = bitmap.copy(bitmap.getConfig(), bitmap.isMutable());
+    }
+
+    public void draw(Canvas canvas, int coordX, int coordY, float scale){
+        Rect src = new Rect();
+        Rect dst = new Rect();
+
+        int cx = (coordX - (int)((this.getWidth() - 1) * (scale/2)));
+        int cy = (coordY - (int)((this.getHeight() - 1) * (scale/2)));
+        Log.i("", "coordX = " + coordX + "| coordY = " + coordY + "| cx = " + cx + " | cy = " + cy);
+
+        for(int x = 0; x < this.getTileW(); ++x) {
+            for (int y = 0; y < this.getTileH(); ++y) {
+                src.set(0, 0, this.getWidth(x,y) - 1, this.getHeight(x,y) - 1);
+
+                dst.left   = cx + x*(int)((PictureFileManager.DECODE_TILE_SIZE - 1.0)*(scale));
+                dst.top    = cy + y*(int)((PictureFileManager.DECODE_TILE_SIZE - 1.0)*(scale));
+
+                dst.right  = dst.left + (int)((this.getWidth(x,y))*(scale));
+                dst.bottom = dst.top + (int)((this.getHeight(x,y))*(scale));
+                canvas.drawBitmap(this.getBitmap(x, y), src, dst, null);
+            }
+        }
+    }
+
+    public void drawOriginalBitmap(Canvas canvas, int coordX, int coordY, float scale){
+        Rect src = new Rect();
+        Rect dst = new Rect();
+        /*
+        int cx = (coordX - (int)((this.getWidth()-1) * (scale/2)));
+        int cy = (coordY - (int)((this.getHeight()-1) * (scale/2)));
+        */
+        for(int x = 0; x < this.getTileW(); ++x) {
+            for (int y = 0; y < this.getTileH(); ++y) {
+                src.set(0, 0, this.getWidth(x,y) - 1, this.getHeight(x,y) - 1);
+
+                dst.left   = x * (PictureFileManager.DECODE_TILE_SIZE - 1);
+                dst.top    = y * (PictureFileManager.DECODE_TILE_SIZE - 1);
+
+                dst.right  = dst.left + this.getWidth(x, y);
+                dst.bottom = dst.top + this.getHeight(x, y);
+
+                canvas.drawBitmap(this.getBitmap(x, y), src, dst, null);
+            }
+        }
     }
 
     public void initOriginalBitmap(Bitmap bitmap, int x, int y){
@@ -82,23 +128,6 @@ public class Image {
                         this.originalBitmap[x][y].getConfig(),
                         this.originalBitmap[x][y].isMutable()
                 );
-            }
-        }
-    }
-
-    public void draw(Canvas canvas, int coordX, int coordY, float scale){
-        Rect src = new Rect();
-        Rect dst = new Rect();
-        int cx = (coordX - (int)((this.getWidth()-1) * (scale/2)));
-        int cy = (coordY - (int)((this.getHeight()-1) * (scale/2)));
-        for(int y = 0; y < this.getTileH(); ++y) {
-            for (int x = 0; x < this.getTileW(); ++x) {
-                src.set(0, 0, this.getWidth(x,y)-1, this.getHeight(x,y)-1);
-                dst.left   = cx + x*(int)((PictureFileManager.DECODE_TILE_SIZE-1.0)*(scale));
-                dst.top    = cy + y*(int)((PictureFileManager.DECODE_TILE_SIZE-1.0)*(scale));
-                dst.right  = dst.left + (int)((this.getWidth(x,y))*(scale));
-                dst.bottom = dst.top + (int)((this.getHeight(x,y))*(scale));
-                canvas.drawBitmap(this.getBitmap(x, y), src, dst, null);
             }
         }
     }

@@ -68,7 +68,7 @@ public class PictureFileManager {
         dispatchTakePictureIntent();
     }
 
-    public static void SaveBitmap(Bitmap bitmap, String filename) throws IOException {
+    public static void SaveBitmap(Bitmap bitmap, int quality) throws IOException {
 
         File pictureFile = getOutputMediaFile();
         if (pictureFile == null) {
@@ -79,7 +79,7 @@ public class PictureFileManager {
         try {
             MediaScannerConnection.scanFile(Activity, new String[] { pictureFile.getPath() }, new String[] { "image/jpeg" }, null);
             FileOutputStream fos = new FileOutputStream(pictureFile);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 85, fos);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, quality, fos);
             fos.close();
         } catch (FileNotFoundException e) {
             Log.d(TAG, "File not found: " + e.getMessage());
@@ -146,18 +146,25 @@ public class PictureFileManager {
 
                 Rect r = new Rect();
 
-                result.setDim((int)Math.ceil((double)w/(double)DECODE_TILE_SIZE), (int)Math.ceil((double)h/(double)DECODE_TILE_SIZE));
-                result.initDimOriginalBitmap((int)Math.ceil((double)w/(double)DECODE_TILE_SIZE), (int)Math.ceil((double)h/(double)DECODE_TILE_SIZE));
+                double width = Math.ceil((double)w / (double)DECODE_TILE_SIZE);
+                double height = Math.ceil((double)h / (double)DECODE_TILE_SIZE);
 
-                for(int y = 0; y < Math.ceil((double)h/(double)DECODE_TILE_SIZE); ++y){
-                    for(int x = 0; x < Math.ceil((double)w/(double)DECODE_TILE_SIZE); ++x){
-                        xm = x*DECODE_TILE_SIZE;
-                        xM = Math.min( (x+1)*DECODE_TILE_SIZE, w );
-                        ym = y*DECODE_TILE_SIZE;
-                        yM = Math.min( (y+1)*DECODE_TILE_SIZE, h );
+                result.setDim((int)width, (int)height);
+                result.initDimOriginalBitmap((int)width, (int)height);
+
+                for(int y = 0; y < height; ++y){
+                    for(int x = 0; x < width; ++x){
+                        xm = x * (DECODE_TILE_SIZE - 1);
+                        ym = y * (DECODE_TILE_SIZE - 1);
+
+                        xM = Math.min( xm + DECODE_TILE_SIZE, w );
+                        yM = Math.min( ym + DECODE_TILE_SIZE, h );
+
                         //Log.i("DBG", "rect= x("+xm +","+xM+"), y("+ym+","+yM+")");
                         r.set(xm, ym, xM, yM);
+
                         img = decoder.decodeRegion(r, null);
+
                         result.addBitmap(img, x, y);
                         result.initOriginalBitmap(img, x, y);
                     }
