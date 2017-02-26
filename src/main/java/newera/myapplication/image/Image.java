@@ -61,23 +61,26 @@ public class Image {
     }
 
     public void draw(Canvas canvas, int coordX, int coordY, float scale){
-        Rect src = new Rect();
+        //Rect src = new Rect();
         Rect dst = new Rect();
 
         int cx = (coordX - (int)((this.getWidth() - 1) * (scale/2)));
         int cy = (coordY - (int)((this.getHeight() - 1) * (scale/2)));
-        Log.i("", "coordX = " + coordX + "| coordY = " + coordY + "| cx = " + cx + " | cy = " + cy);
+        //Log.i("", "coordX = " + coordX + "| coordY = " + coordY + "| cx = " + cx + " | cy = " + cy);
 
         for(int x = 0; x < this.getTileW(); ++x) {
             for (int y = 0; y < this.getTileH(); ++y) {
-                src.set(0, 0, this.getWidth(x,y) - 1, this.getHeight(x,y) - 1);
+                //src.set(0, 0, this.getWidth(x,y) - 1, this.getHeight(x,y) - 1);
 
-                dst.left   = cx + x*(int)((PictureFileManager.DECODE_TILE_SIZE - 1.0)*(scale));
-                dst.top    = cy + y*(int)((PictureFileManager.DECODE_TILE_SIZE - 1.0)*(scale));
+                dst.left   = cx + x*(int)((PictureFileManager.DECODE_TILE_SIZE )*(scale));
+                dst.top    = cy + y*(int)((PictureFileManager.DECODE_TILE_SIZE )*(scale));
 
                 dst.right  = dst.left + (int)((this.getWidth(x,y))*(scale));
                 dst.bottom = dst.top + (int)((this.getHeight(x,y))*(scale));
-                canvas.drawBitmap(this.getBitmap(x, y), src, dst, null);
+
+                //Log.i("DRAW", "rect= x("+ dst.left+","+dst.right+"), y("+dst.top+","+dst.bottom+"), bitmap : w="+this.getWidth(x,y)+", h="+this.getHeight(x,y));
+
+                canvas.drawBitmap(this.getBitmap(x, y), null, dst, null);
             }
         }
     }
@@ -99,7 +102,7 @@ public class Image {
                 dst.right  = dst.left + this.getWidth(x, y);
                 dst.bottom = dst.top + this.getHeight(x, y);
 
-                canvas.drawBitmap(this.getBitmap(x, y), src, dst, null);
+                canvas.drawBitmap(this.getBitmap(x, y), null, dst, null);
             }
         }
     }

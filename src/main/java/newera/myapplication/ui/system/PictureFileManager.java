@@ -154,17 +154,16 @@ public class PictureFileManager {
 
                 for(int y = 0; y < height; ++y){
                     for(int x = 0; x < width; ++x){
-                        xm = x * (DECODE_TILE_SIZE - 1);
-                        ym = y * (DECODE_TILE_SIZE - 1);
+                        xm = x * (DECODE_TILE_SIZE);
+                        ym = y * (DECODE_TILE_SIZE);
 
                         xM = Math.min( xm + DECODE_TILE_SIZE, w );
                         yM = Math.min( ym + DECODE_TILE_SIZE, h );
 
-                        //Log.i("DBG", "rect= x("+xm +","+xM+"), y("+ym+","+yM+")");
                         r.set(xm, ym, xM, yM);
 
                         img = decoder.decodeRegion(r, null);
-
+                        //Log.i("DBG", "rect= x("+xm +","+xM+"), y("+ym+","+yM+"), bitmap : w="+img.getWidth()+", h="+img.getHeight());
                         result.addBitmap(img, x, y);
                         result.initOriginalBitmap(img, x, y);
                     }
