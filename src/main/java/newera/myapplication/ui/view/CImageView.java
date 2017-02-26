@@ -223,8 +223,10 @@ public class CImageView extends View {
                     }else{
                         float currentDist = touchList.get(0).distanceFromPoint(touchList.get(1));
                         scale = currentDist / initialDist * initialScale;
-                        /*coord.x =  (touchList.get(0).x +  touchList.get(1).x)/2 - image.getWidth()/2; // need a scale factor somewhere here
-                        coord.y = (touchList.get(0).x +  touchList.get(1).x)/2 - image.getHeight()/2;*/
+                        /*
+                        coord.x =  (touchList.get(0).x +  touchList.get(1).x)/2 - image.getWidth()/2; // need a scale factor somewhere here
+                        coord.y = (touchList.get(0).x +  touchList.get(1).x)/2 - image.getHeight()/2;
+                        */
                     }
 
                 } break;
