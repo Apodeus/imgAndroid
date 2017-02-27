@@ -236,7 +236,7 @@ public class PictureFileManager {
         TmpUriFile = Uri.fromFile(TmpPictureFile);
 
     }
-
+/*
     private int getExifOrientation(FileDescriptor fd) {
         ExifInterface exif;
         int orientation = 0;
@@ -265,5 +265,5 @@ public class PictureFileManager {
         }
 
         return rotation;
-    }
+    }*/
 }
