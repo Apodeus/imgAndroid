@@ -25,7 +25,7 @@ Schéma fonctionnel : [Mindomo](https://www.mindomo.com/mindmap/b9565ab1eb794d20
 
 ### Filtres
 - ~~Régler la luminosité~~
-- Régler le contraste
+- ~~Régler le contraste~~
 - ~~Egalisation d'histogramme~~
 - ~~Filtrage de couleur~~
 - ~~Convolution~~
