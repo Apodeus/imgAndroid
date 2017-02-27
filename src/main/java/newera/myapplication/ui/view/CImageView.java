@@ -11,6 +11,7 @@ import newera.myapplication.R;
 import newera.myapplication.image.Image;
 import newera.myapplication.image.processing.EItems;
 import newera.myapplication.image.processing.shaders.ChangeHue;
+import newera.myapplication.image.processing.shaders.Contrast;
 import newera.myapplication.image.processing.shaders.KeepHue;
 import newera.myapplication.image.processing.shaders.Lightness;
 import newera.myapplication.image.processing.shaders.Shader;
@@ -127,6 +128,9 @@ public class CImageView extends View {
                 break;
             case F_KEEP_HUE:
                 shader = new KeepHue(getContext());
+                break;
+            case F_CONTRAST:
+                shader = new Contrast(getContext());
                 break;
         }
 

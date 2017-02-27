@@ -366,6 +366,11 @@ public class CircleMenu extends View {
                     this.addItem(new MenuItem(gaussBlur.getName(), gaussBlur));
                     break;
 
+                case 15 :
+                    Shader contrast = new Contrast(this.activity);
+                    this.addItem(new MenuItem(contrast.getName(), contrast));
+                    break;
+
                 default :
                     this.addItem(new MenuItem("Item n°" + i));
                     break;

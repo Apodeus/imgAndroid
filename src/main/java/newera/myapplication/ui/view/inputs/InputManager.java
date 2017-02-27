@@ -53,6 +53,13 @@ public class InputManager {
                 currentBox = new GenericBox(this, label, lstKeepHue);
                 break;
 
+            case F_CONTRAST:
+                List<InputDataType> lstContrast = new ArrayList<>();
+                InputDataType seekBarContrast = new InputDataType(EInputType.INTEGER_SEEKBAR, "value", "Contrast", new int[] {-128, 128, 0});
+                lstContrast.add(seekBarContrast);
+                currentBox = new GenericBox(this, label, lstContrast);
+                break;
+
             case NONE:
                 break;
         }

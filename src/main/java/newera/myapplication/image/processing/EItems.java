@@ -8,5 +8,6 @@ public enum EItems {
     F_CHANGE_HUE,
     F_LIGHTNESS,
     F_KEEP_HUE,
+    F_CONTRAST,
     S_QUALITY_SAVE
 }
