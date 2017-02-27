@@ -42,6 +42,8 @@ Schéma fonctionnel : [Mindomo](https://www.mindomo.com/mindmap/b9565ab1eb794d20
 - ~~Resteindre le dépassement de l'image à l'écran~~
 - Meilleure orientation de l'image lorsqu'elle est chargée
 - Certaines images ne se chargent pas. (Problème en fonction de l'appareil utilisé ?)
+- Améliorer le Zoom, le zoom doit s'opérer depuis le point entre les deux doigts.
+
 
 ## Membres
 
