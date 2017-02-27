@@ -7,7 +7,9 @@ float factor;
 
 static float3 changeLightness(float3 pixel, float factor){
     float3 hsl = rgbToHsl(pixel.x, pixel.y, pixel.z);
+
     hsl.z = hsl.z * factor;
+
     if(hsl.z >= 1.0f){
         hsl.z = 1.0f;
     }

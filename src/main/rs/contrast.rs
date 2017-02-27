@@ -30,14 +30,3 @@ uchar4 __attribute__((kernel)) Contrast(uchar4 in, uint32_t x, uint32_t y) {
 
   return out;
 }
-
-/*
-factor = (259 * (contrast + 255)) / (255 * (259 - contrast))
-
-colour = GetPixelColour(x, y)
-
-newRed   = Truncate(factor * (Red(colour)   - 128) + 128)
-newGreen = Truncate(factor * (Green(colour) - 128) + 128)
-newBlue  = Truncate(factor * (Blue(colour)  - 128) + 128)
-PutPixelColour(x, y) = RGB(newRed, newGreen, newBlue)
-*/

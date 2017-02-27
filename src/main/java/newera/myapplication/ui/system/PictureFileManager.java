@@ -1,18 +1,15 @@
 package newera.myapplication.ui.system;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapRegionDecoder;
 import android.graphics.Rect;
+import android.media.ExifInterface;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
 
@@ -238,5 +235,35 @@ public class PictureFileManager {
         TmpPictureFile = image;
         TmpUriFile = Uri.fromFile(TmpPictureFile);
 
+    }
+
+    private int getExifOrientation(FileDescriptor fd) {
+        ExifInterface exif;
+        int orientation = 0;
+        try {
+            exif = new ExifInterface(fd);
+            orientation = exif.getAttributeInt( ExifInterface.TAG_ORIENTATION, 1 );
+        } catch ( IOException e ) {
+            e.printStackTrace();
+        }
+        Log.d(TAG, "got orientation " + orientation);
+        return orientation;
+    }
+
+    private int getBitmapRotation(FileDescriptor fd) {
+        int rotation = 0;
+        switch ( getExifOrientation(fd) ) {
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                rotation = 180;
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                rotation = 90;
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                rotation = 270;
+                break;
+        }
+
+        return rotation;
     }
 }
