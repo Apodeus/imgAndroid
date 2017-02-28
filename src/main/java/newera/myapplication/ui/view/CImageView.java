@@ -2,6 +2,7 @@ package newera.myapplication.ui.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -44,6 +45,7 @@ public class CImageView extends View {
     private Rect src;
     private Rect dst;
     private InputManager inputManager;
+    private Paint imagePaint;
 
     public CImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -55,6 +57,10 @@ public class CImageView extends View {
         this.dst = new Rect();
 
         this.inputManager = new InputManager(this);
+
+        this.imagePaint = new Paint();
+        imagePaint.setAntiAlias(false);
+        imagePaint.setFilterBitmap(false);
     }
 
     /**
@@ -83,7 +89,7 @@ public class CImageView extends View {
     public void onDraw(Canvas canvas){
         canvas.drawColor(getResources().getColor(R.color.colorPrimaryDark));
         if (image != null && !image.isEmpty()){
-            image.draw(canvas, contentCoords.x, contentCoords.y, contentScale);
+            image.draw(canvas, imagePaint, contentCoords.x, contentCoords.y, contentScale);
             /*dst.left = contentCoords.x - (int) (image.getWidth() * (contentScale/2));
             dst.top = contentCoords.y - (int) (image.getHeight() * (contentScale/2));
             dst.right = contentCoords.x + (int) (image.getWidth() * (contentScale/2));

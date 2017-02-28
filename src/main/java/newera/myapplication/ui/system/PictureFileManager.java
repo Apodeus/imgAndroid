@@ -171,9 +171,9 @@ public class PictureFileManager {
                 Log.i("", "ERROR: TmpUriFile is empty.");
             }
         } catch(IOException e) {
-            Log.i("WARNING", "Cannot get file from Uri");
+            e.printStackTrace();
+            //Log.i("WARNING", e.getMessage());
         }
-
         return result;
     }
 

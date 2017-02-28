@@ -2,6 +2,7 @@ package newera.myapplication.image;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.Log;
 
@@ -60,7 +61,7 @@ public class Image {
         this.bitmap[x][y] = bitmap.copy(bitmap.getConfig(), bitmap.isMutable());
     }
 
-    public void draw(Canvas canvas, int coordX, int coordY, float scale){
+    public void draw(Canvas canvas, Paint paint, int coordX, int coordY, float scale){
         Rect dst = new Rect();
 
         int cx = (coordX - (int)((this.getWidth() - 1) * (scale/2)));
@@ -79,7 +80,7 @@ public class Image {
 
                 //Log.i("DRAW", "rect= x("+ dst.left+","+dst.right+"), y("+dst.top+","+dst.bottom+"), bitmap : w="+this.getWidth(x,y)+", h="+this.getHeight(x,y));
 
-                canvas.drawBitmap(this.getBitmap(x, y), null, dst, null);
+                canvas.drawBitmap(this.getBitmap(x, y), null, dst, paint);
 
             }
         }
