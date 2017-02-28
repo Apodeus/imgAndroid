@@ -29,7 +29,7 @@ static float Hue_2_RGB(float v1, float v2, float vHue) {
 
 static float3 HslToRgb(float3 hsl) {
 	float3 rgb;
-    if (hsl.x == 0) {
+    if (hsl.y == 0) {
         // gray values
         rgb.r = hsl.z;
         rgb.g = hsl.z;
@@ -51,10 +51,10 @@ static float3 HslToRgb(float3 hsl) {
 static float restreinHue(float h){
     float newHue = h;
     if (newHue <= 0){
-        newHue = 359.0f - fabs(fmod(newHue, 360.0f));
+        newHue = 360.0f - fabs(fmod(newHue, 360.0f));
     }
     if(newHue >= 360.0f){
-        newHue = 1 + fabs(fmod(newHue, 360.0f));
+        newHue = 0 + fabs(fmod(newHue, 360.0f));
     }
     return newHue;
 }

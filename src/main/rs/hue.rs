@@ -7,9 +7,9 @@ float factor;
 static float3 changeHue(float3 pixel, float factor){
     float3 hsl = RgbToHsl(pixel);
     //hue is between [0;2.0[
-    hsl.x = restreinHue(factor * 360.0f);
+    //hsl.x = restreinHue(factor * 360.0f);
 
-    //hsl.x = restreinHue(hsl.x);
+    hsl.x = restreinHue(hsl.x);
 
     float3 new = HslToRgb(hsl);
 
