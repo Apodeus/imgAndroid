@@ -40,16 +40,9 @@ public class ActionSave implements Clickable{
 
     @Override
     public int onClick(InputManager manager, CImageView view) {
-        try {
-            //improve this using a seekbar
-            int quality = 85;
-            PictureFileManager.SaveBitmap(view.getImage().getBitmap(), quality);
-            return 0;
-        }catch(IOException e){
-            Log.i("", "Error: Save");
-            return 1;
-        }
-
+        manager.createBox(EItems.S_QUALITY_SAVE, view.getResources().getString(R.string.systemSavePicture));
+        view.setCurrentAction(EItems.S_QUALITY_SAVE);
+        return 0;
     }
 
 

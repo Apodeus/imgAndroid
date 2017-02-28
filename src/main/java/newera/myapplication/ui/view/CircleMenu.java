@@ -64,6 +64,7 @@ public class CircleMenu extends View {
     private float initialItemAngle;
 
     private boolean movingCircle;
+    private boolean scrollLock;
     private int currentPositionX;
     private int currentPositionY;
     public int menuColor, itemColor;
@@ -89,6 +90,7 @@ public class CircleMenu extends View {
         this.itemAngle = 0;
 
         this.movingCircle = false;
+        this.scrollLock = true;
     }
 
     @Override
@@ -221,7 +223,7 @@ public class CircleMenu extends View {
                     currentPositionY = (int) event.getY();
                 }
 
-                if (!touchIsExt){
+                if (!touchIsExt && !scrollLock){
                     float angle = (float)Math.toDegrees(Math.atan2(cornerX - event.getX(), cornerY - event.getY())) % 360;
                     float initialAngle = (float)Math.toDegrees(Math.atan2(cornerX - initialTx, cornerY - initialTy)) % 360;
                     this.itemAngle = initialItemAngle + (angle - initialAngle);
@@ -259,33 +261,13 @@ public class CircleMenu extends View {
 
                         if (itemList.get(i).contains((int)event.getX(), (int)event.getY())){
                             itemList.get(i).getClickable().onClick(manager, view);
-                             /* Temporary Switch case to test the menu and impletations of functionality
-
-                            switch(i){
-                                case 0:
-                                    PictureFileManager.LoadPictureFromGallery();
-                                    break;
-                                case 1:
-                                    PictureFileManager.CreatePictureFileFromCamera();
-                                    break;
-                                case 2:
-                                    try {
-                                        //improve this using a seekbar
-                                        int quality = 85;
-                                        PictureFileManager.SaveBitmap(activity.civ.getImage().getBitmap(), quality);
-                                    }catch(IOException e){
-                                        Log.i("", "Error: Save");
-                                    }
-                                    break;
+                                /*
                                 case 3:
                                     view.reinitialize();
                                     invalidate();
 
                                     break;
-                                default:
-
-                                    break;
-                            }*/
+                                */
 
 
                             shouldExtand = false;
@@ -310,6 +292,7 @@ public class CircleMenu extends View {
 
     public void addClickable(Clickable clk){
         this.addItem(new MenuItem(clk));
+        if(itemList.size() >= 5) this.scrollLock = false;
     }
 
     public void setPosition(Position p){
@@ -349,11 +332,22 @@ public class CircleMenu extends View {
     }
 
     private void updateItemDisplay(){
-        int margin = (int)(extRadius*(1-ITEM_CIRCLE_RADIUS));
-        itemListAngle = 360f/itemList.size();
-        itemRadius = (int)(((extRadius*2*Math.PI)/itemList.size())/2);
-        itemCircleRadius = extRadius-itemRadius;
-        itemRadius = (int)((((itemCircleRadius*2*Math.PI)/itemList.size())/2)*(1-ITEM_CIRCLE_MARGIN));
+        if (!scrollLock){
+            int margin = (int)(extRadius*(1-ITEM_CIRCLE_RADIUS));
+            itemListAngle = 360f/itemList.size();
+            itemRadius = (int)(((extRadius*2*Math.PI)/itemList.size())/2);
+            itemCircleRadius = extRadius-itemRadius;
+            itemRadius = (int)((((itemCircleRadius*2*Math.PI)/itemList.size())/2)*(1-ITEM_CIRCLE_MARGIN));
+            itemAngle = -itemListAngle/2;
+        } else {
+            int margin = (int)(extRadius*(1-ITEM_CIRCLE_RADIUS));
+            itemListAngle = 90f/itemList.size();
+            itemRadius = (int)(((extRadius*0.5*Math.PI)/itemList.size())/2);
+            itemCircleRadius = extRadius-itemRadius;
+            itemRadius = (int)((((itemCircleRadius*0.5*Math.PI)/itemList.size())/2)*(1-ITEM_CIRCLE_MARGIN));
+            itemAngle = -itemListAngle/2;
+        }
+
     }
 
     private void addItem(MenuItem item){
