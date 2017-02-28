@@ -6,19 +6,22 @@
 float factor;
 
 static float3 changeLightness(float3 pixel, float factor){
-    float3 hsl = rgbToHsl(pixel.x, pixel.y, pixel.z);
+
+    float3 hsl = RgbToHsl(pixel);
 
     hsl.z = hsl.z * factor;
-
+    /*
     if(hsl.z >= 1.0f){
-        hsl.z = 1.0f;
+       hsl.z = 1.0f;
     }
     if(hsl.z < 0){
-        hsl.z = 0;
-    }
+       hsl.z = 0;
+    }*/
 
-    float3 new = hslToRGB(hsl.x, hsl.y, hsl.z);
-    return new;
+    float3 rgb = HslToRgb(hsl);
+
+    return rgb;
+
 }
 
 
@@ -30,8 +33,10 @@ uchar4 __attribute__((kernel)) ChangeLightness(uchar4 in, uint32_t x, uint32_t y
 
   uchar4 out;
   out.a = in.a;
-  out.r = (uchar)(new.x * 255.0f);
-  out.g = (uchar)(new.y * 255.0f);
-  out.b = (uchar)(new.z * 255.0f);
+
+  out.r = (uchar)(new.x);
+  out.g = (uchar)(new.y);
+  out.b = (uchar)(new.z);
+
   return out;
 }

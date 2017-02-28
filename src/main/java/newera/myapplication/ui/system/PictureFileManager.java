@@ -137,6 +137,10 @@ public class PictureFileManager {
 
                 //img = BitmapFactory.decodeFileDescriptor(fileDescriptor);
                 BitmapRegionDecoder decoder = BitmapRegionDecoder.newInstance(fileDescriptor, true);
+
+                int rotation = getBitmapRotation(TmpUriFile.getPath());
+                Log.i("", "alpha = " + rotation);
+
                 int h = decoder.getHeight();
                 int w = decoder.getWidth();
                 int xm, xM, ym, yM;//4160*3120
@@ -236,23 +240,10 @@ public class PictureFileManager {
         TmpUriFile = Uri.fromFile(TmpPictureFile);
 
     }
-/*
-    private int getExifOrientation(FileDescriptor fd) {
-        ExifInterface exif;
-        int orientation = 0;
-        try {
-            exif = new ExifInterface(fd);
-            orientation = exif.getAttributeInt( ExifInterface.TAG_ORIENTATION, 1 );
-        } catch ( IOException e ) {
-            e.printStackTrace();
-        }
-        Log.d(TAG, "got orientation " + orientation);
-        return orientation;
-    }
 
-    private int getBitmapRotation(FileDescriptor fd) {
+    private static int getBitmapRotation(String filename) {
         int rotation = 0;
-        switch ( getExifOrientation(fd) ) {
+        switch ( getExifOrientation(filename) ) {
             case ExifInterface.ORIENTATION_ROTATE_180:
                 rotation = 180;
                 break;
@@ -265,5 +256,20 @@ public class PictureFileManager {
         }
 
         return rotation;
-    }*/
+    }
+
+    private static int getExifOrientation(String filename) {
+        ExifInterface exif;
+        int orientation = 0;
+        try {
+            exif = new ExifInterface(filename);
+            orientation = exif.getAttributeInt( ExifInterface.TAG_ORIENTATION, 1 );
+        } catch ( IOException e ) {
+            e.printStackTrace();
+        }
+        Log.d(TAG, "got orientation " + orientation);
+        return orientation;
+    }
+
+
 }

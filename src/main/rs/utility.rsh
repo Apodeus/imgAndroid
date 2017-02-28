@@ -3,27 +3,58 @@
 
 const static float3 gBlackWhiteMult = {0.299f, 0.587f, 0.114f};
 
-static float hue2rgb(float p, float q, float t){
-    if(t < 0)
-        t += 1.0f;
-    if(t > 1.0f)
-        t -= 1.0f;
-    if(t < 1.0f/6.0f)
-        return p + (q - p) * 6.0f * t;
-    if(t < 1.0f/2.0f)
-        return q;
-    if(t < 2.0f/3.0f)
-        return p + (q - p) * (2.0f/3.0f - t) * 6.0f;
-    return p;
+static float Hue_2_RGB(float v1, float v2, float vHue) {
+    if (vHue < 0) {
+        vHue += 1;
+    }
+
+    if (vHue > 1) {
+        vHue -= 1;
+    }
+
+    if ((6 * vHue) < 1) {
+        return (v1 + (v2 - v1) * 6 * vHue);
+    }
+
+    if ((2 * vHue) < 1) {
+        return v2;
+    }
+
+    if ((3 * vHue) < 2) {
+        return (v1 + (v2 - v1) * ((2.0 / 3) - vHue) * 6);
+    }
+
+    return v1;
+}
+
+static float3 HslToRgb(float3 hsl) {
+	float3 rgb;
+    if (hsl.x == 0) {
+        // gray values
+        rgb.r = hsl.z;
+        rgb.g = hsl.z;
+        rgb.b = hsl.z;
+    } else {
+        float v1, v2;
+        float hue = hsl.x / 360.0f;
+
+        v2 = (hsl.z < 0.5) ? (hsl.z * (1 + hsl.y)) : ((hsl.z + hsl.y) - (hsl.z * hsl.y));
+        v1 = 2 * hsl.z - v2;
+
+        rgb.r = Hue_2_RGB(v1, v2, hue + (1.0f / 3));
+        rgb.g = Hue_2_RGB(v1, v2, hue);
+        rgb.b = Hue_2_RGB(v1, v2, hue - (1.0f / 3));
+    }
+    return rgb;
 }
 
 static float restreinHue(float h){
     float newHue = h;
-    if (newHue < 0){
-        newHue = 1.0f - fabs(fmod(newHue, 1.0f));
+    if (newHue <= 0){
+        newHue = 359.0f - fabs(fmod(newHue, 360.0f));
     }
-    if(newHue > 1.0f){
-        newHue = 0 + fabs(fmod(newHue, 1.0f));
+    if(newHue >= 360.0f){
+        newHue = 1 + fabs(fmod(newHue, 360.0f));
     }
     return newHue;
 }
@@ -37,75 +68,45 @@ static int3 convertGrayScale(int r, int g, int b){
       return new;
 }
 
-static float3 hslToRGB(float h, float s, float l){
-    //float4 pixel;
-    float r, g, b;
-    if(s == 0){
-        r = l;
-        g = l;
-        b = l;
-    }else{
-        float p, q;
-        if(l < 0.5f){
-            q =  l * (1.0f + s) ;
-        } else {
-            q = l + s - l * s;
-        }
-        p = 2.0f * l - q;
+static float3 RgbToHsl(float3 rgb) {
+	float3 hsl;
 
-        r = hue2rgb(p, q, h + 1.0f/3.0f);
-        g = hue2rgb(p, q, h);
-        b = hue2rgb(p, q, h - 1.0f/3.0f);
+    float valMin = fmin(fmin(rgb.r, rgb.g), rgb.b);
+    float valMax = fmax(fmax(rgb.r, rgb.g), rgb.b);
+    float delta = valMax - valMin;
+
+    hsl.z = (valMax + valMin) / 2;
+
+    if (delta == 0) {
+        hsl.x = 0;
+        hsl.y = 0;
+    } else {
+        hsl.y = (hsl.z < 0.5f) ? (delta / (valMax + valMin)) : (delta / (2.0f - valMax - valMin));
+
+        float del_r = (((valMax - rgb.r) / 6) + (delta / 2)) / delta;
+        float del_g = (((valMax - rgb.g) / 6) + (delta / 2)) / delta;
+        float del_b = (((valMax - rgb.b) / 6) + (delta / 2)) / delta;
+        float hue;
+
+        if (rgb.r == valMax) {
+            hue = del_b - del_g;
+        } else if (rgb.g == valMax) {
+            hue = (1.0f / 3) + del_r - del_b;
+        } else {
+            hue = (2.0f / 3) + del_g - del_r;
+        }
+
+        if (hue < 0) {
+            hue += 1;
+        }
+        if (hue > 1) {
+            hue -= 1;
+        }
+
+        hsl.x = hue * 360;
     }
-    float3 rgb = {r, g, b};
-    return rgb;
-}
-
-
-static float3 rgbToHsl(float r, float g, float b){
-    float r_, g_, b_;
-    float valMax, valMin;
-    float h, s, l;
-
-    r_ = (float)(r) / 255.0f;
-    g_ = (float)(g) / 255.0f;
-    b_ = (float)(b) / 255.0f;
-
-    valMax = max(max(r_, g_), b_);
-    valMin = min(min(r_, g_), b_);
-
-    h = (valMax + valMin) / 2.0f;
-    s = (valMax + valMin) / 2.0f;
-    l = (valMax + valMin) / 2.0f;
-
-    if(valMax == valMin){
-        h = 0;
-        s = 0;
-    }else{
-        float delta = valMax - valMin;
-        if(l > 0.5f){
-            s = delta / (2.0f - valMax - valMin);
-        } else {
-            s = delta / (valMax + valMin);
-        }
-
-        if(valMax == r_){
-            if(g_ < b_){
-                h = (g_ - b_) / delta + 6.0f;
-            } else {
-                h = (g_ - b_) / delta;
-            }
-        } else if(valMax == g_){
-            h = (b_ - r_) / delta + 2.0f;
-        } else {
-            h = (r_ - g_) / delta + 4.0f;
-        }
-
-        h = h / 6.0f;
-    }
-
-    float3 hsl = {h, s, l};
 
     return hsl;
 }
+
 

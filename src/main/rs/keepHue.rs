@@ -8,10 +8,11 @@ float newHue; // between [0;2.0[
 float epsilon;
 
 static int3 keepHue(float3 pixel, float hue){
-    float3 hsl = rgbToHsl(pixel.x, pixel.y, pixel.z);
-    float3 new = hslToRGB(hsl.x, hsl.y, hsl.z);
+    float3 hsl = RgbToHsl(pixel);
+    float3 new = HslToRgb(hsl);
 
-    //newHue = restreinHue(newHue);
+
+    newHue = restreinHue(newHue * 360.0f) / 360.0f;
 
     float borneInf = newHue - epsilon;
     float borneSup = newHue + epsilon;
@@ -30,15 +31,15 @@ static int3 keepHue(float3 pixel, float hue){
 
     //case 1
     if(borneInf > borneSup){
-        if((hsl.x > borneSup && hsl.x < borneInf)){
+        if((hsl.x / 360 > borneSup && hsl.x / 360 < borneInf)){
             int r, g, b;
-            r = (int)(new.x * 255.0f);
-            g = (int)(new.y * 255.0f);
-            b = (int)(new.z * 255.0f);
+            r = (int)(new.x);
+            g = (int)(new.y);
+            b = (int)(new.z);
             int3 pixelGS = convertGrayScale(r, g, b);
             return pixelGS;
         } else {
-            int3 newPixel = {(int)(new.x * 255.0f), (int)(new.y * 255.0f), (int)(new.z * 255.0f)};
+            int3 newPixel = {(int)(new.x), (int)(new.y), (int)(new.z)};
             //new.x = new.x * 255.0f;
             //new.y = new.y * 255.0f;
             //new.z = new.z * 255.0f;
@@ -48,16 +49,16 @@ static int3 keepHue(float3 pixel, float hue){
 
         //case 2
         //if the pixel's hue is not in the range [newHue-epsilon; newHue+epsilon], we convert it as gray
-        if(!( hsl.x >= borneInf && hsl.x <= borneSup) ){
+        if(!( hsl.x / 360 >= borneInf && hsl.x / 360 <= borneSup) ){
             int r, g, b;
-            r = (int)(new.x * 255.0f);
-            g = (int)(new.y * 255.0f);
-            b = (int)(new.z * 255.0f);
+            r = (int)(new.x);
+            g = (int)(new.y);
+            b = (int)(new.z);
             int3 pixelGS = convertGrayScale(r, g, b);
             return pixelGS;
         }
 
-        int3 newPixel = {(int)(new.x * 255.0f), (int)(new.y * 255.0f), (int)(new.z * 255.0f)};
+        int3 newPixel = {(int)(new.x), (int)(new.y), (int)(new.z)};
         //new.x = new.x * 255.0f;
         //new.y = new.y * 255.0f;
         //new.z = new.z * 255.0f;
