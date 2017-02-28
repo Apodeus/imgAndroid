@@ -18,6 +18,7 @@ import newera.myapplication.MainActivity;
 import newera.myapplication.R;
 import newera.myapplication.image.processing.EItems;
 import newera.myapplication.image.processing.shaders.*;
+import newera.myapplication.ui.Clickable;
 import newera.myapplication.ui.system.PictureFileManager;
 import newera.myapplication.ui.view.inputs.InputManager;
 
@@ -53,6 +54,7 @@ public class CircleMenu extends View {
     private int radius, initialRadius, extRadius;
     private boolean shouldExtand, isExtanded, touchIsExt, transisionLock, touchLock;
     private Position position;
+    private boolean positionLock;
 
     private List<MenuItem> itemList;
     private int itemRadius, itemCircleRadius;
@@ -64,6 +66,7 @@ public class CircleMenu extends View {
     private boolean movingCircle;
     private int currentPositionX;
     private int currentPositionY;
+    public int menuColor, itemColor;
 
     private CImageView view;
     private InputManager manager;
@@ -73,7 +76,10 @@ public class CircleMenu extends View {
         this.isExtanded = false;
         this.shouldExtand = false;
         this.transisionLock = false;
+        this.positionLock = true;
         this.position = Position.BOT_RIGHT;
+        this.menuColor = getResources().getColor(R.color.colorAccent);
+        this.itemColor = getResources().getColor(R.color.colorPrimaryDark);
         this.paint = new Paint();
         paint.setAntiAlias(true);
         paint.setTextSize(TEXT_SIZE);
@@ -92,7 +98,7 @@ public class CircleMenu extends View {
 
         transition();
 
-        paint.setColor(getResources().getColor(R.color.colorAccent));
+        paint.setColor(menuColor);
         if (!movingCircle) {
             canvas.drawARGB((isExtanded?DIM_FACTOR:0), 0, 0, 0);
             drawCircle(canvas, cornerX, cornerY, radius);
@@ -102,7 +108,7 @@ public class CircleMenu extends View {
                     angle = (Math.toRadians(i * itemListAngle) - Math.toRadians(itemAngle)) % (2 * Math.PI);
 
                     // ===== draw circle item ====
-                    paint.setColor(getResources().getColor(R.color.colorPrimaryDark));
+                    paint.setColor(itemColor);
                     x = (int)(cornerX + (itemCircleRadius) * Math.cos(angle));
                     y = (int)(cornerY + (itemCircleRadius) * Math.sin(angle));
                     itemList.get(i).setRect(drawCircle(canvas, x, y, itemRadius));
@@ -129,26 +135,14 @@ public class CircleMenu extends View {
                         border.setTextAlign(Paint.Align.RIGHT);
                         paint.setTextAlign(Paint.Align.RIGHT);
                     }
-
-                    //canvas.drawText(text, x, y, paint);
-
-                /*if((angle >= 0 && angle < Math.PI / 2) || (angle <= 0 && angle > -1*(Math.PI / 2))
-                        || (angle < -1*(3*Math.PI /2) && angle >= -2 * Math.PI)|| (angle > 3*Math.PI/2 && angle <= 2*Math.PI)){
-                    border.setTextAlign(Paint.Align.LEFT);
-                    paint.setTextAlign(Paint.Align.LEFT);
-                    canvas.rotate((float) Math.toDegrees(angle), x2, y2);
-                } else {
-
-                    canvas.rotate((float) Math.toDegrees(angle) + 180, x2, y2);
-                }*/
                     canvas.drawText(text, x2, y2, border);
                     canvas.drawText(text, x2, y2, paint);
 
                     canvas.restore();
                 }
             }
-        }else{
-            paint.setColor(getResources().getColor(R.color.colorAccent));
+        }else if (!positionLock){
+            paint.setColor(menuColor);
             paint.setAlpha(DIM_FACTOR);
             boolean right = currentPositionX > getWidth() / 2;
             boolean down = currentPositionY > getHeight() / 2;
@@ -157,7 +151,7 @@ public class CircleMenu extends View {
             if (right && !down) drawCircle(canvas, width, 0, initialRadius);
             if (right && down) drawCircle(canvas, width, height, initialRadius);
 
-            paint.setColor(getResources().getColor(R.color.colorAccent));
+            paint.setColor(menuColor);
             drawCircle(canvas, currentPositionX, currentPositionY, initialRadius);
         }
     }
@@ -219,7 +213,7 @@ public class CircleMenu extends View {
                     }
                 }
 
-                if (!isExtanded && Math.abs(distFromCorner-distFromCornerInit) > ((extRadius)*TOUCH_MARGIN)*TOUCH_MARGIN) { //Margin over the normal radius*margin
+                if (!positionLock && !isExtanded && Math.abs(distFromCorner-distFromCornerInit) > ((extRadius)*TOUCH_MARGIN)*TOUCH_MARGIN) { //Margin over the normal radius*margin
                     movingCircle = true;
                 }
                 if (movingCircle){
@@ -262,10 +256,11 @@ public class CircleMenu extends View {
                 */
                 if (!movingCircle && !touchIsExt && dist(initialTx, initialTy, (int)event.getX(), (int)event.getY()) < CLICK_DEAD_ZONE){
                     for (int i = 0; i < itemList.size(); ++i){
+
                         if (itemList.get(i).contains((int)event.getX(), (int)event.getY())){
-                            /*
-                             * Temporary Switch case to test the menu and impletations of functionality
-                             */
+                            itemList.get(i).getClickable().onClick(manager, view);
+                             /* Temporary Switch case to test the menu and impletations of functionality
+
                             switch(i){
                                 case 0:
                                     PictureFileManager.LoadPictureFromGallery();
@@ -288,13 +283,11 @@ public class CircleMenu extends View {
 
                                     break;
                                 default:
-                                    if (itemList.get(i).isShader()) {
-                                        itemList.get(i).getShader() .onClick(manager, view);
-                                    }
+
                                     break;
-                            }
-                            /*
-                             */
+                            }*/
+
+
                             shouldExtand = false;
                         }
                     }
@@ -305,83 +298,6 @@ public class CircleMenu extends View {
         return true;
     }
 
-    /*
-           Following code only for testing purpose
-    */
-    public void initialize()
-    {
-        for(int i = 0; i <20; ++i){
-            switch(i) {
-                case 4 :
-                    Shader s = new GrayScale(this.activity);
-                    this.addItem(new MenuItem(s.getName(), s));
-                    break;
-                case 5 :
-                    Shader invert = new InvertColor(this.activity);
-                    this.addItem(new MenuItem(invert.getName(), invert));
-                    break;
-
-                case 6 :
-                    Shader lightness = new Lightness(this.activity);
-                    this.addItem(new MenuItem(lightness.getName(), lightness));
-                    break;
-
-                case 7 :
-                    Shader changeHue = new ChangeHue(this.activity);
-                    this.addItem(new MenuItem(changeHue.getName(), changeHue));
-                    break;
-
-                case 8 :
-                    Shader histo = new HistogramEqualize(this.activity);
-                    this.addItem(new MenuItem(histo.getName(), histo));
-                    break;
-
-                case 9 :
-                    Shader keepHue = new KeepHue(this.activity);
-                    this.addItem(new MenuItem(keepHue.getName(), keepHue));
-                    break;
-
-                case 10 :
-                    Shader sepia = new Sepia(this.activity);
-                    this.addItem(new MenuItem(sepia.getName(), sepia));
-                    break;
-
-                case 11 :
-                    Shader basicEdge = new Convolution(this.activity, Convolution.ConvType.EDGE);
-                    this.addItem(new MenuItem(basicEdge.getName(), basicEdge));
-                    break;
-
-                case 12 :
-                    Shader laplacien = new Convolution(this.activity, Convolution.ConvType.LAPL);
-                    this.addItem(new MenuItem(laplacien.getName(), laplacien));
-                    break;
-
-                case 13 :
-                    Shader sobel = new Convolution(this.activity, Convolution.ConvType.SOBEL);
-                    this.addItem(new MenuItem(sobel.getName(), sobel));
-                    break;
-
-                case 14 :
-                    Shader gaussBlur = new Convolution(this.activity, Convolution.ConvType.GAUSS);
-                    this.addItem(new MenuItem(gaussBlur.getName(), gaussBlur));
-                    break;
-
-                case 15 :
-                    Shader contrast = new Contrast(this.activity);
-                    this.addItem(new MenuItem(contrast.getName(), contrast));
-                    break;
-
-                default :
-                    this.addItem(new MenuItem("Item n°" + i));
-                    break;
-            }
-        }
-        itemList.get(0).string = "Gallery";
-        itemList.get(1).string = "Camera";
-        itemList.get(2).string = "Save";
-        itemList.get(3).string = "Reinitialize";
-    }
-
     public void setView(CImageView view)
     {
         this.view = view;
@@ -390,6 +306,14 @@ public class CircleMenu extends View {
     public void setActivity(MainActivity activity)
     {
         this.activity = activity;
+    }
+
+    public void addClickable(Clickable clk){
+        this.addItem(new MenuItem(clk));
+    }
+
+    public void setPosition(Position p){
+        this.position = p;
     }
 
     private void setCircleMenuMeasures() {
@@ -454,19 +378,24 @@ public class CircleMenu extends View {
     private class MenuItem{
         private RectF rect;
         private String string;
-        private Shader shader;
+        private Clickable clk;
 
         public MenuItem(String string){
             this.string = string;
             this.rect = new RectF();
-            this.shader = null;
+            this.clk = null;
         }
 
-        public MenuItem(String string, Shader shader)
-        {
+        public MenuItem(String string, Clickable clk) {
             this.string = string;
             this.rect = new RectF();
-            this.shader = shader;
+            this.clk = clk;
+        }
+
+        public MenuItem(Clickable clk) {
+            this.string = clk.getName();
+            this.rect = new RectF();
+            this.clk = clk;
         }
 
         public void setRect(float left, float top, float right, float bottom){
@@ -492,14 +421,12 @@ public class CircleMenu extends View {
             return rect.contains(x, y);
         }
 
-        public boolean isShader()
-        {
-            return shader != null;
+        public boolean isShader() {
+            return clk != null;
         }
 
-        public Shader getShader()
-        {
-            return this.shader;
+        public Clickable getClickable() {
+            return this.clk;
         }
     }
 }

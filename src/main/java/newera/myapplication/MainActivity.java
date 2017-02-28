@@ -4,7 +4,21 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import newera.myapplication.image.processing.shaders.ChangeHue;
+import newera.myapplication.image.processing.shaders.Contrast;
+import newera.myapplication.image.processing.shaders.Convolution;
+import newera.myapplication.image.processing.shaders.GrayScale;
+import newera.myapplication.image.processing.shaders.HistogramEqualize;
+import newera.myapplication.image.processing.shaders.InvertColor;
+import newera.myapplication.image.processing.shaders.KeepHue;
+import newera.myapplication.image.processing.shaders.Lightness;
+import newera.myapplication.image.processing.shaders.Sepia;
+import newera.myapplication.image.processing.shaders.Shader;
 import newera.myapplication.ui.system.SystemActionHandler;
+import newera.myapplication.ui.view.ActionCamera;
+import newera.myapplication.ui.view.ActionGallery;
+import newera.myapplication.ui.view.ActionSave;
 import newera.myapplication.ui.view.CImageView;
 import newera.myapplication.ui.view.CircleMenu;
 
@@ -26,11 +40,19 @@ public class MainActivity extends AppCompatActivity {
         //PictureFileManager.LoadPictureFromGallery();
         civ = (CImageView) findViewById(R.id.cImageView);
 
-        CircleMenu menu = (CircleMenu) findViewById(R.id.circleMenu);
+        CircleMenu sysmenu = (CircleMenu) findViewById(R.id.sysMenu);
+        sysmenu.setView((CImageView) findViewById(R.id.cImageView));
+        sysmenu.setActivity(this);
+        sysmenu.setManager(civ.getManager());
+        sysmenu.setPosition(CircleMenu.Position.TOP_LEFT);
+        initializeSysMenu(sysmenu);
+
+        CircleMenu menu = (CircleMenu) findViewById(R.id.filterMenu);
         menu.setView((CImageView) findViewById(R.id.cImageView));
         menu.setActivity(this);
         menu.setManager(civ.getManager());
-        menu.initialize();
+        menu.setPosition(CircleMenu.Position.BOT_RIGHT);
+        initializeFilterMenu(menu);
     }
 
     @Override
@@ -43,5 +65,36 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
         SystemActionHandler.handleRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    public void initializeSysMenu(CircleMenu menu){
+        menu.menuColor = getResources().getColor(R.color.colorPrimaryDark);
+        menu.menuColor = getResources().getColor(R.color.colorPrimary);
+        menu.addClickable(new ActionCamera());
+        menu.addClickable(new ActionGallery());
+        menu.addClickable(new ActionSave());
+        menu.addClickable(new ActionSave());
+    }
+    public void initializeFilterMenu(CircleMenu menu)
+    {
+        menu.addClickable(new GrayScale(this));
+        menu.addClickable(new Contrast(this));
+        menu.addClickable(new InvertColor(this));
+        menu.addClickable(new Lightness(this));
+        menu.addClickable(new ChangeHue(this));
+        menu.addClickable(new HistogramEqualize(this));
+        menu.addClickable(new KeepHue(this));
+        menu.addClickable(new Sepia(this));
+        menu.addClickable(new Convolution(this, Convolution.ConvType.GAUSS));
+        menu.addClickable(new Convolution(this, Convolution.ConvType.EDGE));
+        menu.addClickable(new Convolution(this, Convolution.ConvType.LAPL));
+        menu.addClickable(new Convolution(this, Convolution.ConvType.SOBEL));
+
+
+        /*
+        itemList.get(0).string = "Gallery";
+        itemList.get(1).string = "Camera";
+        itemList.get(2).string = "Save";
+        itemList.get(3).string = "Reinitialize";*/
     }
 }
