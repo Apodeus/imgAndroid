@@ -16,9 +16,11 @@ import newera.myapplication.image.processing.shaders.Contrast;
 import newera.myapplication.image.processing.shaders.KeepHue;
 import newera.myapplication.image.processing.shaders.Lightness;
 import newera.myapplication.image.processing.shaders.Shader;
+import newera.myapplication.ui.system.PictureFileManager;
 import newera.myapplication.ui.view.inputs.EInputType;
 import newera.myapplication.ui.view.inputs.InputManager;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -36,9 +38,11 @@ public class CImageView extends View {
         return inputManager;
     }
 
-    private enum TouchMethod {DRAG, ZOOM, TOOL}
 
+
+    private enum TouchMethod {DRAG, ZOOM, TOOL;}
     private Image image;
+
     private Point contentCoords;
     private float contentScale;
     private TouchHandler touchHandler;
@@ -46,7 +50,6 @@ public class CImageView extends View {
     private Rect dst;
     private InputManager inputManager;
     private Paint imagePaint;
-
     public CImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
         image = null;
@@ -148,6 +151,19 @@ public class CImageView extends View {
     public void onCancelFilter()
     {
 
+    }
+
+    public void onApplySystem(Map<String, Object> params)
+    {
+        switch (currentInputItem){
+            case S_QUALITY_SAVE:
+                try {
+                    PictureFileManager.SaveBitmap(image.getBitmap(), (int) params.get("value"));
+                } catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+        }
     }
     //TODO
     public void onPreviewFilter(int value) {

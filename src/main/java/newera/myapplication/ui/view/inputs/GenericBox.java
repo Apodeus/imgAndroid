@@ -187,7 +187,7 @@ public class GenericBox {
             if (!isEdit && event.getY() > currentBoxBackground.bottom - ICON_SIZE && event.getY() < currentBoxBackground.bottom)
                 if (event.getX() > currentBoxBackground.left && event.getX() < currentBoxBackground.left + ICON_SIZE)
                 {
-                    manager.onCancelFilter();
+                    manager.onCancel();
                 }
                 else if (!isEdit && event.getX() < currentBoxBackground.right && event.getX() > currentBoxBackground.right - ICON_SIZE)
                 {
@@ -199,7 +199,7 @@ public class GenericBox {
                         params.put(label, value);
                     }
 
-                    manager.onApplyFilter(params);
+                    manager.onConfirm(params);
                 } else if (!isEdit){
                     isExtended = !isExtended;
 

@@ -21,6 +21,7 @@ public class InputManager {
 
     private Map<String, Object> currentParams;
     private Map<String, Object> currentPreviewParams;
+    private ECategory currentCategory;
 
     public InputManager(CImageView view)
     {
@@ -29,36 +30,43 @@ public class InputManager {
 
     public void createBox(EItems type, String label)
     {
+        List<InputDataType> l = new ArrayList<>();
         switch (type) {
             case F_CHANGE_HUE:
-                List<InputDataType> l = new ArrayList<>();
+                currentCategory = ECategory.FILTER;
                 InputDataType n = new InputDataType(EInputType.COLOR_PICKER, "value", "Hue", new int[] {0, 360, 0});
                 l.add(n);
                 currentBox = new GenericBox(this, label, l);
                 break;
 
             case F_LIGHTNESS:
-                List<InputDataType> lstLightness = new ArrayList<>();
+                currentCategory = ECategory.FILTER;
                 InputDataType seekBar = new InputDataType(EInputType.INTEGER_SEEKBAR, "value", "Lightness", new int[] {0, 200, 100});
-                lstLightness.add(seekBar);
-                currentBox = new GenericBox(this, label, lstLightness);
+                l.add(seekBar);
+                currentBox = new GenericBox(this, label, l);
                 break;
 
             case F_KEEP_HUE:
-                List<InputDataType> lstKeepHue = new ArrayList<>();
+                currentCategory = ECategory.FILTER;
                 InputDataType seekBarHue = new InputDataType(EInputType.COLOR_PICKER, "valueHue", "Hue", new int[] {0, 360, 0});
                 InputDataType seekBarTolerance = new InputDataType(EInputType.INTEGER_SEEKBAR, "valueTolerance", "Tolerance", new int[] {0, 180, 0});
-                lstKeepHue.add(seekBarHue);
-                lstKeepHue.add(seekBarTolerance);
-                currentBox = new GenericBox(this, label, lstKeepHue);
+                l.add(seekBarHue);
+                l.add(seekBarTolerance);
+                currentBox = new GenericBox(this, label, l);
                 break;
 
             case F_CONTRAST:
-                List<InputDataType> lstContrast = new ArrayList<>();
+                currentCategory = ECategory.FILTER;
                 InputDataType seekBarContrast = new InputDataType(EInputType.INTEGER_SEEKBAR, "value", "Contrast", new int[] {-128, 128, 0});
-                lstContrast.add(seekBarContrast);
-                currentBox = new GenericBox(this, label, lstContrast);
+                l.add(seekBarContrast);
+                currentBox = new GenericBox(this, label, l);
                 break;
+
+            case S_QUALITY_SAVE:
+                currentCategory = ECategory.SYSTEM;
+                InputDataType seekBarQuality = new InputDataType(EInputType.INTEGER_SEEKBAR, "value", "Quality", new int[] {50, 100, 75});
+                l.add(seekBarQuality);
+                currentBox = new GenericBox(this, label, l);
 
             case NONE:
                 break;
@@ -80,19 +88,32 @@ public class InputManager {
             currentBox.drawBox(canvas);
     }
 
-    public void onApplyFilter(Map<String, Object> params)
+    public void onConfirm(Map<String, Object> params)
     {
         this.currentParams = params;
-        view.onApplyFilter(params);
+        String message = "";
+        switch (currentCategory) {
+            case FILTER:
+                view.onApplyFilter(params);
+                message = "Filter applied";
+                break;
+            case TOOL:
+                // :thinking:
+                break;
+            case SYSTEM:
+                view.onApplySystem(params);
+
+                break;
+        }
+
         currentBox = null;
         Snackbar snackbar = Snackbar
-                .make(view, "Filter applied", Snackbar.LENGTH_SHORT);
+                .make(view, message, Snackbar.LENGTH_SHORT);
 
         snackbar.show();
-
     }
 
-    public void onCancelFilter()
+    public void onCancel()
     {
         view.onCancelFilter();
         currentBox = null;
@@ -119,4 +140,10 @@ public class InputManager {
     public Object getPreviewParams() {
         return currentPreviewParams;
     }
+}
+
+enum ECategory{
+    FILTER,
+    TOOL,
+    SYSTEM,
 }

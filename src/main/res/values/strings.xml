@@ -15,4 +15,5 @@
     <string name="apply">Apply</string>
     <string name="cancel">Cancel</string>
     <string name="shaderConvolutionName">Convolution</string>
+    <string name="systemSavePicture">Save save picture</string>
 </resources>
