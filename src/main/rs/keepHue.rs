@@ -10,6 +10,7 @@ float epsilon;
 static int3 keepHue(float3 pixel, float hue){
     float3 hsl = RgbToHsl(pixel);
     float3 new = HslToRgb(hsl);
+    hsl.x = restreinHue(hsl.x) / 359.0f;
 
 
     newHue = restreinHue(newHue * 360.0f) / 360.0f;
@@ -31,7 +32,7 @@ static int3 keepHue(float3 pixel, float hue){
 
     //case 1
     if(borneInf > borneSup){
-        if((hsl.x / 360 > borneSup && hsl.x / 360 < borneInf)){
+        if((hsl.x > borneSup && hsl.x < borneInf)){
             int r, g, b;
             r = (int)(new.x);
             g = (int)(new.y);
@@ -49,7 +50,7 @@ static int3 keepHue(float3 pixel, float hue){
 
         //case 2
         //if the pixel's hue is not in the range [newHue-epsilon; newHue+epsilon], we convert it as gray
-        if(!( hsl.x / 360 >= borneInf && hsl.x / 360 <= borneSup) ){
+        if(!( hsl.x >= borneInf && hsl.x <= borneSup) ){
             int r, g, b;
             r = (int)(new.x);
             g = (int)(new.y);

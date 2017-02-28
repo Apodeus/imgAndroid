@@ -126,8 +126,8 @@ public class Image {
     }
 
     public void reinitializeBitmap(){
-        for(int x = 0; x < w; x++){
-            for(int y = 0; y < h; y++){
+        for(int x = 0; x < w; x++) {
+            for (int y = 0; y < h; y++) {
                 this.bitmap[x][y] = this.originalBitmap[x][y].copy(
                         this.originalBitmap[x][y].getConfig(),
                         this.originalBitmap[x][y].isMutable()
