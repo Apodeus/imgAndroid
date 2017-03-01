@@ -13,6 +13,7 @@
     <string name="galleryName">Gallery</string>
     <string name="cameraName">Camera</string>
     <string name="resetName">Reset</string>
+    <string name="saveName">Save</string>
     <string name="apply">Apply</string>
     <string name="cancel">Cancel</string>
     <string name="shaderConvolutionName">Convolution</string>

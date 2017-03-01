@@ -23,7 +23,7 @@ import newera.myapplication.ui.view.inputs.InputManager;
 public class ActionSave implements Clickable{
 
     private String name = "Save";
-    private int nameId = R.string.galleryName;
+    private int nameId = R.string.saveName;
     private Bitmap icon = null;
 
     @Override
