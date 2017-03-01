@@ -2,6 +2,8 @@ package newera.myapplication.ui.view.inputs;
 
 import android.graphics.*;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.MotionEvent;
 import newera.myapplication.R;
 import newera.myapplication.ui.view.inputs.components.*;
@@ -229,5 +231,4 @@ public class GenericBox {
     {
         return this.manager;
     }
-
 }
