@@ -2,6 +2,8 @@ package newera.myapplication.ui.view.inputs;
 
 import android.graphics.*;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.MotionEvent;
 import newera.myapplication.R;
 import newera.myapplication.ui.view.inputs.components.*;
@@ -164,7 +166,7 @@ public class GenericBox {
     public boolean handleTouch(MotionEvent event)
     {
         if (event.getY() > currentBoxBackground.top && event.getY() < collapsedBoxBackground.top && event.getAction() == MotionEvent.ACTION_DOWN)
-            if (event.getX() > currentBoxBackground.left && event.getX() < currentBoxBackground.right) {
+            if (event.getX() > currentBoxBackground.left) {
             isEdit = true;
                 for (IGenericBoxComponent c : components)
                     c.enableEdit(event);
@@ -229,5 +231,4 @@ public class GenericBox {
     {
         return this.manager;
     }
-
 }

@@ -1,6 +1,10 @@
 package newera.myapplication.image.processing.shaders;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
 
@@ -14,7 +18,7 @@ import newera.myapplication.image.Image;
  */
 
 public class HistogramEqualize extends Shader {
-    private Bitmap icone = null;
+    private Bitmap icon = null;
 
     @Override
     public void ApplyFilter(Image image) {
@@ -61,6 +65,16 @@ public class HistogramEqualize extends Shader {
         refreshImage();
     }
 
+    @Override
+    public void initIcon(Context context, int iconSize) {
+        Drawable d = context.getResources().getDrawable(R.drawable.ic_histogram_straighten_black_24dp);
+        d.setColorFilter(context.getResources().getColor(R.color.colorLight), PorterDuff.Mode.SRC_ATOP);
+        d.setBounds(0, 0, iconSize, iconSize);
+        icon = Bitmap.createBitmap(iconSize, iconSize, Bitmap.Config.ARGB_8888);
+        Canvas c = new Canvas(icon);
+        d.draw(c);
+    }
+
     public HistogramEqualize(MainActivity activity) {
         super(activity);
     }
@@ -75,8 +89,8 @@ public class HistogramEqualize extends Shader {
     }
 
     @Override
-    public Bitmap getIcone() {
-        return icone;
+    public Bitmap getIcon() {
+        return icon;
     }
 
 

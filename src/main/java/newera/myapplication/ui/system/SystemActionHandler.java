@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.view.View;
 import android.view.ViewGroup;
 import newera.myapplication.MainActivity;
 import newera.myapplication.R;
@@ -32,6 +33,14 @@ public class SystemActionHandler {
         PictureFileManager.setActivity(activity);
     }
 
+    public static void removeStartupView()
+    {
+        StartupView sv = (StartupView) Activity.findViewById(R.id.startupView);
+        if (sv != null)
+            sv.setVisibility(View.GONE);
+            //((ViewGroup) sv.getParent()).removeView(sv);
+    }
+
     /**
      * Called by MainActivity as it.
      */
@@ -40,9 +49,7 @@ public class SystemActionHandler {
         if ((requestCode == REQUEST_IMAGE_CAPTURE || requestCode == REQUEST_IMAGE_GALLERY)&& resultCode == RESULT_OK)
         {
             PictureFileManager.HandleResult(data);
-            StartupView sv = (StartupView) Activity.findViewById(R.id.startupView);
-            if (sv != null)
-                ((ViewGroup) sv.getParent()).removeView(sv);
+            removeStartupView();
         }
     }
 

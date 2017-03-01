@@ -3,10 +3,14 @@ package newera.myapplication.ui.view;
 import android.content.Context;
 import android.graphics.*;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import newera.myapplication.R;
+import newera.myapplication.image.Image;
 import newera.myapplication.ui.system.PictureFileManager;
 
 /**
@@ -26,7 +30,7 @@ public class StartupView extends View {
     private Canvas galleryIconCanvas;
     private Canvas cameraIconCanvas;
     private int canvasHeight = 0;
-    private boolean isActive = true;
+    private static boolean isActive = true;
 
     public StartupView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -50,9 +54,9 @@ public class StartupView extends View {
     /**
      * Hide the view and controls.
      */
-    public void mask()
+    public static void Mask()
     {
-        this.isActive = false;
+        isActive = false;
     }
 
     @Override
@@ -96,5 +100,25 @@ public class StartupView extends View {
                 PictureFileManager.CreatePictureFileFromCamera();
 
         return true;
+    }
+
+    @Override
+    public Parcelable onSaveInstanceState()
+    {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("superState", super.onSaveInstanceState());
+        return bundle;
+    }
+
+    @Override
+    public void onRestoreInstanceState(Parcelable state)
+    {
+        if (state instanceof Bundle) // implicit null check
+        {
+            Bundle bundle = (Bundle) state;
+            state = bundle.getParcelable("superState");
+        }
+
+        super.onRestoreInstanceState(state);
     }
 }

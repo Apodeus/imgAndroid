@@ -1,6 +1,10 @@
 package newera.myapplication.ui.view;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 import java.io.IOException;
@@ -20,7 +24,7 @@ public class ActionSave implements Clickable{
 
     private String name = "Save";
     private int nameId = R.string.galleryName;
-    private Bitmap icone = null;
+    private Bitmap icon = null;
 
     @Override
     public String getName() {
@@ -33,10 +37,19 @@ public class ActionSave implements Clickable{
     }
 
     @Override
-    public Bitmap getIcone() {
-        return icone;
+    public Bitmap getIcon() {
+        return icon;
     }
 
+    @Override
+    public void initIcon(Context context, int iconSize) {
+        Drawable d = context.getResources().getDrawable(R.drawable.ic_sd_storage_black_24dp);
+        d.setColorFilter(context.getResources().getColor(R.color.colorLight), PorterDuff.Mode.SRC_ATOP);
+        d.setBounds(0, 0, iconSize, iconSize);
+        icon = Bitmap.createBitmap(iconSize, iconSize, Bitmap.Config.ARGB_8888);
+        Canvas c = new Canvas(icon);
+        d.draw(c);
+    }
 
     @Override
     public int onClick(InputManager manager, CImageView view) {

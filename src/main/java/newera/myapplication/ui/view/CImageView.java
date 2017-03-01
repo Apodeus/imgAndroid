@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,7 +19,7 @@ import newera.myapplication.image.processing.shaders.KeepHue;
 import newera.myapplication.image.processing.shaders.Lightness;
 import newera.myapplication.image.processing.shaders.Shader;
 import newera.myapplication.ui.system.PictureFileManager;
-import newera.myapplication.ui.view.inputs.EInputType;
+import newera.myapplication.ui.system.SystemActionHandler;
 import newera.myapplication.ui.view.inputs.InputManager;
 
 import java.io.IOException;
@@ -50,6 +52,7 @@ public class CImageView extends View {
     private Rect dst;
     private InputManager inputManager;
     private Paint imagePaint;
+    private boolean startupViewMasked = false;
     public CImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
         image = null;
@@ -90,6 +93,8 @@ public class CImageView extends View {
 
     @Override
     public void onDraw(Canvas canvas){
+
+
         canvas.drawColor(getResources().getColor(R.color.colorPrimaryDark));
         if (image != null && !image.isEmpty()){
             image.draw(canvas, imagePaint, contentCoords.x, contentCoords.y, contentScale);
@@ -195,6 +200,48 @@ public class CImageView extends View {
     public void setCurrentAction(EItems item) {
         this.currentInputItem = item;
 
+
+
+    }
+
+    @Override
+    public Parcelable onSaveInstanceState()
+    {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("superState", super.onSaveInstanceState());
+        if (image != null)
+        {
+            bundle.putBoolean("loadedImage", true);
+            image.saveInBundle(bundle);
+            bundle.putInt("contentCoords.x", contentCoords.x);
+            bundle.putInt("contentCoords.y", contentCoords.y);
+            bundle.putFloat("contentScale", contentScale);
+        }
+
+        return bundle;
+    }
+
+    @Override
+    public void onRestoreInstanceState(Parcelable state)
+    {
+        if (state instanceof Bundle) // implicit null check
+        {
+            Bundle bundle = (Bundle) state;
+            if (bundle.getBoolean("loadedImage", false))
+            {
+                image = new Image();
+                image.loadFromBundle(bundle);
+                contentCoords = new Point();
+                contentCoords.x = bundle.getInt("contentCoords.x");
+                contentCoords.y = bundle.getInt("contentCoords.y");
+                contentScale = bundle.getFloat("contentScale");
+                SystemActionHandler.removeStartupView();
+            }
+
+            state = bundle.getParcelable("superState");
+        }
+
+        super.onRestoreInstanceState(state);
     }
 
     private class TouchHandler{
