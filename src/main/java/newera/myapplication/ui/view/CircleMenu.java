@@ -6,20 +6,15 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import newera.myapplication.MainActivity;
 import newera.myapplication.R;
-import newera.myapplication.image.processing.EItems;
-import newera.myapplication.image.processing.shaders.*;
 import newera.myapplication.ui.Clickable;
-import newera.myapplication.ui.system.PictureFileManager;
 import newera.myapplication.ui.view.inputs.InputManager;
 
 
@@ -48,6 +43,7 @@ public class CircleMenu extends View {
     private final static int TEXT_BORDER_SIZE = 4;
     private final static int PositionArray[][] = {{0,0}, {1,0}, {0,1}, {1,1},};
     private final static int DIM_FACTOR = 0;
+    private final static int ICON_SIZE = 100;
 
     private Paint paint;
     private int width, height, min_wh, cornerX, cornerY;
@@ -127,6 +123,8 @@ public class CircleMenu extends View {
 
                     x2 = (int)(cornerX + radius*DISPLAY_MARGIN * Math.cos(angle));
                     y2 = (int)(cornerY + radius*DISPLAY_MARGIN * Math.sin(angle));
+
+                    canvas.drawBitmap(itemList.get(i).getClickable().getIcon(), x - ICON_SIZE / 2, y - ICON_SIZE / 2, paint);
 
                     canvas.save();
                     canvas.rotate((float) Math.toDegrees(angle) + 180*PositionArray[position.ordinal()][0], x2, y2);
@@ -292,6 +290,7 @@ public class CircleMenu extends View {
 
     public void addClickable(Clickable clk){
         this.addItem(new MenuItem(clk));
+        clk.initIcon(activity, ICON_SIZE);
         if(itemList.size() >= 5) this.scrollLock = false;
     }
 

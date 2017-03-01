@@ -1,6 +1,10 @@
 package newera.myapplication.image.processing.shaders;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.renderscript.Allocation;
 
 import newera.myapplication.MainActivity;
@@ -15,7 +19,7 @@ import newera.myapplication.image.Image;
 public class InvertColor extends Shader {
 
     private int nameId = 0;
-    private Bitmap icone = null;
+    private Bitmap icon = null;
 
     @Override
     public void ApplyFilter(Image image)
@@ -34,6 +38,16 @@ public class InvertColor extends Shader {
         refreshImage();
     }
 
+    @Override
+    public void initIcon(Context context, int iconSize) {
+        Drawable d = context.getResources().getDrawable(R.drawable.ic_invert_color_24dp);
+        d.setColorFilter(context.getResources().getColor(R.color.colorLight), PorterDuff.Mode.SRC_ATOP);
+        d.setBounds(0, 0, iconSize, iconSize);
+        icon = Bitmap.createBitmap(iconSize, iconSize, Bitmap.Config.ARGB_8888);
+        Canvas c = new Canvas(icon);
+        d.draw(c);
+    }
+
     public InvertColor(MainActivity activity) {
         super(activity);
     }
@@ -48,8 +62,8 @@ public class InvertColor extends Shader {
     }
 
     @Override
-    public Bitmap getIcone() {
-        return null;
+    public Bitmap getIcon() {
+        return icon;
     }
 
 

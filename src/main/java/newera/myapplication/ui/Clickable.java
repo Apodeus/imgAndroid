@@ -1,5 +1,6 @@
 package newera.myapplication.ui;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import newera.myapplication.ui.view.CImageView;
 import newera.myapplication.ui.view.inputs.InputManager;
@@ -14,7 +15,9 @@ public interface Clickable {
 
     int getNameId();
 
-    Bitmap getIcone();
+    void initIcon(Context context, int iconSize);
+
+    Bitmap getIcon();
 
     int onClick(InputManager manager, CImageView view);
 
