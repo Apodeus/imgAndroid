@@ -164,7 +164,7 @@ public class GenericBox {
     public boolean handleTouch(MotionEvent event)
     {
         if (event.getY() > currentBoxBackground.top && event.getY() < collapsedBoxBackground.top && event.getAction() == MotionEvent.ACTION_DOWN)
-            if (event.getX() > currentBoxBackground.left && event.getX() < currentBoxBackground.right) {
+            if (event.getX() > currentBoxBackground.left) {
             isEdit = true;
                 for (IGenericBoxComponent c : components)
                     c.enableEdit(event);
