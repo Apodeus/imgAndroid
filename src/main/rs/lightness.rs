@@ -18,9 +18,9 @@ static float restreinColor(float color){
 
 static float3 changeLightness(float3 pixel, float brightness){
 
-    pixel.r += brightness;
-    pixel.g += brightness;
-    pixel.b += brightness;
+    pixel.r *= brightness;
+    pixel.g *= brightness;
+    pixel.b *= brightness;
 
     pixel.r = restreinColor(pixel.r);
     pixel.g = restreinColor(pixel.g);
