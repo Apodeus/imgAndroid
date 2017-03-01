@@ -23,10 +23,25 @@ import newera.myapplication.ui.view.ActionSave;
 import newera.myapplication.ui.view.CImageView;
 import newera.myapplication.ui.view.CircleMenu;
 
+import static android.R.attr.value;
+
 public class MainActivity extends AppCompatActivity {
 
     public CImageView civ;
     private static final int REQUEST_CREATE_DIRECTORY = 3;
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        // Save UI state changes to the savedInstanceState.
+        // This bundle will be passed to onCreate if the process is
+        // killed and restarted.
+        savedInstanceState.putBoolean("MyBoolean", true);
+        savedInstanceState.putDouble("myDouble", 1.9);
+        savedInstanceState.putInt("MyInt", 1);
+        savedInstanceState.putString("MyString", "Welcome back to Android");
+        // etc.
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

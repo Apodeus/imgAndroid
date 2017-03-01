@@ -27,7 +27,7 @@ public class ChangeHue extends Shader {
         if(image != null && !image.isEmpty()) {
 
             ScriptC_hue rsChangeHue = new ScriptC_hue(renderScript);
-            rsChangeHue.set_factor(((int) params.get("value") * (1f/360f)));
+            rsChangeHue.set_newHue((int) params.get("value"));
 
             for (Bitmap[] arrBitmap : image.getBitmaps())
                 for (Bitmap bitmap : arrBitmap) {
