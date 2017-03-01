@@ -3,25 +3,31 @@
 
 #include "utility.rsh"
 
-float factor;
+float brightness;
 
-static float3 changeLightness(float3 pixel, float factor){
-
-    float3 hsl = RgbToHsl(pixel);
-
-    hsl.z = hsl.z * factor;
-    /*
-    if(hsl.z >= 1.0f){
-       hsl.z = 1.0f;
+static float restreinColor(float color){
+    if(color > 255){
+        return 255.0f;
     }
-    if(hsl.z < 0){
-       hsl.z = 0;
-    }*/
+    if(color < 0){
+        return 0;
+    }
+    return color;
 
-    float3 rgb = HslToRgb(hsl);
+}
 
+static float3 changeLightness(float3 pixel, float brightness){
+
+    pixel.r += brightness;
+    pixel.g += brightness;
+    pixel.b += brightness;
+
+    pixel.r = restreinColor(pixel.r);
+    pixel.g = restreinColor(pixel.g);
+    pixel.b = restreinColor(pixel.b);
+
+    float3 rgb = {pixel.r, pixel.g, pixel.b};
     return rgb;
-
 }
 
 
@@ -29,7 +35,7 @@ static float3 changeLightness(float3 pixel, float factor){
 //MAINS
 uchar4 __attribute__((kernel)) ChangeLightness(uchar4 in, uint32_t x, uint32_t y) {
   float3 rgb = {in.r, in.g, in.b};
-  float3 new = changeLightness(rgb, factor);
+  float3 new = changeLightness(rgb, brightness);
 
   uchar4 out;
   out.a = in.a;
