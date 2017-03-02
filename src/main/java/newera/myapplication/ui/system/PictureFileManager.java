@@ -65,6 +65,12 @@ public class PictureFileManager {
         dispatchTakePictureIntent();
     }
 
+    /**
+     * @param bitmap
+     * @param quality
+     * @throws IOException
+     * Save a bitmap at the location /Pictures/newera.myapplication/
+     */
     public static void SaveBitmap(Bitmap bitmap, int quality) throws IOException {
 
         File pictureFile = getOutputMediaFile();
@@ -132,51 +138,46 @@ public class PictureFileManager {
 
         try {
             if (TmpUriFile != null) {
+
                 parcelFD = Activity.getContentResolver().openFileDescriptor(TmpUriFile, "r");
                 fileDescriptor = parcelFD.getFileDescriptor();
 
-                //img = BitmapFactory.decodeFileDescriptor(fileDescriptor);
                 BitmapRegionDecoder decoder = BitmapRegionDecoder.newInstance(fileDescriptor, true);
-
-                int rotation = getBitmapRotation(TmpUriFile.getPath());
-                Log.i("", "alpha = " + rotation);
 
                 int h = decoder.getHeight();
                 int w = decoder.getWidth();
-                int xm, xM, ym, yM;//4160*3120
+                int xm, ym, xM, yM;//4160*3120
 
-                Rect r = new Rect();
+                Rect rect = new Rect();
 
-                double width = Math.ceil((double)w / (double)DECODE_TILE_SIZE);
-                double height = Math.ceil((double)h / (double)DECODE_TILE_SIZE);
+                double rows = Math.ceil((double)w / (double)DECODE_TILE_SIZE);
+                double lines = Math.ceil((double)h / (double)DECODE_TILE_SIZE);
 
-                result.setDim((int)width, (int)height);
-                result.initDimOriginalBitmap((int)width, (int)height);
+                result.setDim((int)rows, (int)lines);
+                result.initDimOriginalBitmap((int)rows, (int)lines);
 
-                for(int y = 0; y < height; ++y){
-                    for(int x = 0; x < width; ++x){
+                for(int y = 0; y < lines; ++y){
+                    for(int x = 0; x < rows; ++x){
                         xm = x * DECODE_TILE_SIZE;
                         ym = y * DECODE_TILE_SIZE;
 
                         xM = Math.min( (xm + DECODE_TILE_SIZE), w );
                         yM = Math.min( (ym + DECODE_TILE_SIZE), h );
 
-                        r.set(xm, ym, xM, yM);
+                        rect.set(xm, ym, xM, yM);
 
-                        img = decoder.decodeRegion(r, null);
+                        img = decoder.decodeRegion(rect, null);
                         //Log.i("DBG", "rect= x("+xm +","+xM+"), y("+ym+","+yM+"), bitmap : w="+img.getWidth()+", h="+img.getHeight());
                         result.addBitmap(img, x, y);
                         result.initOriginalBitmap(img, x, y);
                     }
                 }
-                //result.setBitmap(img);
                 parcelFD.close();
             } else {
                 Log.i("", "ERROR: TmpUriFile is empty.");
             }
         } catch(IOException e) {
             e.printStackTrace();
-            //Log.i("WARNING", e.getMessage());
         }
         return result;
     }
@@ -240,36 +241,4 @@ public class PictureFileManager {
         TmpUriFile = Uri.fromFile(TmpPictureFile);
 
     }
-
-    private static int getBitmapRotation(String filename) {
-        int rotation = 0;
-        switch ( getExifOrientation(filename) ) {
-            case ExifInterface.ORIENTATION_ROTATE_180:
-                rotation = 180;
-                break;
-            case ExifInterface.ORIENTATION_ROTATE_90:
-                rotation = 90;
-                break;
-            case ExifInterface.ORIENTATION_ROTATE_270:
-                rotation = 270;
-                break;
-        }
-
-        return rotation;
-    }
-
-    private static int getExifOrientation(String filename) {
-        ExifInterface exif;
-        int orientation = 0;
-        try {
-            exif = new ExifInterface(filename);
-            orientation = exif.getAttributeInt( ExifInterface.TAG_ORIENTATION, 1 );
-        } catch ( IOException e ) {
-            e.printStackTrace();
-        }
-        Log.d(TAG, "got orientation " + orientation);
-        return orientation;
-    }
-
-
 }

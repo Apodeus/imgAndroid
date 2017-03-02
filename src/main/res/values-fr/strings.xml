@@ -8,10 +8,13 @@
     <string name="shaderChangeHueName">Teinte</string>
     <string name="shaderHistogramName">Egalisation d\'histogramme</string>
     <string name="shaderKeepHueName">Conserver une teinte</string>
-    <string name="shaderConvolutionName">Convolution</string>
     <string name="shaderSepiaName">Sepia</string>
+    <string name="shaderContrastName">Contraste</string>
+    <string name="shaderConvolutionName">Convolution</string>
     <string name="galleryName">Galerie</string>
     <string name="cameraName">Appareil photo</string>
+    <string name="resetName">Reset</string>
+    <string name="saveName">Enregistrer</string>
     <string name="apply">Appliquer</string>
     <string name="cancel">Annuler</string>
 </resources>

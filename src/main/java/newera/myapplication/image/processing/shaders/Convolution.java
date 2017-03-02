@@ -21,8 +21,9 @@ import newera.myapplication.ui.view.ActionCamera;
 
 public class Convolution extends Shader{
 
-    private Bitmap icon = null;
+    private Bitmap icon;
 
+    //This Enum permit to know which Convolution should be apply
     public enum ConvType{GAUSS, EDGE, LAPL, SOBEL, SOBEL_H, SOBEL_V}
     public ConvType matrix = ConvType.EDGE;
     public int kernel_size = 3;
@@ -107,12 +108,12 @@ public class Convolution extends Shader{
 
     @Override
     public void initIcon(Context context, int iconSize) {
-        Drawable d = context.getResources().getDrawable(R.drawable.ic_convolution_blur_on_black_24dp);
-        d.setColorFilter(context.getResources().getColor(R.color.colorLight), PorterDuff.Mode.SRC_ATOP);
-        d.setBounds(0, 0, iconSize, iconSize);
+        Drawable drawable = context.getResources().getDrawable(R.drawable.ic_convolution_blur_on_black_24dp);
+        drawable.setColorFilter(context.getResources().getColor(R.color.colorLight), PorterDuff.Mode.SRC_ATOP);
+        drawable.setBounds(0, 0, iconSize, iconSize);
         icon = Bitmap.createBitmap(iconSize, iconSize, Bitmap.Config.ARGB_8888);
-        Canvas c = new Canvas(icon);
-        d.draw(c);
+        Canvas canvas = new Canvas(icon);
+        drawable.draw(canvas);
     }
 
     public String getName()
@@ -122,7 +123,7 @@ public class Convolution extends Shader{
 
     @Override
     public int getNameId() {
-        return 0;
+        return R.string.shaderConvolutionName;
     }
 
     @Override
@@ -160,19 +161,11 @@ public class Convolution extends Shader{
         conv.set_matrix2D(matAlloc);
     }
 
-    private String a(float[] ar){
-        String out = "";
-        for(float f : ar){
-            out += f + ", ";
-        }
-        return out;
-    }
-
     private float[] MatrixToArray(float[][] mat){
-        float arr[] = new float[mat.length*mat[0].length];
+        float arr[] = new float[mat.length * mat[0].length];
         int i = 0;
-        for(int y = 0; y<mat.length; ++y){
-            for(int x = 0; x<mat[0].length; ++x){
+        for(int y = 0; y < mat.length; ++y){
+            for(int x = 0; x < mat[0].length; ++x){
                 arr[i++] = mat[x][y];
             }
         }

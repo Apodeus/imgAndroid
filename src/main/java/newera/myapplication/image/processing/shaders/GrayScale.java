@@ -17,7 +17,7 @@ import newera.myapplication.image.Image;
 
 public class GrayScale extends Shader{
 
-    private Bitmap icon = null;
+    private Bitmap icon;
 
     public GrayScale(MainActivity activity) {
         super(activity);
@@ -29,13 +29,13 @@ public class GrayScale extends Shader{
         if(image != null && !image.isEmpty()) {
 
             ScriptC_grayscale rsGrayscale = new ScriptC_grayscale(renderScript);
+
             for (Bitmap[] arrBitmap : image.getBitmaps())
                 for (Bitmap bitmap : arrBitmap) {
                     Allocation in = Allocation.createFromBitmap(renderScript, bitmap);
                     Allocation out = Allocation.createTyped(renderScript, in.getType());
 
                     rsGrayscale.forEach_Grayscale(in, out);
-
                     out.copyTo(bitmap);
                 }
         }
@@ -44,12 +44,12 @@ public class GrayScale extends Shader{
 
     @Override
     public void initIcon(Context context, int iconSize) {
-        Drawable d = context.getResources().getDrawable(R.drawable.ic_grayscale_gradient_black_24dp);
-        d.setColorFilter(context.getResources().getColor(R.color.colorLight), PorterDuff.Mode.SRC_ATOP);
-        d.setBounds(0, 0, iconSize, iconSize);
+        Drawable drawable = context.getResources().getDrawable(R.drawable.ic_grayscale_gradient_black_24dp);
+        drawable.setColorFilter(context.getResources().getColor(R.color.colorLight), PorterDuff.Mode.SRC_ATOP);
+        drawable.setBounds(0, 0, iconSize, iconSize);
         icon = Bitmap.createBitmap(iconSize, iconSize, Bitmap.Config.ARGB_8888);
-        Canvas c = new Canvas(icon);
-        d.draw(c);
+        Canvas canvas = new Canvas(icon);
+        drawable.draw(canvas);
     }
 
     public String getName()
@@ -59,7 +59,7 @@ public class GrayScale extends Shader{
 
     @Override
     public int getNameId() {
-        return 0;
+        return R.string.shaderGrayScaleName;
     }
 
     @Override

@@ -82,7 +82,6 @@ public class CImageView extends View {
             contentCoords.x = getWidth() / 2;
             contentCoords.y = getHeight() / 2;
             invalidate();
-
         }
     }
 
@@ -100,11 +99,13 @@ public class CImageView extends View {
         canvas.drawColor(getResources().getColor(R.color.colorPrimaryDark));
         if (image != null && !image.isEmpty()){
             image.draw(canvas, imagePaint, contentCoords.x, contentCoords.y, contentScale);
-            /*dst.left = contentCoords.x - (int) (image.getWidth() * (contentScale/2));
+            /*
+            dst.left = contentCoords.x - (int) (image.getWidth() * (contentScale/2));
             dst.top = contentCoords.y - (int) (image.getHeight() * (contentScale/2));
             dst.right = contentCoords.x + (int) (image.getWidth() * (contentScale/2));
             dst.bottom =  contentCoords.y + (int) (image.getHeight() * (contentScale/2));
-            canvas.drawBitmap(image.getBitmap(), src, dst, null);*/
+            canvas.drawBitmap(image.getBitmap(), src, dst, null);
+            */
             inputManager.draw(canvas);
         }
     }
@@ -114,7 +115,6 @@ public class CImageView extends View {
     {
         if (!inputManager.handleTouch(event))
         {
-
             if (event.getPointerCount() <= 1) {
                 contentScale = touchHandler.onTouch(event, TouchMethod.DRAG, contentCoords, contentScale);
                 contentCoords.x = (int) (Math.min(contentCoords.x, getWidth() * MOVE_SAFEZONE + (int) (image.getWidth() * (contentScale/2))));      // need the scale factor
@@ -124,8 +124,6 @@ public class CImageView extends View {
                 contentScale = touchHandler.onTouch(event, TouchMethod.ZOOM, contentCoords, contentScale);
             }
         }
-
-
         invalidate();
         return true;
     }
@@ -152,7 +150,6 @@ public class CImageView extends View {
 
         shader.setParameters(params);
         shader.ApplyFilter(image);
-
     }
 
     public void onCancelFilter()
@@ -172,7 +169,9 @@ public class CImageView extends View {
                 }
         }
     }
+
     //TODO
+    //For Undo / redo options...
     public void onPreviewFilter(int value) {
         /*switch (currentInputType) {
             case NONE:
@@ -194,17 +193,15 @@ public class CImageView extends View {
         }*/
     }
 
+    /**
+     * @return the Image's reference
+     */
     public Image getImage()
     {
         return this.image;
     }
 
-    public void setCurrentAction(EItems item) {
-        this.currentInputItem = item;
-
-
-
-    }
+    public void setCurrentAction(EItems item) { this.currentInputItem = item; }
 
     @Override
     public Parcelable onSaveInstanceState()

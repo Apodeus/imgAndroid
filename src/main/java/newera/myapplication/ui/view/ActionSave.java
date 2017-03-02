@@ -43,12 +43,12 @@ public class ActionSave implements Clickable{
 
     @Override
     public void initIcon(Context context, int iconSize) {
-        Drawable d = context.getResources().getDrawable(R.drawable.ic_sd_storage_black_24dp);
-        d.setColorFilter(context.getResources().getColor(R.color.colorLight), PorterDuff.Mode.SRC_ATOP);
-        d.setBounds(0, 0, iconSize, iconSize);
+        Drawable drawable = context.getResources().getDrawable(R.drawable.ic_sd_storage_black_24dp);
+        drawable.setColorFilter(context.getResources().getColor(R.color.colorLight), PorterDuff.Mode.SRC_ATOP);
+        drawable.setBounds(0, 0, iconSize, iconSize);
         icon = Bitmap.createBitmap(iconSize, iconSize, Bitmap.Config.ARGB_8888);
-        Canvas c = new Canvas(icon);
-        d.draw(c);
+        Canvas canvas = new Canvas(icon);
+        drawable.draw(canvas);
     }
 
     @Override
@@ -57,15 +57,5 @@ public class ActionSave implements Clickable{
         view.setCurrentAction(EItems.S_QUALITY_SAVE);
         return 0;
     }
-
-
-    /*
-    @Override
-    public int onClick(InputManager manager, CImageView view) {
-        manager.createBox(EItems.F_CHANGE_HUE, view.getResources().getString(R.string.shaderChangeHueName));
-        view.setCurrentAction(EItems.F_CHANGE_HUE);
-        return 0;
-    }
-    */
 
 }

@@ -18,8 +18,7 @@ import newera.myapplication.image.Image;
 
 public class InvertColor extends Shader {
 
-    private int nameId = 0;
-    private Bitmap icon = null;
+    private Bitmap icon;
 
     @Override
     public void ApplyFilter(Image image)
@@ -40,25 +39,23 @@ public class InvertColor extends Shader {
 
     @Override
     public void initIcon(Context context, int iconSize) {
-        Drawable d = context.getResources().getDrawable(R.drawable.ic_invert_color_24dp);
-        d.setColorFilter(context.getResources().getColor(R.color.colorLight), PorterDuff.Mode.SRC_ATOP);
-        d.setBounds(0, 0, iconSize, iconSize);
+        Drawable drawable = context.getResources().getDrawable(R.drawable.ic_invert_color_24dp);
+        drawable.setColorFilter(context.getResources().getColor(R.color.colorLight), PorterDuff.Mode.SRC_ATOP);
+        drawable.setBounds(0, 0, iconSize, iconSize);
         icon = Bitmap.createBitmap(iconSize, iconSize, Bitmap.Config.ARGB_8888);
-        Canvas c = new Canvas(icon);
-        d.draw(c);
+        Canvas canvas = new Canvas(icon);
+        drawable.draw(canvas);
     }
 
     public InvertColor(MainActivity activity) {
         super(activity);
     }
 
-    public String getName(){
-        return activity.getResources().getString(R.string.shaderInvertColorName);
-    }
+    public String getName(){ return activity.getResources().getString(R.string.shaderInvertColorName); }
 
     @Override
     public int getNameId() {
-        return 0;
+        return R.string.shaderInvertColorName;
     }
 
     @Override

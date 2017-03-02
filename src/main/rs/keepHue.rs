@@ -4,13 +4,13 @@
 #include "rs_debug.rsh"
 #include "utility.rsh"
 
-float newHue; // between [0;2.0[
+float newHue;
 float epsilon;
 
 static int3 keepHue(float3 pixel, float hue){
     float3 hsl = RgbToHsl(pixel);
     float3 new = HslToRgb(hsl);
-    hsl.x = restreinHue(hsl.x) / 359.0f;
+    hsl.x = restreinHue(hsl.x) / 360.0f;
 
 
     newHue = restreinHue(newHue * 360.0f) / 360.0f;
@@ -19,7 +19,6 @@ static int3 keepHue(float3 pixel, float hue){
     float borneSup = newHue + epsilon;
 
     if(borneInf < 0){
-        //borneInf = 2.0f - fabs(fmod(borneInf, 2.0f));
         borneInf = 1.0f + fmod(borneInf, 1.0f);
     }
 
@@ -41,9 +40,6 @@ static int3 keepHue(float3 pixel, float hue){
             return pixelGS;
         } else {
             int3 newPixel = {(int)(new.x), (int)(new.y), (int)(new.z)};
-            //new.x = new.x * 255.0f;
-            //new.y = new.y * 255.0f;
-            //new.z = new.z * 255.0f;
             return newPixel;
         }
     } else {
@@ -60,9 +56,6 @@ static int3 keepHue(float3 pixel, float hue){
         }
 
         int3 newPixel = {(int)(new.x), (int)(new.y), (int)(new.z)};
-        //new.x = new.x * 255.0f;
-        //new.y = new.y * 255.0f;
-        //new.z = new.z * 255.0f;
         return newPixel;
     }
 }
@@ -70,10 +63,8 @@ static int3 keepHue(float3 pixel, float hue){
 //MAINS
 uchar4 __attribute__((kernel)) KeepSpecificHue(uchar4 in, uint32_t x, uint32_t y) {
     float3 rgb = {in.r, in.g, in.b};
-
     int3 new = keepHue(rgb, newHue);
-    //float3 newt = rgbToHsl(rgb.r, rgb.g, rgb.b);
-    //float3 new = hslToRGB(newt.x, newt.y, newt.z);
+
     uchar4 out;
 
     out.a = in.a;

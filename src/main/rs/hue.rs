@@ -13,7 +13,6 @@ static float3 changeHue(float3 pixel, float factor){
 
     float3 new = HslToRgb(hsl);
 
-    //new.a = pixel.a;
     return new;
 }
 
@@ -21,7 +20,6 @@ static float3 changeHue(float3 pixel, float factor){
 
 //MAINS
 uchar4 __attribute__((kernel)) ChangeHue(uchar4 in, uint32_t x, uint32_t y) {
-  //float4 pixel = rsUnpackColor8888(in);
   float3 rgb = {in.r, in.g, in.b};
   float3 new = changeHue(rgb, newHue);
 

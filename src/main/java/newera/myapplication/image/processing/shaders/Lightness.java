@@ -20,7 +20,14 @@ import newera.myapplication.ui.view.inputs.InputManager;
  */
 
 public class Lightness extends Shader {
-    private Bitmap icon = null;
+    
+    private Bitmap icon;
+
+    public Lightness(MainActivity activity) {
+        super(activity);
+    }
+
+    public Lightness(Context context){super(context);}
 
     @Override
     public void ApplyFilter(Image image)
@@ -33,28 +40,22 @@ public class Lightness extends Shader {
                 for (Bitmap bitmap : arrBitmap) {
                     Allocation in = Allocation.createFromBitmap(renderScript, bitmap);
                     Allocation out = Allocation.createTyped(renderScript, in.getType());
+
                     rsLightness.forEach_ChangeLightness(in, out);
                     out.copyTo(bitmap);
                 }
         }
-        //refreshImage();
     }
 
     @Override
     public void initIcon(Context context, int iconSize) {
-        Drawable d = context.getResources().getDrawable(R.drawable.ic_brightness_5_black_24dp);
-        d.setColorFilter(context.getResources().getColor(R.color.colorLight), PorterDuff.Mode.SRC_ATOP);
-        d.setBounds(0, 0, iconSize, iconSize);
+        Drawable drawable = context.getResources().getDrawable(R.drawable.ic_brightness_5_black_24dp);
+        drawable.setColorFilter(context.getResources().getColor(R.color.colorLight), PorterDuff.Mode.SRC_ATOP);
+        drawable.setBounds(0, 0, iconSize, iconSize);
         icon = Bitmap.createBitmap(iconSize, iconSize, Bitmap.Config.ARGB_8888);
-        Canvas c = new Canvas(icon);
-        d.draw(c);
+        Canvas canvas = new Canvas(icon);
+        drawable.draw(canvas);
     }
-
-    public Lightness(MainActivity activity) {
-        super(activity);
-    }
-
-    public Lightness(Context context){super(context);}
 
     public String getName(){
         return activity.getResources().getString(R.string.shaderLightnessName);
@@ -62,7 +63,7 @@ public class Lightness extends Shader {
 
     @Override
     public int getNameId() {
-        return 0;
+        return R.string.shaderLightnessName;
     }
 
     @Override

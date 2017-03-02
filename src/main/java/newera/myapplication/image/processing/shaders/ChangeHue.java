@@ -22,7 +22,17 @@ import java.util.Map;
  */
 
 public class ChangeHue extends Shader {
-    private Bitmap icon = null;
+    private Bitmap icon;
+
+    public ChangeHue(MainActivity activity) {
+        super(activity);
+    }
+
+    public ChangeHue(Context context)
+    {
+        super(context);
+    }
+
 
     @Override
     public void ApplyFilter(Image image)
@@ -40,7 +50,6 @@ public class ChangeHue extends Shader {
                     out.copyTo(bitmap);
                 }
         }
-        //refreshImage();
     }
 
     public void ApplyPreviewFilter(Image image, Object param)
@@ -50,37 +59,28 @@ public class ChangeHue extends Shader {
         ApplyFilter(image);
     }
 
-    public ChangeHue(MainActivity activity) {
-        super(activity);
-    }
-
-    public ChangeHue(Context context)
-    {
-        super(context);
-    }
-
     public String getName(){
         return activity.getResources().getString(R.string.shaderChangeHueName);
     }
 
     @Override
     public int getNameId() {
-        return 0;
+        return R.string.shaderChangeHueName;
     }
 
     @Override
     public void initIcon(Context context, int iconSize) {
-        Drawable d = context.getResources().getDrawable(R.drawable.ic_hue_color_lens_black_24dp);
-        d.setColorFilter(context.getResources().getColor(R.color.colorLight), PorterDuff.Mode.SRC_ATOP);
-        d.setBounds(0, 0, iconSize, iconSize);
+        Drawable drawable = context.getResources().getDrawable(R.drawable.ic_hue_color_lens_black_24dp);
+        drawable.setColorFilter(context.getResources().getColor(R.color.colorLight), PorterDuff.Mode.SRC_ATOP);
+        drawable.setBounds(0, 0, iconSize, iconSize);
         icon = Bitmap.createBitmap(iconSize, iconSize, Bitmap.Config.ARGB_8888);
-        Canvas c = new Canvas(icon);
-        d.draw(c);
+        Canvas canvas = new Canvas(icon);
+        drawable.draw(canvas);
     }
 
     @Override
     public Bitmap getIcon() {
-        return icon;
+        return this.icon;
     }
 
     @Override
