@@ -6,7 +6,7 @@ import android.renderscript.RenderScript;
 import newera.myapplication.MainActivity;
 import newera.myapplication.R;
 import newera.myapplication.image.Image;
-import newera.myapplication.ui.Clickable;
+import newera.myapplication.ui.view.ActionClickable;
 import newera.myapplication.ui.view.CImageView;
 import newera.myapplication.ui.view.inputs.InputManager;
 import newera.myapplication.ui.view.ShaderDialogBox;
@@ -17,7 +17,7 @@ import java.util.Map;
  * Created by Emile Barjou-Suire on 09/02/2017.
  */
 
-public abstract class Shader implements Clickable{
+public abstract class Shader extends ActionClickable {
 
     RenderScript renderScript;
     MainActivity activity;
@@ -25,12 +25,14 @@ public abstract class Shader implements Clickable{
 
     Shader(MainActivity activity)
     {
+        super(activity);
         renderScript = RenderScript.create(activity);
         this.activity = activity;
     }
 
     Shader(Context context)
     {
+        super(context);
         renderScript = RenderScript.create(context);
         this.activity = null;
     }
@@ -44,12 +46,9 @@ public abstract class Shader implements Clickable{
 
     }
 
+
     void refreshImage(){
         activity.findViewById(R.id.cImageView).invalidate();
-    }
-
-    public String getName(){
-        return null;
     }
 
     public int onClick(InputManager manager, CImageView view) {

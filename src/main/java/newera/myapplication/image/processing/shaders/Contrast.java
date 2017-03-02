@@ -23,13 +23,10 @@ import newera.myapplication.ui.view.inputs.InputManager;
 
 public class Contrast extends Shader{
 
-    private Bitmap icon;
-
-    public Contrast(MainActivity activity) {
-        super(activity);
-    }
     public Contrast(Context context) {
         super(context);
+        this.drawableIconId = R.drawable.ic_contrast_tonality_black_24dp;
+        this.clickableName = R.string.shaderContrastName;
     }
 
     @Override
@@ -49,31 +46,6 @@ public class Contrast extends Shader{
                     out.copyTo(bitmap);
                 }
         }
-    }
-
-    @Override
-    public void initIcon(Context context, int iconSize) {
-        Drawable drawable = context.getResources().getDrawable(R.drawable.ic_contrast_tonality_black_24dp);
-        drawable.setColorFilter(context.getResources().getColor(R.color.colorLight), PorterDuff.Mode.SRC_ATOP);
-        drawable.setBounds(0, 0, iconSize, iconSize);
-        icon = Bitmap.createBitmap(iconSize, iconSize, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(icon);
-        drawable.draw(canvas);
-    }
-
-    public String getName()
-    {
-        return activity.getResources().getString(R.string.shaderContrastName);
-    }
-
-    @Override
-    public int getNameId() {
-        return R.string.shaderContrastName;
-    }
-
-    @Override
-    public Bitmap getIcon() {
-        return icon;
     }
 
     @Override

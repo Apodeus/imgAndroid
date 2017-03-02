@@ -11,10 +11,11 @@
     <string name="shaderSepiaName">Sepia</string>
     <string name="shaderContrastName">Contraste</string>
     <string name="shaderConvolutionName">Convolution</string>
-    <string name="galleryName">Galerie</string>
-    <string name="cameraName">Appareil photo</string>
-    <string name="resetName">Reset</string>
-    <string name="saveName">Enregistrer</string>
+    <string name="systemGalleryName">Galerie</string>
+    <string name="systemCameraName">Appareil photo</string>
+    <string name="systemResetName">Réinitialiser l\'image</string>
+    <string name="systemSaveName">Enregistrer</string>
     <string name="apply">Appliquer</string>
     <string name="cancel">Annuler</string>
+    <string name="systemSavePicture">Sauvegarder l\'image</string>
 </resources>

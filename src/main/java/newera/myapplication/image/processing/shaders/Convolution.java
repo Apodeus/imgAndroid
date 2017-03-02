@@ -21,8 +21,6 @@ import newera.myapplication.ui.view.ActionCamera;
 
 public class Convolution extends Shader{
 
-    private Bitmap icon;
-
     //This Enum permit to know which Convolution should be apply
     public enum ConvType{GAUSS, EDGE, LAPL, MOY, SOBEL, SOBEL_H, SOBEL_V}
     public ConvType matrix = ConvType.EDGE;
@@ -68,10 +66,12 @@ public class Convolution extends Shader{
 
     public Convolution(MainActivity activity) {
         super(activity);
+        this.drawableIconId = R.drawable.ic_convolution_blur_on_black_24dp;
     }
 
     public Convolution(MainActivity activity, ConvType type){
         super(activity);
+        this.drawableIconId = R.drawable.ic_convolution_blur_on_black_24dp;
         matrix = type;
     }
 
@@ -113,31 +113,10 @@ public class Convolution extends Shader{
         refreshImage();
     }
 
-    @Override
-    public void initIcon(Context context, int iconSize) {
-        Drawable drawable = context.getResources().getDrawable(R.drawable.ic_convolution_blur_on_black_24dp);
-        drawable.setColorFilter(context.getResources().getColor(R.color.colorLight), PorterDuff.Mode.SRC_ATOP);
-        drawable.setBounds(0, 0, iconSize, iconSize);
-        icon = Bitmap.createBitmap(iconSize, iconSize, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(icon);
-        drawable.draw(canvas);
-    }
-
     public String getName()
     {
         return activity.getResources().getString(R.string.shaderConvolutionName) + " " +  this.matrix.name();
     }
-
-    @Override
-    public int getNameId() {
-        return R.string.shaderConvolutionName;
-    }
-
-    @Override
-    public Bitmap getIcon() {
-        return icon;
-    }
-
 
     private void setupMatrix(ScriptC_convolution conv, ConvType type){
         float[][] target = null;

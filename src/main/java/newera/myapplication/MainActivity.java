@@ -92,10 +92,10 @@ public class MainActivity extends AppCompatActivity {
     public void initializeSysMenu(CircleMenu menu){
         menu.menuColor = getResources().getColor(R.color.colorPrimaryDark);
         menu.menuColor = getResources().getColor(R.color.colorPrimary);
-        menu.addClickable(new ActionCamera());
-        menu.addClickable(new ActionGallery());
-        menu.addClickable(new ActionSave());
-        menu.addClickable(new ActionReset());
+        menu.addClickable(new ActionCamera(this));
+        menu.addClickable(new ActionGallery(this));
+        menu.addClickable(new ActionSave(this));
+        menu.addClickable(new ActionReset(this));
     }
     public void initializeFilterMenu(CircleMenu menu) {
         menu.addClickable(new InvertColor(this));

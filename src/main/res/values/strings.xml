@@ -10,12 +10,12 @@
     <string name="shaderKeepHueName">Keep specific Hue</string>
     <string name="shaderSepiaName">Sepia</string>
     <string name="shaderContrastName">Contrast</string>
-    <string name="galleryName">Gallery</string>
-    <string name="cameraName">Camera</string>
-    <string name="resetName">Reset</string>
-    <string name="saveName">Save</string>
+    <string name="systemGalleryName">Gallery</string>
+    <string name="systemCameraName">Camera</string>
+    <string name="systemResetName">Reset</string>
+    <string name="systemSaveName">Save</string>
     <string name="apply">Apply</string>
     <string name="cancel">Cancel</string>
     <string name="shaderConvolutionName">Convolution</string>
-    <string name="systemSavePicture">Save save picture</string>
+    <string name="systemSavePicture">Save picture</string>
 </resources>

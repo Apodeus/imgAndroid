@@ -13,8 +13,6 @@ public interface Clickable {
 
     String getName();
 
-    int getNameId();
-
     void initIcon(Context context, int iconSize);
 
     Bitmap getIcon();

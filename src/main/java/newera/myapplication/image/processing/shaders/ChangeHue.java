@@ -22,15 +22,12 @@ import java.util.Map;
  */
 
 public class ChangeHue extends Shader {
-    private Bitmap icon;
-
-    public ChangeHue(MainActivity activity) {
-        super(activity);
-    }
 
     public ChangeHue(Context context)
     {
         super(context);
+        this.drawableIconId = R.drawable.ic_hue_color_lens_black_24dp;
+        this.clickableName = R.string.shaderChangeHueName;
     }
 
 
@@ -57,30 +54,6 @@ public class ChangeHue extends Shader {
         //!! Overwrite current image even if canceled !!
         params = (Map<String, Object>) param;
         ApplyFilter(image);
-    }
-
-    public String getName(){
-        return activity.getResources().getString(R.string.shaderChangeHueName);
-    }
-
-    @Override
-    public int getNameId() {
-        return R.string.shaderChangeHueName;
-    }
-
-    @Override
-    public void initIcon(Context context, int iconSize) {
-        Drawable drawable = context.getResources().getDrawable(R.drawable.ic_hue_color_lens_black_24dp);
-        drawable.setColorFilter(context.getResources().getColor(R.color.colorLight), PorterDuff.Mode.SRC_ATOP);
-        drawable.setBounds(0, 0, iconSize, iconSize);
-        icon = Bitmap.createBitmap(iconSize, iconSize, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(icon);
-        drawable.draw(canvas);
-    }
-
-    @Override
-    public Bitmap getIcon() {
-        return this.icon;
     }
 
     @Override

@@ -18,10 +18,10 @@ import newera.myapplication.image.Image;
 
 public class Sepia extends Shader{
 
-    private Bitmap icon;
-
-    public Sepia(MainActivity activity) {
+    public Sepia(Context activity) {
         super(activity);
+        this.drawableIconId = R.drawable.ic_photo_filter_sepia_24dp;
+        this.clickableName = R.string.shaderSepiaName;
     }
 
     @Override
@@ -41,31 +41,5 @@ public class Sepia extends Shader{
         }
         refreshImage();
     }
-
-    @Override
-    public void initIcon(Context context, int iconSize) {
-        Drawable drawable = context.getResources().getDrawable(R.drawable.ic_photo_filter_sepia_24dp);
-        drawable.setColorFilter(context.getResources().getColor(R.color.colorLight), PorterDuff.Mode.SRC_ATOP);
-        drawable.setBounds(0, 0, iconSize, iconSize);
-        icon = Bitmap.createBitmap(iconSize, iconSize, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(icon);
-        drawable.draw(canvas);
-    }
-
-    public String getName()
-    {
-        return activity.getResources().getString(R.string.shaderSepiaName);
-    }
-
-    @Override
-    public int getNameId() {
-        return R.string.shaderSepiaName;
-    }
-
-    @Override
-    public Bitmap getIcon() {
-        return icon;
-    }
-
 
 }

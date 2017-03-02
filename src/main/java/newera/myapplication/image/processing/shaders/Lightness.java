@@ -20,14 +20,12 @@ import newera.myapplication.ui.view.inputs.InputManager;
  */
 
 public class Lightness extends Shader {
-    
-    private Bitmap icon;
 
-    public Lightness(MainActivity activity) {
-        super(activity);
+    public Lightness(Context context){
+        super(context);
+        this.drawableIconId = R.drawable.ic_brightness_5_black_24dp;
+        this.clickableName = R.string.shaderLightnessName;
     }
-
-    public Lightness(Context context){super(context);}
 
     @Override
     public void ApplyFilter(Image image)
@@ -45,30 +43,6 @@ public class Lightness extends Shader {
                     out.copyTo(bitmap);
                 }
         }
-    }
-
-    @Override
-    public void initIcon(Context context, int iconSize) {
-        Drawable drawable = context.getResources().getDrawable(R.drawable.ic_brightness_5_black_24dp);
-        drawable.setColorFilter(context.getResources().getColor(R.color.colorLight), PorterDuff.Mode.SRC_ATOP);
-        drawable.setBounds(0, 0, iconSize, iconSize);
-        icon = Bitmap.createBitmap(iconSize, iconSize, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(icon);
-        drawable.draw(canvas);
-    }
-
-    public String getName(){
-        return activity.getResources().getString(R.string.shaderLightnessName);
-    }
-
-    @Override
-    public int getNameId() {
-        return R.string.shaderLightnessName;
-    }
-
-    @Override
-    public Bitmap getIcon() {
-        return icon;
     }
 
     @Override
