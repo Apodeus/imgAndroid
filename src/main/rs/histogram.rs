@@ -1,6 +1,6 @@
 #pragma version(1)
 #pragma rs_fp_relaxed
-#pragma rs java_package_name(newera.myapplication)
+#pragma rs java_package_name(newera.EliJ)
 
 #include "rs_debug.rsh"
 

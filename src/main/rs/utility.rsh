@@ -1,5 +1,5 @@
 #pragma version(1)
-#pragma rs java_package_name(newera.myapplication)
+#pragma rs java_package_name(newera.EliJ)
 
 const static float3 grayscaleValues = {0.299f, 0.587f, 0.114f};
 
