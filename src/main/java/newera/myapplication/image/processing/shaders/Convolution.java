@@ -140,7 +140,7 @@ public class Convolution extends Shader{
             target = matrix_edge;
             factor = factor_edge;
         } else if (type == ConvType.GAUSS){
-            target = matrix_gauss;
+            target = GaussianKernel(5);
             factor = factor_gauss;
         } else if (type == ConvType.LAPL){
             target = matrix_lapl;
@@ -172,4 +172,25 @@ public class Convolution extends Shader{
         return arr;
     }
 
+    private float[][] GaussianKernel(double sigma){
+        int W = 15;
+        float kernel[][] = new float[W][W];
+        double mean = W/2;
+        double sum = 0.0; // For accumulating the kernel values
+        for (int x = 0; x < W; ++x)
+            for (int y = 0; y < W; ++y) {
+                kernel[x][y] = (float)(Math.exp( -0.5 * (Math.pow((x-mean)/sigma, 2.0) + Math.pow((y-mean)/sigma,2.0)) )
+                        / (2 * Math.PI * sigma * sigma));
+
+                // Accumulate the kernel values
+                sum += kernel[x][y];
+            }
+
+// Normalize the kernel
+        for (int x = 0; x < W; ++x)
+            for (int y = 0; y < W; ++y)
+                kernel[x][y] /= sum;
+
+        return kernel;
+    }
 }
