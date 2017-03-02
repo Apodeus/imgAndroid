@@ -1,7 +1,7 @@
 #pragma version(1)
 #pragma rs java_package_name(newera.myapplication)
 
-const static float3 gBlackWhiteMult = {0.299f, 0.587f, 0.114f};
+const static float3 grayscaleValues = {0.299f, 0.587f, 0.114f};
 
 static float Hue_2_RGB(float v1, float v2, float vHue) {
     if (vHue < 0) {
@@ -60,7 +60,7 @@ static float restreinHue(float h){
 }
 
 static int3 convertGrayScale(int r, int g, int b){
-      int grayscale = r * gBlackWhiteMult.r +  g * gBlackWhiteMult.g + b * gBlackWhiteMult.b;
+      int grayscale = r * grayscaleValues.r +  g * grayscaleValues.g + b * grayscaleValues.b;
       int3 new;
       new.x = grayscale;
       new.y = grayscale;

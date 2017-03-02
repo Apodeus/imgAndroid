@@ -2,6 +2,8 @@
 #pragma rs_fp_relaxed
 #pragma rs java_package_name(newera.myapplication)
 
+#include "rs_debug.rsh"
+
 const static float3 grayScale = {0.299f, 0.587f, 0.114f};
 
 rs_allocation arr;
@@ -14,8 +16,6 @@ static float restrein(float val){
     float f = fmax(0.0f, val);
     return fmin(1.0f, f);
 }
-
-
 
 void init() {
     //init the array with zeros
@@ -55,12 +55,36 @@ uchar4 __attribute__((kernel)) calculHistogram(uchar4 in, uint32_t x, uint32_t y
   histogram[Yvalue]++;
   rsSetElementAt_int(arr, histogram[Yvalue],Yvalue);
 
-  float4 new = {Y, U, V, pixel.a};
+  float4 new = {pixel.r, pixel.g, pixel.b, pixel.a};
   out = rsPackColorTo8888(new);
   return out;
 }
 
+uchar4 __attribute__((kernel)) Equalize(uchar4 in, uint32_t x, uint32_t y){
+    float4 pixel = rsUnpackColor8888(in);
 
+    float Y = grayScale.r * pixel.r + grayScale.g * pixel.g + grayScale.b * pixel.b;
+    float U = ((0.492f * (pixel.b - Y)) + 1.0f) / 2.0f;
+    float V = ((0.877f * (pixel.r - Y)) + 1.0f) / 2.0f;
+
+    int32_t Yvalue = Y * 255;
+
+    Y = remapArray[Yvalue];
+
+    U = (2.0f * U) - 1.0f;
+    V = (2.0f * V) - 1.0f;
+
+    //Compute values for red, green and blue channels
+    float red = restrein(Y + 1.14f * V);
+    float green = restrein(Y - 0.395f * U - 0.581f * V);
+    float blue = restrein(Y + 2.033f * U);
+
+    //Put the values in the output uchar4
+    return rsPackColorTo8888(red, green, blue, pixel.a);
+}
+
+
+/*
 
 uchar4 __attribute__((kernel)) YUVToRGB(uchar4 in, uint32_t x, uint32_t y) {
 
@@ -82,3 +106,5 @@ uchar4 __attribute__((kernel)) YUVToRGB(uchar4 in, uint32_t x, uint32_t y) {
     //Put the values in the output uchar4
     return rsPackColorTo8888(red, green, blue, pixel.a);
 }
+
+*/
