@@ -212,7 +212,6 @@ public class CImageView extends View {
         if (image != null)
         {
             bundle.putBoolean("loadedImage", true);
-            image.saveInBundle(bundle);
             bundle.putInt("contentCoords.x", contentCoords.x);
             bundle.putInt("contentCoords.y", contentCoords.y);
             bundle.putFloat("contentScale", contentScale);
@@ -229,8 +228,6 @@ public class CImageView extends View {
             Bundle bundle = (Bundle) state;
             if (bundle.getBoolean("loadedImage", false))
             {
-                image = new Image();
-                image.loadFromBundle(bundle);
                 contentCoords = new Point();
                 contentCoords.x = bundle.getInt("contentCoords.x");
                 contentCoords.y = bundle.getInt("contentCoords.y");

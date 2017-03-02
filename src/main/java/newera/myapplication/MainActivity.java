@@ -1,5 +1,6 @@
 package newera.myapplication;
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import newera.myapplication.image.processing.shaders.InvertColor;
 import newera.myapplication.image.processing.shaders.KeepHue;
 import newera.myapplication.image.processing.shaders.Lightness;
 import newera.myapplication.image.processing.shaders.Sepia;
+import newera.myapplication.ui.system.DataFragment;
 import newera.myapplication.ui.system.SystemActionHandler;
 import newera.myapplication.ui.view.ActionCamera;
 import newera.myapplication.ui.view.ActionGallery;
@@ -24,6 +26,7 @@ import newera.myapplication.ui.view.CircleMenu;
 public class MainActivity extends AppCompatActivity {
 
     public CImageView civ;
+    public DataFragment dataFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +54,27 @@ public class MainActivity extends AppCompatActivity {
         menu.setManager(civ.getManager());
         menu.setPosition(CircleMenu.Position.BOT_RIGHT);
         initializeFilterMenu(menu);
+
+        // find the retained fragment on activity restarts
+        FragmentManager fm = getFragmentManager();
+        dataFragment = (DataFragment) fm.findFragmentByTag("data");
+
+        // create the fragment and data the first time
+        if (dataFragment == null) {
+            // add the fragment
+            dataFragment = new DataFragment();
+            fm.beginTransaction().add(dataFragment, "data").commit();
+            // load the data from the web
+        }else{
+            civ.setImage(dataFragment.getImage());
+        }
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        dataFragment.setImage(civ.getImage());
     }
 
     @Override
