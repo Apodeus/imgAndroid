@@ -12,7 +12,10 @@ import newera.myapplication.R;
 import newera.myapplication.ScriptC_convolution;
 import newera.myapplication.ScriptC_sobel;
 import newera.myapplication.image.Image;
+import newera.myapplication.image.processing.EItems;
 import newera.myapplication.ui.view.ActionCamera;
+import newera.myapplication.ui.view.CImageView;
+import newera.myapplication.ui.view.inputs.InputManager;
 
 
 /**
@@ -89,6 +92,7 @@ public class Convolution extends Shader{
                     rsConv.set_h(bitmap.getHeight());
                     rsConv.set_w(bitmap.getWidth());
                     rsConv.set_in(in);
+
                     if(matrix != ConvType.SOBEL) {
                         setupMatrix(rsConv, matrix);
                         rsConv.forEach_convolution(out);
@@ -182,4 +186,5 @@ public class Convolution extends Shader{
 
         return kernel;
     }
+
 }

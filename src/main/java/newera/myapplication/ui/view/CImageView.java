@@ -15,6 +15,7 @@ import newera.myapplication.image.Image;
 import newera.myapplication.image.processing.EItems;
 import newera.myapplication.image.processing.shaders.ChangeHue;
 import newera.myapplication.image.processing.shaders.Contrast;
+import newera.myapplication.image.processing.shaders.Convolution;
 import newera.myapplication.image.processing.shaders.KeepHue;
 import newera.myapplication.image.processing.shaders.Lightness;
 import newera.myapplication.image.processing.shaders.Shader;
@@ -39,8 +40,6 @@ public class CImageView extends View {
     public InputManager getManager() {
         return inputManager;
     }
-
-
 
 
     private enum TouchMethod {DRAG, ZOOM, TOOL;}
