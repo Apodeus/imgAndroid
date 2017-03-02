@@ -26,7 +26,7 @@ public class Convolution extends Shader{
     //This Enum permit to know which Convolution should be apply
     public enum ConvType{GAUSS, EDGE, LAPL, SOBEL, SOBEL_H, SOBEL_V}
     public ConvType matrix = ConvType.EDGE;
-    public int kernel_size = 3;
+    private float sigma = 1;
 
     private float factor_gauss = 1;
     private float[][] matrix_gauss = {
@@ -140,7 +140,7 @@ public class Convolution extends Shader{
             target = matrix_edge;
             factor = factor_edge;
         } else if (type == ConvType.GAUSS){
-            target = GaussianKernel(5);
+            target = GaussianKernel(sigma);
             factor = factor_gauss;
         } else if (type == ConvType.LAPL){
             target = matrix_lapl;
@@ -173,7 +173,7 @@ public class Convolution extends Shader{
     }
 
     private float[][] GaussianKernel(double sigma){
-        int W = 15;
+        int W = (int)(sigma*3);
         float kernel[][] = new float[W][W];
         double mean = W/2;
         double sum = 0.0; // For accumulating the kernel values
