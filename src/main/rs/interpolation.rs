@@ -1,5 +1,5 @@
 #pragma version(1)
-#pragma rs java_package_name(newera.myapplication)
+#pragma rs java_package_name(newera.EliJ)
 
 float3 p0, p1, p2, p3, pixel1, pixel2;
 rs_allocation orig_image;

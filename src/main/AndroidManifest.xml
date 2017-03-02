@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
     <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="newera.myapplication">
+    package="newera.EliJ">
 
     <uses-feature android:name="android.hardware.camera" android:required="false"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".MainActivity">
+        <activity android:name="newera.EliJ.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

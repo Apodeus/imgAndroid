@@ -1,5 +1,5 @@
 #pragma version(1)
-#pragma rs java_package_name(newera.myapplication)
+#pragma rs java_package_name(newera.EliJ)
 
 const static float3 sepiaRed = {0.393f, 0.769f, 0.189f};
 const static float3 sepiaGreen = {0.349f, 0.686f, 0.168f};

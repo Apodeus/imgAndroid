@@ -1,5 +1,5 @@
 #pragma version(1)
-#pragma rs java_package_name(newera.myapplication)
+#pragma rs java_package_name(newera.EliJ)
 
 rs_allocation in;
 
