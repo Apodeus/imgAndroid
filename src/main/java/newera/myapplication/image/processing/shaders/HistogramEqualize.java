@@ -50,6 +50,8 @@ public class HistogramEqualize extends Shader {
 
             //Copy the new histogram in the array histo
             tmpArrayHistogram.copyTo(histo);
+            rsHistogram.set_histogram(histo);
+            rsHistogram.invoke_createRemapArray();
 
             //Apply the equalization of the histogram
             for (Bitmap[] arrBitmap : image.getBitmaps()){
@@ -57,12 +59,8 @@ public class HistogramEqualize extends Shader {
                     Allocation in = Allocation.createFromBitmap(renderScript, bitmap);
                     Allocation out = Allocation.createTyped(renderScript, in.getType());
 
-                    rsHistogram.forEach_calculHistogram(in, out);
-                    rsHistogram.set_histogram(histo);
-                    rsHistogram.invoke_createRemapArray();
-                    rsHistogram.forEach_YUVToRGB(out, in);
-
-                    in.copyTo(bitmap);
+                    rsHistogram.forEach_Equalize(in, out);
+                    out.copyTo(bitmap);
                 }
             }
         }
