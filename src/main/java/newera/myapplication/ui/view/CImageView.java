@@ -42,6 +42,7 @@ public class CImageView extends View {
 
 
 
+
     private enum TouchMethod {DRAG, ZOOM, TOOL;}
     private Image image;
 

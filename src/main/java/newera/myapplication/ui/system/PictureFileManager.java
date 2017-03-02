@@ -169,11 +169,17 @@ public class PictureFileManager {
                         img = decoder.decodeRegion(rect, null);
                         //Log.i("DBG", "rect= x("+xm +","+xM+"), y("+ym+","+yM+"), bitmap : w="+img.getWidth()+", h="+img.getHeight());
                         result.addBitmap(img, x, y);
-                        result.initOriginalBitmap(img, x, y);
                     }
                 }
                 parcelFD.close();
-            } else {
+
+                for(int y = 0; y < lines; ++y)
+                    for(int x = 0; x < rows; ++x)
+                    {
+                        img = result.getBitmap(x, y);
+                        result.initOriginalBitmap(img, x, y);
+                    }
+                } else {
                 Log.i("", "ERROR: TmpUriFile is empty.");
             }
         } catch(IOException e) {
@@ -192,6 +198,9 @@ public class PictureFileManager {
             TmpUriFile = data.getData();
         }
 
+        Image i = Activity.civ.getImage();
+        if (i != null && !i.isEmpty())
+            i.recycleBitmaps();
         Activity.civ.setImage(RetrieveSavedPictureFromIntent());
     }
 

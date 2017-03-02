@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.util.Log;
 
 import newera.myapplication.image.processing.shaders.Shader;
 import newera.myapplication.ui.system.PictureFileManager;
@@ -17,7 +16,7 @@ import newera.myapplication.ui.system.PictureFileManager;
 public class Image {
     private Bitmap[][] bitmap;
     private Bitmap[][] originalBitmap;
-    private int rows, lines;
+    private int w, h;
 
     /**
      * @return bitmap's reference
@@ -38,8 +37,8 @@ public class Image {
      *       Initialize the array of Bitmaps
      */
     public void setDim(int rows, int lines){
-        this.rows = rows;
-        this.lines = lines;
+        this.w = rows;
+        this.h = lines;
         this.bitmap = new Bitmap[rows][lines];
         for(int x = 0; x < rows; ++x) {
             for (int y = 0; y < lines; ++y) {
@@ -139,8 +138,8 @@ public class Image {
     }
 
     public void initDimOriginalBitmap(int w, int h){
-        this.rows = w;
-        this.lines = h;
+        this.w = w;
+        this.h = h;
         this.originalBitmap = new Bitmap[w][h];
         for(int y = 0; y < h; ++y) {
             for (int x = 0; x < w; ++x) {
@@ -150,8 +149,8 @@ public class Image {
     }
 
     public void reinitializeBitmap(){
-        for(int x = 0; x < rows; x++) {
-            for (int y = 0; y < lines; y++) {
+        for(int x = 0; x < w; x++) {
+            for (int y = 0; y < h; y++) {
                 this.bitmap[x][y] = this.originalBitmap[x][y].copy(
                         this.originalBitmap[x][y].getConfig(),
                         this.originalBitmap[x][y].isMutable()
@@ -172,7 +171,7 @@ public class Image {
 
     public int getWidth(){
         int bmp_width = 0;
-        for (int x = 0; x < rows; ++x) {
+        for (int x = 0; x < w; ++x) {
             bmp_width += bitmap[x][0].getWidth();
         }
         return bmp_width;
@@ -180,7 +179,7 @@ public class Image {
 
     public int getHeight() {
         int bmp_height = 0;
-        for (int y = 0; y < lines; ++y) {
+        for (int y = 0; y < h; ++y) {
             bmp_height += bitmap[0][y].getHeight();
         }
         return bmp_height;
@@ -208,22 +207,22 @@ public class Image {
      * @return The number of Bitmap in width
      */
     public int getTileW() {
-        return rows;
+        return w;
     }
 
     /**
      * @return The number of Bitmap in height
      */
     public int getTileH() {
-        return lines;
+        return h;
     }
 
     public void saveInBundle(Bundle bundle)
     {
-        bundle.putInt("Iw", rows);
-        bundle.putInt("Ih", lines);
-        for (int j = 0; j < rows; j++)
-            for (int i = 0; i < lines; i++)
+        bundle.putInt("Iw", w);
+        bundle.putInt("Ih", h);
+        for (int j = 0; j < w; j++)
+            for (int i = 0; i < h; i++)
             {
                 bundle.putParcelable("Ibitmap." + j + "." + i, bitmap[j][i]);
                 bundle.putParcelable("IoriginalBitmap." + j + "." + i, originalBitmap[j][i]);
@@ -232,15 +231,24 @@ public class Image {
 
     public void loadFromBundle(Bundle bundle)
     {
-        rows = bundle.getInt("Iw");
-        lines = bundle.getInt("Ih");
-        bitmap = new Bitmap[rows][lines];
-        originalBitmap = new Bitmap[rows][lines];
-        for (int j = 0; j < rows; j++)
-            for (int i = 0; i < lines; i++)
+        w = bundle.getInt("Iw");
+        h = bundle.getInt("Ih");
+        bitmap = new Bitmap[w][h];
+        originalBitmap = new Bitmap[w][h];
+        for (int j = 0; j < w; j++)
+            for (int i = 0; i < h; i++)
             {
                 bitmap[j][i] = bundle.getParcelable("Ibitmap." + j + "." + i);
                 originalBitmap[j][i] = bundle.getParcelable("IoriginalBitmap." + j + "." + i);
+            }
+    }
+
+    public void recycleBitmaps() {
+        for (int i = 0; i < w; i++)
+            for (int j = 0; j < h; j++)
+            {
+                bitmap[i][j].recycle();
+                originalBitmap[i][j].recycle();
             }
     }
 }
