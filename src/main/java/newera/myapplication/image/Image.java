@@ -217,32 +217,6 @@ public class Image {
         return h;
     }
 
-    public void saveInBundle(Bundle bundle)
-    {
-        bundle.putInt("Iw", w);
-        bundle.putInt("Ih", h);
-        for (int j = 0; j < w; j++)
-            for (int i = 0; i < h; i++)
-            {
-                bundle.putParcelable("Ibitmap." + j + "." + i, bitmap[j][i]);
-                bundle.putParcelable("IoriginalBitmap." + j + "." + i, originalBitmap[j][i]);
-            }
-    }
-
-    public void loadFromBundle(Bundle bundle)
-    {
-        w = bundle.getInt("Iw");
-        h = bundle.getInt("Ih");
-        bitmap = new Bitmap[w][h];
-        originalBitmap = new Bitmap[w][h];
-        for (int j = 0; j < w; j++)
-            for (int i = 0; i < h; i++)
-            {
-                bitmap[j][i] = bundle.getParcelable("Ibitmap." + j + "." + i);
-                originalBitmap[j][i] = bundle.getParcelable("IoriginalBitmap." + j + "." + i);
-            }
-    }
-
     public void recycleBitmaps() {
         for (int i = 0; i < w; i++)
             for (int j = 0; j < h; j++)
