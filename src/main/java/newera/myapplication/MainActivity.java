@@ -97,8 +97,7 @@ public class MainActivity extends AppCompatActivity {
         menu.addClickable(new ActionSave());
         menu.addClickable(new ActionReset());
     }
-    public void initializeFilterMenu(CircleMenu menu)
-    {
+    public void initializeFilterMenu(CircleMenu menu) {
         menu.addClickable(new InvertColor(this));
         menu.addClickable(new GrayScale(this));
         menu.addClickable(new Sepia(this));
@@ -108,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
         menu.addClickable(new KeepHue(this));
         menu.addClickable(new HistogramEqualize(this));
         menu.addClickable(new Convolution(this, Convolution.ConvType.GAUSS));
+        menu.addClickable(new Convolution(this, Convolution.ConvType.MOY));
         menu.addClickable(new Convolution(this, Convolution.ConvType.EDGE));
         menu.addClickable(new Convolution(this, Convolution.ConvType.LAPL));
         menu.addClickable(new Convolution(this, Convolution.ConvType.SOBEL));

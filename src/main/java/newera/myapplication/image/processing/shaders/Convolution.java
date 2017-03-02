@@ -24,7 +24,7 @@ public class Convolution extends Shader{
     private Bitmap icon;
 
     //This Enum permit to know which Convolution should be apply
-    public enum ConvType{GAUSS, EDGE, LAPL, SOBEL, SOBEL_H, SOBEL_V}
+    public enum ConvType{GAUSS, EDGE, LAPL, MOY, SOBEL, SOBEL_H, SOBEL_V}
     public ConvType matrix = ConvType.EDGE;
     private float sigma = 1;
 
@@ -33,6 +33,13 @@ public class Convolution extends Shader{
             {0.077847f, 0.123317f, 0.077847f},
             {0.123317f, 0.195346f, 0.123317f},
             {0.077847f, 0.123317f, 0.077847f},
+    };
+
+    private float factor_moy = 9;
+    private float[][] matrix_moy = {
+            {1, 1, 1,},
+            {1, 1, 1,},
+            {1, 1, 1,},
     };
 
     private float factor_edge = 1;
@@ -151,6 +158,9 @@ public class Convolution extends Shader{
         } else if (type == ConvType.SOBEL_V){
             target = matrix_sobel[1];
             factor = factor_sobel;
+        } else if (type == ConvType.MOY){
+            target = matrix_moy;
+            factor = factor_moy;
         }
         conv.set_matrix_size(target.length);
         conv.set_matrix_factor(factor);

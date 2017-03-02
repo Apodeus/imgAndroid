@@ -47,5 +47,5 @@ uchar4 __attribute__((kernel)) convolution(uint32_t x, uint32_t y) {
 
     //out = convert_uchar4(stack);
 
-    return rsPackColorTo8888(stack);
+    return rsPackColorTo8888(stack/matrix_factor);
 }
