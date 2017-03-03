@@ -3,7 +3,9 @@ package newera.EliJ.ui.system;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapRegionDecoder;
+import android.graphics.Matrix;
 import android.graphics.Rect;
+import android.media.ExifInterface;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
@@ -248,5 +250,12 @@ public class PictureFileManager {
         TmpPictureFile = image;
         TmpUriFile = Uri.fromFile(TmpPictureFile);
 
+    }
+
+    public static Bitmap rotateImage(Bitmap source, float angle) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(),
+                matrix, true);
     }
 }
