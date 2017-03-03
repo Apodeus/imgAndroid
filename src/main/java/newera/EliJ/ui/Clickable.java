@@ -1,6 +1,5 @@
 package newera.EliJ.ui;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import newera.EliJ.ui.view.CImageView;
 import newera.EliJ.ui.view.inputs.InputManager;
@@ -13,7 +12,7 @@ public interface Clickable {
 
     String getName();
 
-    void initIcon(Context context, int iconSize);
+    void initIcon(int iconSize);
 
     Bitmap getIcon();
 

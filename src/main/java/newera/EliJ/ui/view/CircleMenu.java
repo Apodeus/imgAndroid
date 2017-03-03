@@ -63,7 +63,16 @@ public class CircleMenu extends View {
     private boolean scrollLock;
     private int currentPositionX;
     private int currentPositionY;
-    public int menuColor, itemColor;
+
+    public void setMenuColor(int menuColor) {
+        this.menuColor = menuColor;
+    }
+
+    public void setItemColor(int itemColor) {
+        this.itemColor = itemColor;
+    }
+
+    private int menuColor, itemColor;
 
     private CImageView view;
     private InputManager manager;
@@ -255,10 +264,10 @@ public class CircleMenu extends View {
                 * Handle click
                 */
                 if (!movingCircle && !touchIsExt && dist(initialTx, initialTy, (int)event.getX(), (int)event.getY()) < CLICK_DEAD_ZONE){
-                    for (int i = 0; i < itemList.size(); ++i){
+                    for (MenuItem anItemList : itemList) {
 
-                        if (itemList.get(i).contains((int)event.getX(), (int)event.getY())){
-                            itemList.get(i).getClickable().onClick(manager, view);
+                        if (anItemList.contains((int) event.getX(), (int) event.getY())) {
+                            anItemList.getClickable().onClick(manager, view);
                                 /*
                                 case 3:
                                     view.reinitialize();
@@ -290,7 +299,7 @@ public class CircleMenu extends View {
 
     public void addClickable(Clickable clk){
         this.addItem(new MenuItem(clk));
-        clk.initIcon(activity, ICON_SIZE);
+        clk.initIcon(ICON_SIZE);
         if(itemList.size() >= 5) this.scrollLock = false;
     }
 

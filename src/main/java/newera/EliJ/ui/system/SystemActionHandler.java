@@ -32,6 +32,9 @@ public class SystemActionHandler {
         PictureFileManager.setActivity(activity);
     }
 
+    /**
+     * Set the StartupView to become invisible and unresponsive to user inputs.
+     */
     public static void removeStartupView()
     {
         StartupView sv = (StartupView) Activity.findViewById(R.id.startupView);
@@ -53,7 +56,7 @@ public class SystemActionHandler {
     }
 
     /**
-     * create a request to allow the creation of a directory for saving content
+     * Ask permission to the user to save data in the Gallery
      */
     public static void requestCreateDirectory() {
 
@@ -74,6 +77,9 @@ public class SystemActionHandler {
 
     }
 
+    /**
+     * Called as it by MainActivity to deal with new permitted actions.
+     */
     public static void handleRequestPermissionsResult(int requestCode,
                                                       String permissions[], int[] grantResults){
         switch (requestCode) {

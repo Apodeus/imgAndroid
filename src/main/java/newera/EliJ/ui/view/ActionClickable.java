@@ -18,12 +18,20 @@ public abstract class ActionClickable implements Clickable {
     protected int drawableIconId;
     protected int clickableName;
 
+    /**
+     * Create a button for CircleMenu with icon, label and identification.
+     * @param context App's context (MainActivity or View)
+     */
     public ActionClickable(Context context)
     {
         this.context = context;
     }
 
-    public void initIcon(Context context, int iconSize) {
+    /**
+     * Generate app's icon with color before drawing it.
+     * @param iconSize Size of the icon
+     */
+    public void initIcon(int iconSize) {
         Drawable drawable = context.getResources().getDrawable(drawableIconId);
         drawable.setColorFilter(context.getResources().getColor(R.color.colorLight), PorterDuff.Mode.SRC_ATOP);
         drawable.setBounds(0, 0, iconSize, iconSize);
@@ -32,10 +40,16 @@ public abstract class ActionClickable implements Clickable {
         drawable.draw(canvas);
     }
 
+    /**
+     * @return Icon to be drawn
+     */
     public Bitmap getIcon() {
         return icon;
     }
 
+    /**
+     * @return Name to be displayed
+     */
     public String getName()
     {
         return context.getResources().getString(clickableName);

@@ -20,7 +20,7 @@ public class ActionSave extends ActionClickable {
 
     @Override
     public int onClick(InputManager manager, CImageView view) {
-        manager.createBox(EItems.S_QUALITY_SAVE, view.getResources().getString(R.string.systemSavePicture));
+        manager.createBox(this, EItems.S_QUALITY_SAVE, view.getResources().getString(R.string.systemSavePicture));
         view.setCurrentAction(EItems.S_QUALITY_SAVE);
         return 0;
     }

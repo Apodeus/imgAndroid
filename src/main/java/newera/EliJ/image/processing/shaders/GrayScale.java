@@ -1,10 +1,11 @@
 package newera.EliJ.image.processing.shaders;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.renderscript.Allocation;
-import newera.EliJ.MainActivity;
 import newera.EliJ.R;
 import newera.EliJ.ScriptC_grayscale;
 import newera.EliJ.image.Image;
+import newera.EliJ.image.processing.EItems;
 
 
 /**
@@ -13,10 +14,11 @@ import newera.EliJ.image.Image;
 
 public class GrayScale extends Shader{
 
-    public GrayScale(MainActivity activity) {
-        super(activity);
+    public GrayScale(Context context) {
+        super(context);
         this.drawableIconId = R.drawable.ic_grayscale_gradient_black_24dp;
         this.clickableName = R.string.shaderGrayScaleName;
+        this.item = EItems.F_GRAYSCALE;
     }
 
     @Override
@@ -35,7 +37,7 @@ public class GrayScale extends Shader{
                     out.copyTo(bitmap);
                 }
         }
-        refreshImage();
+        //refreshImage();
     }
 
 }
