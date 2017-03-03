@@ -33,22 +33,18 @@ public class PictureFileManager {
     public static final int DECODE_TILE_SIZE = 2048;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int REQUEST_IMAGE_GALLERY = 2;
-    private static final int REQUEST_CREATE_DIRECTORY = 3;
     private static int LAST_REQUEST;
 
     private static MainActivity Activity;
 
-    private static String TmpPicturePath;
-
     private static File TmpPictureFile;
 
-    private static ParcelFileDescriptor parcelFD;
-    private static FileDescriptor fileDescriptor;
     private static Uri TmpUriFile;
 
 
-    /** Set the reference to MainActivity for systems calls.
-     * @param activity the MainActivity.
+    /**
+     * Set the reference to MainActivity for systems calls.
+     * @param activity App's MainActivity.
      */
     static void setActivity(MainActivity activity) {
         Activity = activity;
@@ -65,10 +61,10 @@ public class PictureFileManager {
     }
 
     /**
-     * @param bitmap
-     * @param quality
+     * @param bitmap Bitmap to save
+     * @param quality Quality of compressed Bitmap from 0 to 100 (correct would be 75-80)
      * @throws IOException
-     * Save a bitmap at the location /Pictures/newera.myapplication/
+     * Save a bitmap at the location /Pictures/newera.EliJ/
      */
     public static void SaveBitmap(Bitmap bitmap, int quality) throws IOException {
 
@@ -91,7 +87,10 @@ public class PictureFileManager {
 
     }
 
-    /** Create a File for saving an image or video */
+
+    /**
+     * @return File to save picture to
+     */
     private static File getOutputMediaFile(){
         // To be safe, you should check that the SDCard is mounted
         // using Environment.getExternalStorageState() before doing this.
@@ -130,7 +129,7 @@ public class PictureFileManager {
      * Retrieve a picture previously saved with CreatePictureFileFromCamera() or LoadPictureFromGallery().
      * @return A new Image object of the saved picture
      */
-    public static Image RetrieveSavedPictureFromIntent()
+    private static Image RetrieveSavedPictureFromIntent()
     {
         Image result = new Image();
         Bitmap img;
@@ -138,8 +137,8 @@ public class PictureFileManager {
         try {
             if (TmpUriFile != null) {
 
-                parcelFD = Activity.getContentResolver().openFileDescriptor(TmpUriFile, "r");
-                fileDescriptor = parcelFD.getFileDescriptor();
+                ParcelFileDescriptor parcelFD = Activity.getContentResolver().openFileDescriptor(TmpUriFile, "r");
+                FileDescriptor fileDescriptor = parcelFD.getFileDescriptor();
 
                 BitmapRegionDecoder decoder = BitmapRegionDecoder.newInstance(fileDescriptor, true);
 
@@ -236,16 +235,14 @@ public class PictureFileManager {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = Activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
+
+        // Save a file: path for use with ACTION_VIEW intents
+
+        TmpPictureFile = File.createTempFile(
                 imageFileName,
                 ".jpg",
                 storageDir
         );
-
-        // Save a file: path for use with ACTION_VIEW intents
-
-        TmpPicturePath = image.getAbsolutePath();
-        TmpPictureFile = image;
         TmpUriFile = Uri.fromFile(TmpPictureFile);
 
     }

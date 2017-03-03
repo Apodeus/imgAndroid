@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">EliJ</string>
+    <string name="app_name">EliJ</string>
     <string name="startupGalleryHint">Select a picture from Gallery</string>
     <string name="startupCameraHint">Take a picture from Camera</string>
     <string name="shaderGrayScaleName">GrayScale</string>
@@ -18,4 +18,11 @@
     <string name="cancel">Cancel</string>
     <string name="shaderConvolutionName">Convolution</string>
     <string name="systemSavePicture">Save picture</string>
+    <string name="messageFilterApplied">Filter Applied</string>
+    <string name="messageSaveSuccess">Picture saved succefully</string>
+    <string name="shaderConvolutionGaussName">GAUSS Convolution</string>
+    <string name="shaderConvolutionEdgeName">EDGE Convolution</string>
+    <string name="shaderConvolutionLAPLName">LAPL Convolution</string>
+    <string name="shaderConvolutionMoyName">AVG Convolution</string>
+    <string name="shaderConvolutionSobelName">SOBEL Convolution</string>
 </resources>

@@ -1,14 +1,17 @@
-# Projet Android - Semestre 6
+# EliJ
+**Projet Android - Semestre 6**
+
 *Réalisation d'une application Android de traitement d'images.*
 
 ## Sujet
 
 [Lien](http://dept-info.labri.fr/~vialard/ANDROID/references/cahierDesCharges.pdf).
 
-Deadline premier rendu : **Vendredi 3 Mars**
+Deadline premier rendu - *Version Akuma*: **Vendredi 3 Mars**
 
-Deadline rendu final : **Vendredi 14 Avril**
+Deadline rendu final - *Version Buzzard*: **Vendredi 14 Avril**
 ## Cahier des charges
+Cahier : [Overleaf](https://www.overleaf.com/8419408rzkrzspxynkf#/29873234/).
 
 Schéma fonctionnel : [Mindomo](https://www.mindomo.com/mindmap/b9565ab1eb794d20a15267735e7b041d).
 
@@ -18,7 +21,7 @@ Schéma fonctionnel : [Mindomo](https://www.mindomo.com/mindmap/b9565ab1eb794d20
 - ~~Charger une image depuis la Galerie~~
 - ~~Charger une image depuis la caméra~~
 - ~~Afficher une image sur une ImageView custom~~
-- ~~Zoomer~~
+- ~~Zoomer~~ 
 - ~~Scroller~~
 - ~~Réinitialiser l'image d'origine~~
 - ~~Sauvegarder l'image modifiée~~

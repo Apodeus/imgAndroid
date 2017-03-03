@@ -13,11 +13,7 @@ import android.view.View;
 import newera.EliJ.R;
 import newera.EliJ.image.Image;
 import newera.EliJ.image.processing.EItems;
-import newera.EliJ.image.processing.shaders.ChangeHue;
-import newera.EliJ.image.processing.shaders.Contrast;
-import newera.EliJ.image.processing.shaders.KeepHue;
-import newera.EliJ.image.processing.shaders.Lightness;
-import newera.EliJ.image.processing.shaders.Shader;
+import newera.EliJ.image.processing.shaders.*;
 import newera.EliJ.ui.system.PictureFileManager;
 import newera.EliJ.ui.system.SystemActionHandler;
 import newera.EliJ.ui.view.inputs.InputManager;
@@ -33,7 +29,6 @@ import java.util.Map;
 
 public class CImageView extends View {
     private final static float MOVE_SAFEZONE = 0.5f;
-    private final static float LERP_FACTOR = 3f;
     private EItems currentInputItem;
 
     public InputManager getManager() {
@@ -43,25 +38,21 @@ public class CImageView extends View {
 
 
 
-    private enum TouchMethod {DRAG, ZOOM, TOOL;}
+    private enum TouchMethod {DRAG, ZOOM, TOOL}
     private Image image;
 
     private Point contentCoords;
     private float contentScale;
     private TouchHandler touchHandler;
-    private Rect src;
-    private Rect dst;
     private InputManager inputManager;
     private Paint imagePaint;
-    private boolean startupViewMasked = false;
+
     public CImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
         image = null;
         this.contentCoords = new Point(0, 0);
         this.touchHandler = new TouchHandler();
         this.contentScale = 1f;
-        this.src = new Rect();
-        this.dst = new Rect();
 
         this.inputManager = new InputManager(this);
 
@@ -72,7 +63,7 @@ public class CImageView extends View {
 
     /**
      * Set the picture to be displayed on the view.
-     * @param image the Image object to be displayed.
+     * @param image Image object to be displayed.
      */
     public void setImage(Image image)
     {
@@ -86,7 +77,10 @@ public class CImageView extends View {
         }
     }
 
-    public void reinitialize(){
+    /**
+     * Reset Image's content.
+     */
+    void reinitialize(){
         if(this.image != null && !this.image.isEmpty()) {
             this.image.reinitializeBitmap();
             invalidate();
@@ -129,35 +123,29 @@ public class CImageView extends View {
         return true;
     }
 
-    public void onApplyFilter(Map<String, Object> params)
+    /**
+     * Called by InputManager to edit the Image object with the given parameters when user presses Apply.
+     * @param shader Shader to apply
+     * @param params Shader's parameters
+     */
+    public void onApplyFilter(Shader shader, Map<String, Object> params)
     {
-        Shader shader = null;
-        switch (currentInputItem) {
-            case NONE:
-                return;
-            case F_CHANGE_HUE:
-                shader = new ChangeHue(getContext());
-                break;
-            case F_LIGHTNESS:
-                shader = new Lightness(getContext());
-                break;
-            case F_KEEP_HUE:
-                shader = new KeepHue(getContext());
-                break;
-            case F_CONTRAST:
-                shader = new Contrast(getContext());
-                break;
-        }
-
         shader.setParameters(params);
         shader.ApplyFilter(image);
     }
 
+    /**
+     * Called by InputManager when box is closed by user.
+     */
     public void onCancelFilter()
     {
 
     }
 
+    /**
+     * Same usage as onApplyFilter but mainly for system calls. Might be fused with onApplyFilter in the future.
+     * @param params Call's parameters
+     */
     public void onApplySystem(Map<String, Object> params)
     {
         switch (currentInputItem){
@@ -173,8 +161,8 @@ public class CImageView extends View {
 
     //TODO
     //For Undo / redo options...
-    public void onPreviewFilter(int value) {
-        /*switch (currentInputType) {
+    /*public void onPreviewFilter(int value) {
+        switch (currentInputType) {
             case NONE:
                 return;
             case SHADER:
@@ -191,8 +179,8 @@ public class CImageView extends View {
                 break;
             case SYSTEM:
                 break;
-        }*/
-    }
+        }
+    }*/
 
     /**
      * @return the Image's reference
@@ -202,6 +190,10 @@ public class CImageView extends View {
         return this.image;
     }
 
+    /**
+     * Setter for more abstract approach. Might be useless in the future.
+     * @param item Item to deal with somewhere else.
+     */
     public void setCurrentAction(EItems item) { this.currentInputItem = item; }
 
     @Override
@@ -245,7 +237,6 @@ public class CImageView extends View {
         private int initialX, initialY;
         private int initialContentX, initialContentY;
         private float initialDist, initialScale;
-        private TouchMethod method;
         private int mActivePointerId, pointerIndex;
         private List<Point> touchList;
 

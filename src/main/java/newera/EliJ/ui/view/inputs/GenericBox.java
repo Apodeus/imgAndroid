@@ -34,7 +34,6 @@ public class GenericBox {
     private Rect collapsedBoxBackground;
 
     private int boxBackgroundColor;
-    private int boxBorderColor;
     private int textColor;
 
     private List<IGenericBoxComponent> components;
@@ -42,19 +41,138 @@ public class GenericBox {
     private boolean init = false;
 
     private final static float BOX_BOTTOM_OFFSET_Y = 0.05f;
-    private final static float BOX_HEIGHT_COVERAGE = 0.05f;
     private final static float BOX_WIDTH_COVERAGE = 0.85f;
-    private final static float BOX_BORDER_THICKNESS = 0.7f;
     private final static int TEXT_SIZE = 40;
     private final static int ICON_SIZE = 125;
 
     private final static float PAINT_ALPHA = 0.8f;
 
-    public GenericBox(InputManager manager, String label, List<InputDataType> askedValues)
+    /**
+     * Create a modular input box for user interaction on items.
+     * @param manager InputManager parent of the box
+     * @param label String to display as a title
+     * @param askedValues List of asked settings to be set by user
+     */
+    GenericBox(InputManager manager, String label, List<InputDataType> askedValues)
     {
         this.manager = manager;
         this.label = label;
         this.askedValues = askedValues;
+    }
+
+    /**
+     * Draw the box in the given canvas.
+     * @param canvas eh.
+     */
+    void drawBox(Canvas canvas) {
+        if (!init)
+            initialize(canvas);
+
+        paint.setColor(boxBackgroundColor);
+        paint.setAlpha((int) (PAINT_ALPHA * 255));
+        canvas.drawRect(currentBoxBackground, paint);
+
+        canvas.drawBitmap(applyIconBitmap, currentBoxBackground.right - ICON_SIZE, currentBoxBackground.bottom - ICON_SIZE, paint);
+        canvas.drawBitmap(cancelIconBitmap, currentBoxBackground.left, currentBoxBackground.bottom - ICON_SIZE, paint);
+
+        paint.setColor(textColor);
+        paint.setTextSize(TEXT_SIZE);
+        paint.setTextAlign(Paint.Align.CENTER);
+        canvas.drawText(label, viewWidth/2, currentBoxBackground.bottom - ICON_SIZE / 1.75f, paint);
+
+        if (isExtended)
+        {
+            for (IGenericBoxComponent c : components)
+                c.draw(canvas);
+
+            canvas.drawBitmap(collapseIconBitmap, (viewWidth - ICON_SIZE) / 2, currentBoxBackground.bottom - ICON_SIZE / 1.3f, paint);
+        }else{
+            canvas.drawBitmap(extendIconBitmap, (viewWidth - ICON_SIZE) / 2, currentBoxBackground.bottom - ICON_SIZE / 1.3f , paint);
+        }
+
+    }
+
+    /**
+     * To be called by View's onTouchEvent. Deal with touchEvent on the box.
+     * @param event MotionEvent given to the View as it.
+     * @return True if event is destined to the box (you might want to ignore further checks)
+     */
+    boolean handleTouch(MotionEvent event)
+    {
+        if (event.getY() > currentBoxBackground.top && event.getY() < collapsedBoxBackground.top && event.getAction() == MotionEvent.ACTION_DOWN)
+            if (event.getX() > currentBoxBackground.left) {
+            isEdit = true;
+                for (IGenericBoxComponent c : components)
+                    c.enableEdit(event);
+                //Handle action_down
+            }
+
+        if (isEdit && event.getAction() == MotionEvent.ACTION_MOVE)
+        {
+            //Handle edit
+            for (IGenericBoxComponent c : components)
+                c.handleEdit(event);
+        }
+
+        if (event.getAction() == MotionEvent.ACTION_UP)
+        {
+
+            for (IGenericBoxComponent c : components)
+                c.disableEdit();
+            //manager.onPreviewFilter(currentValue, getParams());
+            if (!isEdit && event.getY() > currentBoxBackground.bottom - ICON_SIZE && event.getY() < currentBoxBackground.bottom)
+                if (event.getX() > currentBoxBackground.left && event.getX() < currentBoxBackground.left + ICON_SIZE)
+                {
+                    manager.onCancel();
+                }
+                else if (!isEdit && event.getX() < currentBoxBackground.right && event.getX() > currentBoxBackground.right - ICON_SIZE)
+                {
+                    Map<String, Object> params = new HashMap<>();
+                    for (int i = 0; i < components.size(); i++)
+                    {
+                        String label = askedValues.get(i).getDataLabel();
+                        Object value = components.get(i).getValue();
+                        params.put(label, value);
+                    }
+
+                    manager.onConfirm(params);
+                } else if (!isEdit){
+                    isExtended = !isExtended;
+
+                    if (currentBoxBackground.equals(extendedBoxBackground))
+                        currentBoxBackground = collapsedBoxBackground;
+                    else
+                        currentBoxBackground = extendedBoxBackground;
+                }
+
+            isEdit = false;
+        }
+
+        return isEdit;
+    }
+
+    /**
+     * @return Box's width for module placements and touch detections.
+     */
+    public int getCanvasWidth()
+    {
+        return this.viewWidth;
+    }
+
+    /**
+     * @return Box's height for module placements and touch detections.
+     */
+    public int getCanvasHeight()
+    {
+        return this.viewHeight;
+    }
+
+    /**
+     * @return InputManager for module update on general app's state.
+     */
+    public InputManager getInputManager()
+    {
+        return this.manager;
     }
 
     private void initialize(Canvas canvas)
@@ -63,7 +181,6 @@ public class GenericBox {
         this.viewHeight = canvas.getHeight();
 
         this.boxBackgroundColor = manager.getView().getResources().getColor(R.color.colorPrimaryMild);
-        this.boxBorderColor = manager.getView().getResources().getColor(R.color.colorAccent);
         this.textColor = manager.getView().getResources().getColor(R.color.colorLight);
 
         this.collapsedBoxBackground = new Rect((int) (viewWidth * (1 - BOX_WIDTH_COVERAGE)) / 2, (int) (viewHeight * (1 - BOX_BOTTOM_OFFSET_Y) - ICON_SIZE), (int) (viewWidth - viewWidth * (1 - BOX_WIDTH_COVERAGE) / 2), (int) (viewHeight * (1 - BOX_BOTTOM_OFFSET_Y)));
@@ -131,102 +248,5 @@ public class GenericBox {
         this.currentBoxBackground = extendedBoxBackground;
 
         this.init = true;
-    }
-
-    public void drawBox(Canvas canvas) {
-        if (!init)
-            initialize(canvas);
-
-        paint.setColor(boxBackgroundColor);
-        paint.setAlpha((int) (PAINT_ALPHA * 255));
-        canvas.drawRect(currentBoxBackground, paint);
-
-        canvas.drawBitmap(applyIconBitmap, currentBoxBackground.right - ICON_SIZE, currentBoxBackground.bottom - ICON_SIZE, paint);
-        canvas.drawBitmap(cancelIconBitmap, currentBoxBackground.left, currentBoxBackground.bottom - ICON_SIZE, paint);
-
-        paint.setColor(textColor);
-        paint.setTextSize(TEXT_SIZE);
-        paint.setTextAlign(Paint.Align.CENTER);
-        canvas.drawText(label, viewWidth/2, currentBoxBackground.bottom - ICON_SIZE / 1.75f, paint);
-
-        if (isExtended)
-        {
-            for (IGenericBoxComponent c : components)
-                c.draw(canvas);
-
-            canvas.drawBitmap(collapseIconBitmap, (viewWidth - ICON_SIZE) / 2, currentBoxBackground.bottom - ICON_SIZE / 1.3f, paint);
-        }else{
-            canvas.drawBitmap(extendIconBitmap, (viewWidth - ICON_SIZE) / 2, currentBoxBackground.bottom - ICON_SIZE / 1.3f , paint);
-        }
-
-    }
-
-    public boolean handleTouch(MotionEvent event)
-    {
-        if (event.getY() > currentBoxBackground.top && event.getY() < collapsedBoxBackground.top && event.getAction() == MotionEvent.ACTION_DOWN)
-            if (event.getX() > currentBoxBackground.left) {
-            isEdit = true;
-                for (IGenericBoxComponent c : components)
-                    c.enableEdit(event);
-                //Handle action_down
-            }
-
-        if (isEdit && event.getAction() == MotionEvent.ACTION_MOVE)
-        {
-            //Handle edit
-            for (IGenericBoxComponent c : components)
-                c.handleEdit(event);
-        }
-
-        if (event.getAction() == MotionEvent.ACTION_UP)
-        {
-
-            for (IGenericBoxComponent c : components)
-                c.disableEdit();
-            //manager.onPreviewFilter(currentValue, getParams());
-            if (!isEdit && event.getY() > currentBoxBackground.bottom - ICON_SIZE && event.getY() < currentBoxBackground.bottom)
-                if (event.getX() > currentBoxBackground.left && event.getX() < currentBoxBackground.left + ICON_SIZE)
-                {
-                    manager.onCancel();
-                }
-                else if (!isEdit && event.getX() < currentBoxBackground.right && event.getX() > currentBoxBackground.right - ICON_SIZE)
-                {
-                    Map<String, Object> params = new HashMap<>();
-                    for (int i = 0; i < components.size(); i++)
-                    {
-                        String label = askedValues.get(i).getDataLabel();
-                        Object value = components.get(i).getValue();
-                        params.put(label, value);
-                    }
-
-                    manager.onConfirm(params);
-                } else if (!isEdit){
-                    isExtended = !isExtended;
-
-                    if (currentBoxBackground.equals(extendedBoxBackground))
-                        currentBoxBackground = collapsedBoxBackground;
-                    else
-                        currentBoxBackground = extendedBoxBackground;
-                }
-
-            isEdit = false;
-        }
-
-        return isEdit;
-    }
-
-    public int getCanvasWidth()
-    {
-        return this.viewWidth;
-    }
-
-    public int getCanvasHeight()
-    {
-        return this.viewHeight;
-    }
-
-    public InputManager getInputManager()
-    {
-        return this.manager;
     }
 }

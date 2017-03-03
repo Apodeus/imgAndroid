@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
-import newera.EliJ.image.processing.shaders.Shader;
 import newera.EliJ.ui.system.PictureFileManager;
 
 /**
@@ -18,12 +17,15 @@ public class Image {
     private int w, h;
 
     /**
-     * @return bitmap's reference
+     * @return Edited tile reference
      */
     public Bitmap getBitmap(int x, int y){
         return bitmap[x][y];
     }
 
+    /**
+     * @return Tileset of edited bitmap
+     */
     public Bitmap[][] getBitmaps()
     {
         return this.bitmap;
@@ -61,11 +63,10 @@ public class Image {
     }
 
     /**
-     * @param bitmap
-     * @param x
-     * @param y
-     *
-     * This method add, by copy, a bitmap in a certain location (x;y) in the array of Bitmap.
+     * Copy a bitmap at given coordinates in the tileset.
+     * @param bitmap Bitmap to copy in the tileset
+     * @param x Coordinate x
+     * @param y Coordinate y
      */
     public void addBitmap(Bitmap bitmap, int x, int y){
         if(bitmap == null)
@@ -74,12 +75,12 @@ public class Image {
     }
 
     /**
-     * @param canvas
-     * @param paint
-     * @param coordX
-     * @param coordY
-     * @param scale
-     * Draw the array of Bitmap in the canvas.
+     * Draw the whole tileset of Bitmap in the canvas.
+     * @param canvas Canvas to draw in
+     * @param paint Canvas's paint
+     * @param coordX Coordinate X
+     * @param coordY Coordinate Y
+     * @param scale Scale to draw on
      */
     public void draw(Canvas canvas, Paint paint, int coordX, int coordY, float scale){
         Rect dst = new Rect();
@@ -105,10 +106,105 @@ public class Image {
     }
 
     /**
-     * @param canvas
-     * Draw the full sized bitmap in the canvas.
+     * Store a copy of original bitmap on given coordinates.
+     * @param bitmap Original tile
+     * @param x Coordinate x
+     * @param y Coordinate y
      */
-    public void drawOriginalBitmap(Canvas canvas){
+    public void initOriginalBitmap(Bitmap bitmap, int x, int y){
+        if(bitmap == null)
+            return;
+        this.originalBitmap[x][y] = bitmap.copy(bitmap.getConfig(), bitmap.isMutable());
+    }
+
+    /**
+     * Generate an empty tileset for original bitmap's storage.
+     * @param w Number of tiles on w axis
+     * @param h Number of tiles on h axis
+     */
+    public void initDimOriginalBitmap(int w, int h){
+        this.w = w;
+        this.h = h;
+        this.originalBitmap = new Bitmap[w][h];
+        for(int y = 0; y < h; ++y) {
+            for (int x = 0; x < w; ++x) {
+                originalBitmap[x][y] = null;
+            }
+        }
+    }
+
+    /**
+     * Reset edited bitmap at original's state.
+     */
+    public void reinitializeBitmap(){
+        for(int x = 0; x < w; x++) {
+            for (int y = 0; y < h; y++) {
+                this.bitmap[x][y] = this.originalBitmap[x][y].copy(
+                        this.originalBitmap[x][y].getConfig(),
+                        this.originalBitmap[x][y].isMutable()
+                );
+            }
+        }
+    }
+
+    /**
+     * @return True if no bitmap is set.
+     */
+    public boolean isEmpty(){
+        return bitmap == null;
+    }
+
+    /**
+     * @return Width of the full-sized bitmap.
+     */
+    public int getWidth(){
+        int bmp_width = 0;
+        for (int x = 0; x < w; ++x) {
+            bmp_width += bitmap[x][0].getWidth();
+        }
+        return bmp_width;
+    }
+
+    /**
+     * @return Height of the full-sized bitmap.
+     */
+    public int getHeight() {
+        int bmp_height = 0;
+        for (int y = 0; y < h; ++y) {
+            bmp_height += bitmap[0][y].getHeight();
+        }
+        return bmp_height;
+    }
+
+    /**
+     * Force a full free on all Image's bitmaps.
+     */
+    public void recycleBitmaps() {
+        for (int i = 0; i < w; i++)
+            for (int j = 0; j < h; j++)
+            {
+                bitmap[i][j].recycle();
+                originalBitmap[i][j].recycle();
+            }
+    }
+
+    private int getWidth(int x, int y){
+        return bitmap[x][y].getWidth();
+    }
+
+    private int getHeight(int x, int y) {
+        return bitmap[x][y].getHeight();
+    }
+
+    private int getTileW() {
+        return w;
+    }
+
+    private int getTileH() {
+        return h;
+    }
+
+    private void drawOriginalBitmap(Canvas canvas){
         Rect dst = new Rect();
 
         for(int x = 0; x < this.getTileW(); ++x) {
@@ -122,106 +218,5 @@ public class Image {
                 canvas.drawBitmap(this.getBitmap(x, y), null, dst, null);
             }
         }
-    }
-
-    /**
-     * @param bitmap
-     * @param x
-     * @param y
-     * Initialize a copy of the first Bitmap loaded as a save.
-     */
-    public void initOriginalBitmap(Bitmap bitmap, int x, int y){
-        if(bitmap == null)
-            return;
-        this.originalBitmap[x][y] = bitmap.copy(bitmap.getConfig(), bitmap.isMutable());
-    }
-
-    public void initDimOriginalBitmap(int w, int h){
-        this.w = w;
-        this.h = h;
-        this.originalBitmap = new Bitmap[w][h];
-        for(int y = 0; y < h; ++y) {
-            for (int x = 0; x < w; ++x) {
-                originalBitmap[x][y] = null;
-            }
-        }
-    }
-
-    public void reinitializeBitmap(){
-        for(int x = 0; x < w; x++) {
-            for (int y = 0; y < h; y++) {
-                this.bitmap[x][y] = this.originalBitmap[x][y].copy(
-                        this.originalBitmap[x][y].getConfig(),
-                        this.originalBitmap[x][y].isMutable()
-                );
-            }
-        }
-    }
-
-    public void applyShader(Shader shader)
-    {
-        shader.ApplyFilter(this);
-    }
-
-
-    public boolean isEmpty(){
-        return bitmap == null;
-    }
-
-    public int getWidth(){
-        int bmp_width = 0;
-        for (int x = 0; x < w; ++x) {
-            bmp_width += bitmap[x][0].getWidth();
-        }
-        return bmp_width;
-    }
-
-    public int getHeight() {
-        int bmp_height = 0;
-        for (int y = 0; y < h; ++y) {
-            bmp_height += bitmap[0][y].getHeight();
-        }
-        return bmp_height;
-    }
-
-    /**
-     * @param x
-     * @param y
-     * @return The width of a bitmap at the location (x;y) in the array
-     */
-    public int getWidth(int x, int y){
-        return bitmap[x][y].getWidth();
-    }
-
-    /**
-     * @param x
-     * @param y
-     * @return The Height of a bitmap at the location (x;y) in the array
-     */
-    public int getHeight(int x, int y) {
-        return bitmap[x][y].getHeight();
-    }
-
-    /**
-     * @return The number of Bitmap in width
-     */
-    public int getTileW() {
-        return w;
-    }
-
-    /**
-     * @return The number of Bitmap in height
-     */
-    public int getTileH() {
-        return h;
-    }
-
-    public void recycleBitmaps() {
-        for (int i = 0; i < w; i++)
-            for (int j = 0; j < h; j++)
-            {
-                bitmap[i][j].recycle();
-                originalBitmap[i][j].recycle();
-            }
     }
 }

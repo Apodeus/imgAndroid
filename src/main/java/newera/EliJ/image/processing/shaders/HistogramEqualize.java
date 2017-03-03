@@ -8,6 +8,7 @@ import newera.EliJ.MainActivity;
 import newera.EliJ.R;
 import newera.EliJ.ScriptC_histogram;
 import newera.EliJ.image.Image;
+import newera.EliJ.image.processing.EItems;
 
 /**
  * Created by Romain on 19/02/2017.
@@ -18,6 +19,8 @@ public class HistogramEqualize extends Shader {
     public HistogramEqualize(MainActivity activity) {
         super(activity);
         this.drawableIconId = R.drawable.ic_histogram_straighten_black_24dp;
+        this.clickableName = R.string.shaderHistogramName;
+        this.item = EItems.F_HISTOGRAM_EQ;
     }
 
     @Override
@@ -60,9 +63,7 @@ public class HistogramEqualize extends Shader {
                 }
             }
         }
-        refreshImage();
+        //refreshImage();
     }
-
-    public String getName(){ return activity.getResources().getString(R.string.shaderHistogramName); }
 
 }

@@ -8,8 +8,6 @@ import newera.EliJ.R;
 import newera.EliJ.ScriptC_contrast;
 import newera.EliJ.image.Image;
 import newera.EliJ.image.processing.EItems;
-import newera.EliJ.ui.view.CImageView;
-import newera.EliJ.ui.view.inputs.InputManager;
 
 
 /**
@@ -22,6 +20,7 @@ public class Contrast extends Shader{
         super(context);
         this.drawableIconId = R.drawable.ic_contrast_tonality_black_24dp;
         this.clickableName = R.string.shaderContrastName;
+        this.item = EItems.F_CONTRAST;
     }
 
     @Override
@@ -41,13 +40,6 @@ public class Contrast extends Shader{
                     out.copyTo(bitmap);
                 }
         }
-    }
-
-    @Override
-    public int onClick(InputManager manager, CImageView view) {
-        manager.createBox(EItems.F_CONTRAST, view.getResources().getString(R.string.shaderContrastName));
-        view.setCurrentAction(EItems.F_CONTRAST);
-        return 0;
     }
 
 }

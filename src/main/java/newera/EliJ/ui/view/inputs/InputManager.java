@@ -3,7 +3,10 @@ package newera.EliJ.ui.view.inputs;
 import android.graphics.Canvas;
 import android.support.design.widget.Snackbar;
 import android.view.MotionEvent;
+import newera.EliJ.R;
 import newera.EliJ.image.processing.EItems;
+import newera.EliJ.image.processing.shaders.Shader;
+import newera.EliJ.ui.Clickable;
 import newera.EliJ.ui.view.CImageView;
 
 import java.util.ArrayList;
@@ -19,17 +22,28 @@ public class InputManager {
 
     private GenericBox currentBox;
 
-    private Map<String, Object> currentParams;
-    private Map<String, Object> currentPreviewParams;
     private ECategory currentCategory;
+    private Clickable currentClickable;
 
+    /**
+     * Create an InputManager to handle communication between image processing and
+     * user inputs.
+     * @param view View used for processing
+     */
     public InputManager(CImageView view)
     {
         this.view = view;
     }
 
-    public void createBox(EItems type, String label)
+    /**
+     * Generate a box for user interaction.
+     * @param clk CircleMenu button's reference
+     * @param type Action enum
+     * @param label Label/Hint for user
+     */
+    public void createBox(Clickable clk, EItems type, String label)
     {
+        currentClickable = clk;
         List<InputDataType> l = new ArrayList<>();
         switch (type) {
             case F_CHANGE_HUE:
@@ -62,6 +76,15 @@ public class InputManager {
                 currentBox = new GenericBox(this, label, l);
                 break;
 
+            case F_HISTOGRAM_EQ:
+            case F_CONVOLUTION:
+            case F_SEPIA:
+            case F_INVERT_COLOR:
+            case F_GRAYSCALE:
+                currentCategory = ECategory.FILTER;
+                currentBox = new GenericBox(this, label, l);
+                break;
+
             case S_QUALITY_SAVE:
                 currentCategory = ECategory.SYSTEM;
                 InputDataType seekBarQuality = new InputDataType(EInputType.INTEGER_SEEKBAR, "value", "Quality", new int[] {50, 100, 75});
@@ -75,34 +98,50 @@ public class InputManager {
         view.invalidate();
     }
 
-
-
+    /**
+     * Bridge between CImageView and GenericBox.
+     */
     public boolean handleTouch(MotionEvent event) {
         return currentBox != null && currentBox.handleTouch(event);
 
     }
 
+    /**
+     * Draw the box on the given canvas.
+     * @param canvas eh.
+     */
     public void draw(Canvas canvas)
     {
         if (currentBox != null)
             currentBox.drawBox(canvas);
     }
 
-    public void onConfirm(Map<String, Object> params)
+    /*public void onPreviewFilter(int value, Map<String, Object> params)
     {
-        this.currentParams = params;
+        view.onPreviewFilter(value);
+    }*/
+
+    /**
+     * @return View for GenericBox's needs.
+     */
+    public CImageView getView() {
+        return view;
+    }
+
+    void onConfirm(Map<String, Object> params)
+    {
         String message = "";
         switch (currentCategory) {
             case FILTER:
-                view.onApplyFilter(params);
-                message = "Filter applied";
+                view.onApplyFilter((Shader) currentClickable, params);
+                message = view.getResources().getString(R.string.messageFilterApplied);
                 break;
             case TOOL:
                 // :thinking:
                 break;
             case SYSTEM:
                 view.onApplySystem(params);
-
+                message = view.getResources().getString(R.string.messageSaveSuccess); //temp
                 break;
         }
 
@@ -113,7 +152,7 @@ public class InputManager {
         snackbar.show();
     }
 
-    public void onCancel()
+    void onCancel()
     {
         view.onCancelFilter();
         currentBox = null;
@@ -122,28 +161,6 @@ public class InputManager {
 
         snackbar.show();
     }
-
-    public void onPreviewFilter(int value, Map<String, Object> params)
-    {
-        this.currentPreviewParams = params;
-        view.onPreviewFilter(value);
-    }
-
-    public CImageView getView() {
-        return view;
-    }
-
-    public Map<String, Object> getParams() {
-        return currentParams;
-    }
-
-    public Object getPreviewParams() {
-        return currentPreviewParams;
-    }
 }
 
-enum ECategory{
-    FILTER,
-    TOOL,
-    SYSTEM,
-}
+

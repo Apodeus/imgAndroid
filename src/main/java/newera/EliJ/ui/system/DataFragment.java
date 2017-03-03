@@ -18,11 +18,18 @@ public class DataFragment extends Fragment {
         setRetainInstance(true);
     }
 
+    /**
+     * Setter.
+     * @param image Image object to be saved
+     */
     public void setImage(Image image)
     {
         this.image = image;
     }
 
+    /**
+     * @return Image object to be restored
+     */
     public Image getImage()
     {
         return this.image;

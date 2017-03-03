@@ -30,6 +30,9 @@ public class StartupView extends View {
     private int canvasHeight = 0;
     private static boolean isActive = true;
 
+    /**
+     * Minimalist interface displayed at app's start. Shorter way to open a picture.
+     */
     public StartupView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
@@ -47,14 +50,6 @@ public class StartupView extends View {
         cameraIconCanvas = new Canvas(cameraIconBitmap);
 
         invalidate();
-    }
-
-    /**
-     * Hide the view and controls.
-     */
-    public static void Mask()
-    {
-        isActive = false;
     }
 
     @Override
@@ -88,7 +83,7 @@ public class StartupView extends View {
         if (!isActive)
             return true;
 
-        float xPos = event.getX();
+        //float xPos = event.getX();
         float yPos = event.getY();
 
         if (event.getAction() == MotionEvent.ACTION_UP)
