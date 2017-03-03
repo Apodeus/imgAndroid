@@ -24,6 +24,7 @@ public class ChangeHue extends Shader {
         super(context);
         this.drawableIconId = R.drawable.ic_hue_color_lens_black_24dp;
         this.clickableName = R.string.shaderChangeHueName;
+        this.item = EItems.F_CHANGE_HUE;
     }
 
 
@@ -50,13 +51,6 @@ public class ChangeHue extends Shader {
         //!! Overwrite current image even if canceled !!
         params = (Map<String, Object>) param;
         ApplyFilter(image);
-    }
-
-    @Override
-    public int onClick(InputManager manager, CImageView view) {
-        manager.createBox(EItems.F_CHANGE_HUE, view.getResources().getString(R.string.shaderChangeHueName));
-        view.setCurrentAction(EItems.F_CHANGE_HUE);
-        return 0;
     }
 
 }

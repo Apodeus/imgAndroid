@@ -6,6 +6,7 @@ import android.renderscript.RenderScript;
 import newera.EliJ.MainActivity;
 import newera.EliJ.R;
 import newera.EliJ.image.Image;
+import newera.EliJ.image.processing.EItems;
 import newera.EliJ.ui.view.ActionClickable;
 import newera.EliJ.ui.view.CImageView;
 import newera.EliJ.ui.view.inputs.InputManager;
@@ -22,6 +23,7 @@ public abstract class Shader extends ActionClickable {
     RenderScript renderScript;
     MainActivity activity;
     Map<String, Object> params;
+    EItems item;
 
     Shader(MainActivity activity)
     {
@@ -52,11 +54,8 @@ public abstract class Shader extends ActionClickable {
     }
 
     public int onClick(InputManager manager, CImageView view) {
-        ShaderDialogBox dial = new ShaderDialogBox();
-        dial.setOnClick(this);
-        dial.setImage(((CImageView)activity.findViewById(R.id.cImageView)).getImage());
-        dial.setName(this.getName());
-        dial.show(this.activity.getFragmentManager(), "ShaderDialog");
+        manager.createBox(this, item, view.getResources().getString(clickableName));
+        view.setCurrentAction(item);
         return 0;
     }
 

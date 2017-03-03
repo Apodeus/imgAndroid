@@ -21,6 +21,7 @@ public class KeepHue extends Shader{
         super(context);
         this.drawableIconId = R.drawable.ic_keep_hue_colorize_black_24dp;
         this.clickableName = R.string.shaderKeepHueName;
+        this.item = EItems.F_KEEP_HUE;
     }
 
     @Override
@@ -41,13 +42,6 @@ public class KeepHue extends Shader{
                     out.copyTo(bitmap);
                 }
         }
-    }
-
-    @Override
-    public int onClick(InputManager manager, CImageView view) {
-        manager.createBox(EItems.F_KEEP_HUE, view.getResources().getString(R.string.shaderKeepHueName));
-        view.setCurrentAction(EItems.F_KEEP_HUE);
-        return 0;
     }
 
 }

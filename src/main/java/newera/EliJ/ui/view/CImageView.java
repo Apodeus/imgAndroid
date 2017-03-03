@@ -13,11 +13,8 @@ import android.view.View;
 import newera.EliJ.R;
 import newera.EliJ.image.Image;
 import newera.EliJ.image.processing.EItems;
-import newera.EliJ.image.processing.shaders.ChangeHue;
-import newera.EliJ.image.processing.shaders.Contrast;
-import newera.EliJ.image.processing.shaders.KeepHue;
-import newera.EliJ.image.processing.shaders.Lightness;
-import newera.EliJ.image.processing.shaders.Shader;
+import newera.EliJ.image.processing.shaders.*;
+import newera.EliJ.ui.Clickable;
 import newera.EliJ.ui.system.PictureFileManager;
 import newera.EliJ.ui.system.SystemActionHandler;
 import newera.EliJ.ui.view.inputs.InputManager;
@@ -129,26 +126,8 @@ public class CImageView extends View {
         return true;
     }
 
-    public void onApplyFilter(Map<String, Object> params)
+    public void onApplyFilter(Shader shader, Map<String, Object> params)
     {
-        Shader shader = null;
-        switch (currentInputItem) {
-            case NONE:
-                return;
-            case F_CHANGE_HUE:
-                shader = new ChangeHue(getContext());
-                break;
-            case F_LIGHTNESS:
-                shader = new Lightness(getContext());
-                break;
-            case F_KEEP_HUE:
-                shader = new KeepHue(getContext());
-                break;
-            case F_CONTRAST:
-                shader = new Contrast(getContext());
-                break;
-        }
-
         shader.setParameters(params);
         shader.ApplyFilter(image);
     }

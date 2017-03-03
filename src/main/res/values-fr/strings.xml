@@ -18,4 +18,12 @@
     <string name="apply">Appliquer</string>
     <string name="cancel">Annuler</string>
     <string name="systemSavePicture">Sauvegarder l\'image</string>
+    <string name="messageFilterApplied">Filtre appliqué</string>
+    <string name="messageSaveSuccess">Image sauvegardée dans la Galerie</string>
+    <string name="app_name">EliJ</string>
+    <string name="shaderConvolutionEdgeName">Convolution EDGE</string>
+    <string name="shaderConvolutionGaussName">Convolution GAUSS</string>
+    <string name="shaderConvolutionLAPLName">Convolution LAPL</string>
+    <string name="shaderConvolutionMoyName">Convolution MOY</string>
+    <string name="shaderConvolutionSobelName">Convolution SOBEL</string>
 </resources>

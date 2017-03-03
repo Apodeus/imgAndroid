@@ -21,6 +21,7 @@ public class Lightness extends Shader {
         super(context);
         this.drawableIconId = R.drawable.ic_brightness_5_black_24dp;
         this.clickableName = R.string.shaderLightnessName;
+        this.item = EItems.F_LIGHTNESS;
     }
 
     @Override
@@ -39,13 +40,6 @@ public class Lightness extends Shader {
                     out.copyTo(bitmap);
                 }
         }
-    }
-
-    @Override
-    public int onClick(InputManager manager, CImageView view) {
-        manager.createBox(EItems.F_LIGHTNESS, view.getResources().getString(R.string.shaderLightnessName));
-        view.setCurrentAction(EItems.F_LIGHTNESS);
-        return 0;
     }
 
 }

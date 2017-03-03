@@ -8,6 +8,7 @@ import newera.EliJ.R;
 import newera.EliJ.ScriptC_convolution;
 import newera.EliJ.ScriptC_sobel;
 import newera.EliJ.image.Image;
+import newera.EliJ.image.processing.EItems;
 
 
 /**
@@ -68,6 +69,32 @@ public class Convolution extends Shader{
         super(activity);
         this.drawableIconId = R.drawable.ic_convolution_blur_on_black_24dp;
         matrix = type;
+        switch (matrix) {
+            case GAUSS:
+                this.clickableName = R.string.shaderConvolutionGaussName;
+                this.item = EItems.F_CONVOLUTION;
+                break;
+            case EDGE:
+                this.clickableName = R.string.shaderConvolutionEdgeName;
+                this.item = EItems.F_CONVOLUTION;
+                break;
+            case LAPL:
+                this.clickableName = R.string.shaderConvolutionLAPLName;
+                this.item = EItems.F_CONVOLUTION;
+                break;
+            case MOY:
+                this.clickableName = R.string.shaderConvolutionMoyName;
+                this.item = EItems.F_CONVOLUTION;
+                break;
+            case SOBEL:
+                this.clickableName = R.string.shaderConvolutionSobelName;
+                this.item = EItems.F_CONVOLUTION;
+                break;
+            case SOBEL_H:
+                break;
+            case SOBEL_V:
+                break;
+        }
     }
 
     @Override
@@ -105,12 +132,7 @@ public class Convolution extends Shader{
                     out.copyTo(bitmap);
                 }
         }
-        refreshImage();
-    }
-
-    public String getName()
-    {
-        return activity.getResources().getString(R.string.shaderConvolutionName) + " " +  this.matrix.name();
+        //refreshImage();
     }
 
     private void setupMatrix(ScriptC_convolution conv, ConvType type){

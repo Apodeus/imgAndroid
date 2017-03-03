@@ -6,6 +6,7 @@ import android.renderscript.Allocation;
 import newera.EliJ.R;
 import newera.EliJ.ScriptC_sepia;
 import newera.EliJ.image.Image;
+import newera.EliJ.image.processing.EItems;
 
 
 /**
@@ -18,6 +19,7 @@ public class Sepia extends Shader{
         super(activity);
         this.drawableIconId = R.drawable.ic_photo_filter_sepia_24dp;
         this.clickableName = R.string.shaderSepiaName;
+        this.item = EItems.F_SEPIA;
     }
 
     @Override
@@ -35,7 +37,7 @@ public class Sepia extends Shader{
                     out.copyTo(bitmap);
                 }
         }
-        refreshImage();
+        //refreshImage();
     }
 
 }

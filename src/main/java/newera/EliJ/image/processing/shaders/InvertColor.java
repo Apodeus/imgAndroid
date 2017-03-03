@@ -1,5 +1,6 @@
 package newera.EliJ.image.processing.shaders;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.renderscript.Allocation;
 
@@ -7,6 +8,7 @@ import newera.EliJ.MainActivity;
 import newera.EliJ.R;
 import newera.EliJ.ScriptC_invert;
 import newera.EliJ.image.Image;
+import newera.EliJ.image.processing.EItems;
 
 /**
  * Created by Romain on 18/02/2017.
@@ -14,10 +16,11 @@ import newera.EliJ.image.Image;
 
 public class InvertColor extends Shader {
 
-    public InvertColor(MainActivity activity) {
-        super(activity);
+    public InvertColor(Context context) {
+        super(context);
         this.drawableIconId = R.drawable.ic_invert_color_24dp;
         this.clickableName = R.string.shaderInvertColorName;
+        this.item = EItems.F_INVERT_COLOR;
     }
 
     @Override
@@ -34,7 +37,7 @@ public class InvertColor extends Shader {
                     out.copyTo(bitmap);
                 }
         }
-        refreshImage();
+        //refreshImage();
     }
 
 }
