@@ -8,10 +8,6 @@ import newera.EliJ.R;
 import newera.EliJ.ScriptC_hue;
 import newera.EliJ.image.Image;
 import newera.EliJ.image.processing.EItems;
-import newera.EliJ.ui.view.CImageView;
-import newera.EliJ.ui.view.inputs.InputManager;
-
-import java.util.Map;
 
 /**
  * Created by Romain on 19/02/2017.
@@ -46,11 +42,11 @@ public class ChangeHue extends Shader {
         }
     }
 
-    public void ApplyPreviewFilter(Image image, Object param)
+    /*public void ApplyPreviewFilter(Image image, Object param)
     {
         //!! Overwrite current image even if canceled !!
-        params = (Map<String, Object>) param;
-        ApplyFilter(image);
-    }
+        //params = (Map<String, Object>) param;
+        //ApplyFilter(image);
+    }*/
 
 }

@@ -8,8 +8,6 @@ import newera.EliJ.R;
 import newera.EliJ.ScriptC_lightness;
 import newera.EliJ.image.Image;
 import newera.EliJ.image.processing.EItems;
-import newera.EliJ.ui.view.CImageView;
-import newera.EliJ.ui.view.inputs.InputManager;
 
 /**
  * Created by Romain on 19/02/2017.

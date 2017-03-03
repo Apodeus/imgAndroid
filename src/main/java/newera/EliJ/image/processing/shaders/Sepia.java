@@ -1,4 +1,5 @@
 package newera.EliJ.image.processing.shaders;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.renderscript.Allocation;

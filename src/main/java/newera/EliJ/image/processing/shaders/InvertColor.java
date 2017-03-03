@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.renderscript.Allocation;
 
-import newera.EliJ.MainActivity;
 import newera.EliJ.R;
 import newera.EliJ.ScriptC_invert;
 import newera.EliJ.image.Image;

@@ -8,8 +8,6 @@ import newera.EliJ.R;
 import newera.EliJ.ScriptC_keepHue;
 import newera.EliJ.image.Image;
 import newera.EliJ.image.processing.EItems;
-import newera.EliJ.ui.view.CImageView;
-import newera.EliJ.ui.view.inputs.InputManager;
 
 /**
  * Created by Romain on 21/02/2017.

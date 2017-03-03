@@ -2,13 +2,10 @@ package newera.EliJ.image.processing.shaders;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.renderscript.Allocation;
-import newera.EliJ.MainActivity;
 import newera.EliJ.R;
 import newera.EliJ.ScriptC_grayscale;
 import newera.EliJ.image.Image;
 import newera.EliJ.image.processing.EItems;
-import newera.EliJ.ui.view.CImageView;
-import newera.EliJ.ui.view.inputs.InputManager;
 
 
 /**

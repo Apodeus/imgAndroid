@@ -26,7 +26,7 @@ import newera.EliJ.ui.view.CircleMenu;
 public class MainActivity extends AppCompatActivity {
 
     public CImageView civ;
-    public DataFragment dataFragment;
+    private DataFragment dataFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,15 +89,14 @@ public class MainActivity extends AppCompatActivity {
         SystemActionHandler.handleRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-    public void initializeSysMenu(CircleMenu menu){
-        menu.menuColor = getResources().getColor(R.color.colorPrimaryDark);
-        menu.menuColor = getResources().getColor(R.color.colorPrimary);
+    private void initializeSysMenu(CircleMenu menu){
+        menu.setMenuColor(getResources().getColor(R.color.colorPrimary));
         menu.addClickable(new ActionCamera(this));
         menu.addClickable(new ActionGallery(this));
         menu.addClickable(new ActionSave(this));
         menu.addClickable(new ActionReset(this));
     }
-    public void initializeFilterMenu(CircleMenu menu) {
+    private void initializeFilterMenu(CircleMenu menu) {
         menu.addClickable(new InvertColor(this));
         menu.addClickable(new GrayScale(this));
         menu.addClickable(new Sepia(this));
