@@ -14,6 +14,8 @@
     <string name="systemCameraName">Camera</string>
     <string name="systemResetName">Reset</string>
     <string name="systemSaveName">Save</string>
+    <string name="systemRotateLeftName">Rotate Left</string>
+    <string name="systemRotateRightName">Rotate Right</string>
     <string name="apply">Apply</string>
     <string name="cancel">Cancel</string>
     <string name="shaderConvolutionName">Convolution</string>

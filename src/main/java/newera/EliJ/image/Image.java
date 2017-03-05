@@ -2,10 +2,14 @@ package newera.EliJ.image;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.util.Log;
 
 import newera.EliJ.ui.system.PictureFileManager;
+
+import static java.lang.Math.abs;
 
 /**
  * Created by Emile Barjou-Suire on 09/02/2017.
@@ -15,6 +19,7 @@ public class Image {
     private Bitmap[][] bitmap;
     private Bitmap[][] originalBitmap;
     private int w, h;
+    private int angle = 0;
 
     /**
      * @return Edited tile reference
@@ -87,21 +92,39 @@ public class Image {
 
         int cx = (coordX - (int)((this.getWidth() - 1) * (scale/2)));
         int cy = (coordY - (int)((this.getHeight() - 1) * (scale/2)));
+
+        int shiftW = 0;
+        int shiftH = 0;
         //Log.i("", "coordX = " + coordX + "| coordY = " + coordY + "| cx = " + cx + " | cy = " + cy);
 
         for(int x = 0; x < this.getTileW(); ++x) {
+            //int lastShiftW = 0;
             for (int y = 0; y < this.getTileH(); ++y) {
 
                 dst.left   = cx + x*(int)((PictureFileManager.DECODE_TILE_SIZE )*(scale));
                 dst.top    = cy + y*(int)((PictureFileManager.DECODE_TILE_SIZE )*(scale));
+                //dst.left = cx + (int)((shiftW) * (scale));
+                //dst.top = cy + (int)((shiftH) * (scale));
+
+
+                //lastShiftW = this.getWidth(x, y);
+                //shiftH = shiftH + this.getHeight(x, y);
+
 
                 dst.right  = dst.left + (int)((this.getWidth(x,y))*(scale));
                 dst.bottom = dst.top + (int)((this.getHeight(x,y))*(scale));
 
                 //Log.i("DRAW", "rect= x("+ dst.left+","+dst.right+"), y("+dst.top+","+dst.bottom+"), bitmap : w="+this.getWidth(x,y)+", h="+this.getHeight(x,y));
+                //Log.i("DRAW", "shiftH = " + shiftH + " ShiftW = " + shiftW + " LastShiftW = " + lastShiftW);
+                //Log.i("DRAW", " Scale = " + scale);
 
+                canvas.save();
+                canvas.rotate(this.angle, dst.left, dst.top);
                 canvas.drawBitmap(this.getBitmap(x, y), null, dst, paint);
+                canvas.restore();
             }
+            //shiftH = 0;
+            //shiftW += (lastShiftW - 1);
         }
     }
 
@@ -219,4 +242,67 @@ public class Image {
             }
         }
     }
+
+    public void rotate(int angle){
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        for(int x = 0; x < w; x++){
+            for(int y = 0; y < h; y++){
+                Bitmap tmpBitmap = bitmap[x][y];
+                this.bitmap[x][y] = Bitmap.createBitmap(tmpBitmap, 0, 0, tmpBitmap.getWidth(), tmpBitmap.getHeight(), matrix, true);
+                tmpBitmap.recycle();
+                tmpBitmap = originalBitmap[x][y];
+                this.originalBitmap[x][y] = Bitmap.createBitmap(tmpBitmap, 0, 0, tmpBitmap.getWidth(), tmpBitmap.getHeight(), matrix, true);
+                tmpBitmap.recycle();
+            }
+        }
+
+        int tmp = this.w;
+        this.w = this.h;
+        this.h = tmp;
+
+
+        bitmap = rotateArrayBitmap(bitmap, 0);
+        originalBitmap = rotateArrayBitmap(originalBitmap, 0);
+
+    }
+
+    private Bitmap[][] rotateArrayBitmap(Bitmap[][] bitmaps, int alpha){
+        Bitmap[][] arrBmp = new Bitmap[w][h];
+
+        for(int x = 0; x < w; x++){
+            for(int y = 0; y < h; y++){
+                if(alpha > 0)
+                    arrBmp[x][y] = bitmaps[y][abs(x - w + 1)];
+                if(alpha < 0)
+                    arrBmp[x][y] = bitmaps[abs(y - h + 1)][x];
+            }
+        }
+
+        return arrBmp;
+    }
+
+    public void setAngle(int a){
+        this.angle += a;
+
+        int tmp = this.w;
+        this.w = this.h;
+        this.h = tmp;
+
+        bitmap = rotateArrayBitmap(bitmap, a);
+        originalBitmap = rotateArrayBitmap(originalBitmap, a);
+    }
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
