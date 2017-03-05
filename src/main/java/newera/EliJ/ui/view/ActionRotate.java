@@ -17,18 +17,27 @@ public class ActionRotate extends ActionClickable {
     {
         super(context);
         this.angle = alpha;
-        this.drawableIconId = R.drawable.ic_reset_replay_black_24dp;
+        this.clickableName = R.string.systemRotateLeftName;
+        this.drawableIconId = R.drawable.ic_rotate_left_black_24dp;
 
-        if(this.angle > 0)
-            this.clickableName = R.string.systemRotateLeftName;
-        else if(this.angle < 0)
+        if(this.angle > 0)//right
+        {
             this.clickableName = R.string.systemRotateRightName;
+            this.drawableIconId = R.drawable.ic_rotate_right_black_24dp;
+        }
+        else if(this.angle < 0)//left
+        {
+            this.clickableName = R.string.systemRotateLeftName;
+            this.drawableIconId = R.drawable.ic_rotate_left_black_24dp;
+        }
     }
 
     @Override
     public int onClick(InputManager manager, CImageView view) {
-        view.getImage().setAngle(this.angle);
-        view.invalidate();
+        if(view.getImage() != null && !view.getImage().isEmpty()) {
+            view.getImage().setAngle(this.angle);
+            view.invalidate();
+        }
         return 0;
     }
 }
