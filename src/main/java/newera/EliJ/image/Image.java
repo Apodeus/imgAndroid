@@ -245,14 +245,16 @@ public class Image {
     }
 
     public void setAngle(int a){
-        this.angle += a;
+        if(!this.isEmpty()) {
 
-        int tmp = this.w;
-        this.w = this.h;
-        this.h = tmp;
+            this.angle += a;
+            int tmp = this.w;
+            this.w = this.h;
+            this.h = tmp;
 
-        bitmap = rotateArrayBitmap(bitmap, a);
-        originalBitmap = rotateArrayBitmap(originalBitmap, a);
+            bitmap = rotateArrayBitmap(bitmap, a);
+            originalBitmap = rotateArrayBitmap(originalBitmap, a);
+        }
     }
 
 
