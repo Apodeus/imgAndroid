@@ -40,7 +40,7 @@ Schéma fonctionnel : [Mindomo](https://www.mindomo.com/mindmap/b9565ab1eb794d20
 - "Schtroumpfer" un visage
 - Restreindre la zone d'application d'un filtre
 
-### Problèmes connues à résoudre
+### Problèmes
 - ~~Problème de hitbox du menu circulaire~~
 - ~~Resteindre le dépassement de l'image à l'écran~~
 - Meilleure orientation de l'image lorsqu'elle est chargée
@@ -58,6 +58,8 @@ Schéma fonctionnel : [Mindomo](https://www.mindomo.com/mindmap/b9565ab1eb794d20
 
 ## Récupération du dépôt sous IntelliJ IDEA ou Android Studio
 
+L'application est développée à la fois sur IntelliJ IDEA et Android Studio, et ce dernier masquant quelques fichiers incompatibles avec IDEA, une petite manipulation est nécessaire avant de pouvoir récupérer le projet et l'intégrer avec Git dans l'IDE.
+
 - Créer un projet Android vierge avec comme nom de projet `My Application` et en domaine de compagnie `newEra`, sélectionner l'API 19.
 - Ajuster si besoin les paramètres Gradle ou autre pour compiler l'application vierge correctement.
 - Supprimer le dossier `MyApplication\app\src`.
@@ -69,7 +71,45 @@ Schéma fonctionnel : [Mindomo](https://www.mindomo.com/mindmap/b9565ab1eb794d20
 
 L'architecture finale devrait ressembler à cela : 
 
-![pic](https://a.pomf.cat/ogjuoo.png)
+```
+MyApplication
+	+ app
+		+ out
+			- elij-akuma.apk
+		+ src
+			+ main
+				+ java
+					+ NewEra.EliJ
+						+ image
+							+ processing
+								+ shaders
+									- ...
+								+ tools
+									- ...
+								- ...
+							- ...
+						+ ui
+							+ system
+								- ...
+							+ view
+								+ inputs
+									+ components
+										- ...
+									- ...
+								- ...
+							Clickable.java
+						MainActivity.java
+				+ res
+					.
+					. //fichiers ressource
+					.
+				+ rs 
+					.
+					. //fichiers RenderScript
+					.
+		 - build.gradle
+```
+
 
 ## Theme colors
 ["Examined Living"](http://flatcolors.net/palette/615-examined-living)
