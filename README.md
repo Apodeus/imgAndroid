@@ -74,8 +74,6 @@ L'architecture finale devrait ressembler à cela :
 ```
 MyApplication
 	+ app
-		+ out
-			- elij-akuma.apk
 		+ src
 			+ main
 				+ java
