@@ -284,7 +284,7 @@ public class Image {
         if(!this.isEmpty()) {
 
             this.angle += a;
-            //this.angle = this.angle % 360;
+            this.angle = this.angle % 360;
 
             int tmp = this.w;
             this.w = this.h;
