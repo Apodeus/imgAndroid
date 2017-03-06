@@ -256,9 +256,9 @@ public class Image {
                 bitmap[x][y] = Bitmap.createBitmap(tmp, 0, 0, tmp.getWidth(), tmp.getHeight(), matrix, true);
                 tmp.recycle();
 
-                tmp = this.originalBitmap[x][y];
-                originalBitmap[x][y] = Bitmap.createBitmap(tmp, 0, 0, tmp.getWidth(), tmp.getHeight(), matrix, true);
-                tmp.recycle();
+                Bitmap tmp2 = this.originalBitmap[x][y];
+                originalBitmap[x][y] = Bitmap.createBitmap(tmp2, 0, 0, tmp2.getWidth(), tmp2.getHeight(), matrix, true);
+                tmp2.recycle();
 
             }
         }
