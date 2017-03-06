@@ -10,6 +10,7 @@ import android.util.Log;
 import newera.EliJ.ui.system.PictureFileManager;
 
 import static java.lang.Math.abs;
+import static java.lang.Math.min;
 
 /**
  * Created by Emile Barjou-Suire on 09/02/2017.
@@ -56,14 +57,18 @@ public class Image {
     /**
      * @return Bitmap : The full sized bitmap.
      */
-    public Bitmap getBitmap(){
+    public Bitmap getBitmap(int alpha){
+        rotateBitmaps(alpha);
+
         int nWidth = this.getWidth();
         int nHeight = this.getHeight();
 
         Bitmap newBitmap = Bitmap.createBitmap(nWidth, nHeight, bitmap[0][0].getConfig());
         Canvas canvas = new Canvas(newBitmap);
 
-        drawOriginalBitmap(canvas);
+        drawOriginalBitmap(canvas, alpha);
+        rotateBitmaps(-1 * alpha);
+
         return newBitmap;
     }
 
@@ -213,20 +218,51 @@ public class Image {
         return h;
     }
 
-    private void drawOriginalBitmap(Canvas canvas){
+    private void drawOriginalBitmap(Canvas canvas, int alpha){
         Rect dst = new Rect();
+        int shiftW = 0;
+        int shiftH = 0;
 
         for(int x = 0; x < this.getTileW(); ++x) {
+            int lastShift = 0;
             for (int y = 0; y < this.getTileH(); ++y) {
-                dst.left   = x * PictureFileManager.DECODE_TILE_SIZE;
-                dst.top    = y * PictureFileManager.DECODE_TILE_SIZE;
+                dst.left = shiftW;
+                dst.top = shiftH;
+
+                shiftH += this.getHeight(x, y);
+                lastShift = this.getWidth(x, y);
+
 
                 dst.right  = dst.left + this.getWidth(x, y);
                 dst.bottom = dst.top + this.getHeight(x, y);
-
                 canvas.drawBitmap(this.getBitmap(x, y), null, dst, null);
+
+            }
+            shiftH = 0;
+            shiftW += lastShift;
+        }
+    }
+
+    private void rotateBitmaps(int angle){
+
+
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+
+        for(int x = 0; x < w; x++){
+            for(int y = 0; y < h; y++){
+
+                Bitmap tmp = this.getBitmap(x, y);
+                bitmap[x][y] = Bitmap.createBitmap(tmp, 0, 0, tmp.getWidth(), tmp.getHeight(), matrix, true);
+                tmp.recycle();
+
+                tmp = this.originalBitmap[x][y];
+                originalBitmap[x][y] = Bitmap.createBitmap(tmp, 0, 0, tmp.getWidth(), tmp.getHeight(), matrix, true);
+                tmp.recycle();
+
             }
         }
+
     }
 
     private Bitmap[][] rotateArrayBitmap(Bitmap[][] bitmaps, int alpha){
@@ -248,6 +284,8 @@ public class Image {
         if(!this.isEmpty()) {
 
             this.angle += a;
+            //this.angle = this.angle % 360;
+
             int tmp = this.w;
             this.w = this.h;
             this.h = tmp;
@@ -256,6 +294,8 @@ public class Image {
             originalBitmap = rotateArrayBitmap(originalBitmap, a);
         }
     }
+
+    public int getAngle(){return this.angle;}
 
 
 }
