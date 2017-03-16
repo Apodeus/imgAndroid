@@ -19,6 +19,7 @@ import newera.EliJ.ui.system.SystemActionHandler;
 import newera.EliJ.ui.view.ActionCamera;
 import newera.EliJ.ui.view.ActionGallery;
 import newera.EliJ.ui.view.ActionReset;
+import newera.EliJ.ui.view.ActionRotate;
 import newera.EliJ.ui.view.ActionSave;
 import newera.EliJ.ui.view.CImageView;
 import newera.EliJ.ui.view.CircleMenu;
@@ -95,7 +96,10 @@ public class MainActivity extends AppCompatActivity {
         menu.addClickable(new ActionGallery(this));
         menu.addClickable(new ActionSave(this));
         menu.addClickable(new ActionReset(this));
+        menu.addClickable(new ActionRotate(this, 90));
+        menu.addClickable(new ActionRotate(this, -90));
     }
+
     private void initializeFilterMenu(CircleMenu menu) {
         menu.addClickable(new InvertColor(this));
         menu.addClickable(new GrayScale(this));

@@ -32,7 +32,7 @@ import static android.content.ContentValues.TAG;
  */
 
 public class PictureFileManager {
-    public static final int DECODE_TILE_SIZE = 2048;
+    public static final int DECODE_TILE_SIZE = 512;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int REQUEST_IMAGE_GALLERY = 2;
     private static int LAST_REQUEST;

@@ -300,7 +300,7 @@ public class CircleMenu extends View {
     public void addClickable(Clickable clk){
         this.addItem(new MenuItem(clk));
         clk.initIcon(ICON_SIZE);
-        if(itemList.size() >= 5) this.scrollLock = false;
+        if(itemList.size() >= 7) this.scrollLock = false;
     }
 
     public void setPosition(Position p){
