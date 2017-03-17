@@ -31,21 +31,9 @@ uchar4 __attribute__((kernel)) convolution(uint32_t x, uint32_t y) {
                 stack.b += rsUnpackColor8888(rsGetElementAt_uchar4(in, x, y)).b * factor;
                 stack.a += rsUnpackColor8888(rsGetElementAt_uchar4(in, x, y)).a * factor;
             }
-
-            //stack.r += tmp_pix.r ;//* rsGetElementAt_float(matrix2D, (i+matrix_halfSize)+(j+matrix_halfSize)*matrix_dim);
-            //stack.g += tmp_pix.g ;//* rsGetElementAt_float(matrix2D, (i+matrix_halfSize)+(j+matrix_halfSize)*matrix_dim);
-            //stack.b += tmp_pix.b ;//* rsGetElementAt_float(matrix2D, (i+matrix_halfSize)+(j+matrix_halfSize)*matrix_dim);
-            //stack.a += tmp_pix.a ;//* rsGetElementAt_float(matrix2D, (i+matrix_halfSize)+(j+matrix_halfSize)*matrix_dim);
         }
     }
-    //stack = convert_uint4(rsGetElementAt_uchar4(in, x, y));
 
-    //stack.r = stack.r / matrix_factor;
-    //stack.g = stack.g / matrix_factor;
-    //stack.b = stack.b / matrix_factor;
-    //stack.a = stack.a / matrix_factor;
-
-    //out = convert_uchar4(stack);
 
     return rsPackColorTo8888(stack/matrix_factor);
 }

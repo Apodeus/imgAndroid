@@ -2,6 +2,7 @@ package newera.EliJ.ui.system;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.BitmapRegionDecoder;
 import android.graphics.Rect;
 import android.media.MediaScannerConnection;
@@ -147,6 +148,8 @@ public class PictureFileManager {
                 int xm, ym, xM, yM;//4160*3120
 
                 Rect rect = new Rect();
+                BitmapFactory.Options opts = new BitmapFactory.Options();
+                opts.inMutable = true;
 
                 double rows = Math.ceil((double)w / (double)DECODE_TILE_SIZE);
                 double lines = Math.ceil((double)h / (double)DECODE_TILE_SIZE);
@@ -164,8 +167,7 @@ public class PictureFileManager {
 
                         rect.set(xm, ym, xM, yM);
 
-                        img = decoder.decodeRegion(rect, null);
-                        //Log.i("DBG", "rect= x("+xm +","+xM+"), y("+ym+","+yM+"), bitmap : w="+img.getWidth()+", h="+img.getHeight());
+                        img = decoder.decodeRegion(rect, opts);
                         result.addBitmap(img, x, y);
                     }
                 }

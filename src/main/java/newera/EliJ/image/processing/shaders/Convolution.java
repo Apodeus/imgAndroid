@@ -132,7 +132,6 @@ public class Convolution extends Shader{
                     out.copyTo(bitmap);
                 }
         }
-        //refreshImage();
     }
 
     private void setupMatrix(ScriptC_convolution conv, ConvType type){

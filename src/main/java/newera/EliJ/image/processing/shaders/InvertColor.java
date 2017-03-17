@@ -36,7 +36,6 @@ public class InvertColor extends Shader {
                     out.copyTo(bitmap);
                 }
         }
-        //refreshImage();
     }
 
 }

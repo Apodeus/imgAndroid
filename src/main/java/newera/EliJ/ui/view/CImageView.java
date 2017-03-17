@@ -151,7 +151,7 @@ public class CImageView extends View {
         switch (currentInputItem){
             case S_QUALITY_SAVE:
                 try {
-                    PictureFileManager.SaveBitmap(image.getBitmap(image.getAngle()), (int) params.get("value"));
+                    PictureFileManager.SaveBitmap(image.getBitmap(image.getAngle()), (int)params.get("value"));
                 } catch (IOException e)
                 {
                     e.printStackTrace();

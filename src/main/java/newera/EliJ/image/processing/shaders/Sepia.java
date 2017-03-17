@@ -38,7 +38,6 @@ public class Sepia extends Shader{
                     out.copyTo(bitmap);
                 }
         }
-        //refreshImage();
     }
 
 }

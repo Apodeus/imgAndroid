@@ -81,7 +81,7 @@ public class Image {
     public void addBitmap(Bitmap bitmap, int x, int y){
         if(bitmap == null)
             return;
-        this.bitmap[x][y] = bitmap.copy(bitmap.getConfig(), bitmap.isMutable());
+        this.bitmap[x][y] = bitmap;
     }
 
     /**
@@ -98,18 +98,13 @@ public class Image {
         int cx = (coordX - (int)((this.getWidth() - 1) * (scale/2)));
         int cy = (coordY - (int)((this.getHeight() - 1) * (scale/2)));
 
-        //Log.i("", "coordX = " + coordX + "| coordY = " + coordY + "| cx = " + cx + " | cy = " + cy);
-
         for(int x = 0; x < this.getTileW(); ++x) {
             for (int y = 0; y < this.getTileH(); ++y) {
-
                 dst.left   = cx + x*(int)((PictureFileManager.DECODE_TILE_SIZE )*(scale));
                 dst.top    = cy + y*(int)((PictureFileManager.DECODE_TILE_SIZE )*(scale));
 
                 dst.right  = dst.left + (int)((this.getWidth(x,y))*(scale));
                 dst.bottom = dst.top + (int)((this.getHeight(x,y))*(scale));
-
-                //Log.i("DRAW", "rect= x("+ dst.left+","+dst.right+"), y("+dst.top+","+dst.bottom+"), bitmap : w="+this.getWidth(x,y)+", h="+this.getHeight(x,y));
 
                 canvas.save();
                 canvas.rotate(this.angle, dst.left, dst.top);
@@ -231,7 +226,6 @@ public class Image {
 
                 shiftH += this.getHeight(x, y);
                 lastShift = this.getWidth(x, y);
-
 
                 dst.right  = dst.left + this.getWidth(x, y);
                 dst.bottom = dst.top + this.getHeight(x, y);

@@ -37,7 +37,6 @@ public class GrayScale extends Shader{
                     out.copyTo(bitmap);
                 }
         }
-        //refreshImage();
     }
 
 }

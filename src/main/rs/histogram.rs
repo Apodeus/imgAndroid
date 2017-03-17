@@ -52,7 +52,8 @@ uchar4 __attribute__((kernel)) calculHistogram(uchar4 in, uint32_t x, uint32_t y
 
   int32_t Yvalue = Y * 255;
 
-  histogram[Yvalue]++;
+  /*ATOMIC=>*/histogram[Yvalue]++;
+
   rsSetElementAt_int(arr, histogram[Yvalue],Yvalue);
 
   float4 new = {pixel.r, pixel.g, pixel.b, pixel.a};

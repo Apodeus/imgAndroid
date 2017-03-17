@@ -41,12 +41,4 @@ public class ChangeHue extends Shader {
                 }
         }
     }
-
-    /*public void ApplyPreviewFilter(Image image, Object param)
-    {
-        //!! Overwrite current image even if canceled !!
-        //params = (Map<String, Object>) param;
-        //ApplyFilter(image);
-    }*/
-
 }

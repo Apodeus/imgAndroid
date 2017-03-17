@@ -63,7 +63,6 @@ public class HistogramEqualize extends Shader {
                 }
             }
         }
-        //refreshImage();
     }
 
 }
