@@ -2,7 +2,7 @@ package newera.EliJ.image.processing.shaders;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.renderscript.Allocation;
+import android.support.v8.renderscript.Allocation;
 
 import newera.EliJ.R;
 import newera.EliJ.ScriptC_sepia;
