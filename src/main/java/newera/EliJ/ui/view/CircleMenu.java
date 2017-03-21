@@ -31,10 +31,12 @@ public class CircleMenu extends View {
 
     public enum Position {TOP_LEFT, TOP_RIGHT, BOT_LEFT, BOT_RIGHT}
 
-    //Radius of menu minimized and extended, in percent of min(width, height)
+    //Radius of menu minimized and extended, 1 = min(width, height)
     private final static double RADIUS_MIN = 0.10;
     private final static double RADIUS_EXT = 0.50;
+
     private final static double TOUCH_MARGIN = 1.25;
+    //Radius of inner circle where item are draw
     private final static double ITEM_CIRCLE_RADIUS = 0.90;
     private final static double ITEM_CIRCLE_MARGIN = 0.05;
     private final static double DISPLAY_MARGIN = 1.03;
@@ -110,7 +112,7 @@ public class CircleMenu extends View {
             canvas.drawARGB((isExtanded?DIM_FACTOR:0), 0, 0, 0);
             drawCircle(canvas, cornerX, cornerY, radius);
 
-            if (isExtanded){
+            if (isExtanded){ //if the menu is extended, ie item are draw
                 for (int i = 0; i < itemList.size(); ++i){
                     angle = (Math.toRadians(i * itemListAngle) - Math.toRadians(itemAngle)) % (2 * Math.PI);
 
@@ -120,7 +122,7 @@ public class CircleMenu extends View {
                     y = (int)(cornerY + (itemCircleRadius) * Math.sin(angle));
                     itemList.get(i).setRect(drawCircle(canvas, x, y, itemRadius));
 
-                    // ==== Draw item name ====
+                    // ==== Draw item name and icon ====
                     Paint border = new Paint();
                     border.setAntiAlias(true);
                     border.setTextSize(TEXT_SIZE);
@@ -150,7 +152,7 @@ public class CircleMenu extends View {
                     canvas.restore();
                 }
             }
-        }else if (!positionLock){
+        }else if (!positionLock){ //If menu is moving
             paint.setColor(menuColor);
             paint.setAlpha(DIM_FACTOR);
             boolean right = currentPositionX > getWidth() / 2;
@@ -167,6 +169,7 @@ public class CircleMenu extends View {
 
     @Override
     public void onMeasure(int w, int h){
+        //Setup size of the menu, based on the screen size
         width = MeasureSpec.getSize(w);
         height = MeasureSpec.getSize(h);
         min_wh = Math.min(width, height);
@@ -207,6 +210,8 @@ public class CircleMenu extends View {
             case MotionEvent.ACTION_MOVE: {
                 double distFromCorner = dist((int)event.getX(), (int)event.getY(), cornerX, cornerY);
                 double distFromCornerInit = dist(cornerX, cornerY, initialTx, initialTy);
+
+                //Define if the touch event must resize the circle
                 if ( distFromCorner < extRadius*TOUCH_MARGIN && distFromCorner > initialRadius*(1.0/TOUCH_MARGIN) && !movingCircle ) {
                     if (!isExtanded && Math.abs(distFromCorner-distFromCornerInit) > (initialRadius/2)*TOUCH_MARGIN) {
                         touchIsExt = true;
@@ -222,6 +227,7 @@ public class CircleMenu extends View {
                     }
                 }
 
+                //Define if the touch event must move the circle
                 if (!positionLock && !isExtanded && Math.abs(distFromCorner-distFromCornerInit) > ((extRadius)*TOUCH_MARGIN)*TOUCH_MARGIN) { //Margin over the normal radius*margin
                     movingCircle = true;
                 }
@@ -230,6 +236,7 @@ public class CircleMenu extends View {
                     currentPositionY = (int) event.getY();
                 }
 
+                //Define if the touch event must scroll within the menu
                 if (!touchIsExt && !scrollLock){
                     float angle = (float)Math.toDegrees(Math.atan2(cornerX - event.getX(), cornerY - event.getY())) % 360;
                     float initialAngle = (float)Math.toDegrees(Math.atan2(cornerX - initialTx, cornerY - initialTy)) % 360;
@@ -255,7 +262,7 @@ public class CircleMenu extends View {
                     setCircleMenuMeasures();
                     invalidate();
                 }
-
+                //Define if the menu need to be extended when user release touch
                 if (!movingCircle && touchIsExt){
                     shouldExtand = !((extRadius - initialRadius) / 2 > dist((int) event.getX(), (int) event.getY(), cornerX, cornerY));
                 }
@@ -268,15 +275,6 @@ public class CircleMenu extends View {
 
                         if (anItemList.contains((int) event.getX(), (int) event.getY())) {
                             anItemList.getClickable().onClick(manager, view);
-                                /*
-                                case 3:
-                                    view.reinitialize();
-                                    invalidate();
-
-                                    break;
-                                */
-
-
                             shouldExtand = false;
                         }
                     }
@@ -297,6 +295,11 @@ public class CircleMenu extends View {
         this.activity = activity;
     }
 
+
+    /**
+     * Add an item implementing Clickable in the menu.
+     * @param clk Clickable object to be added.
+     */
     public void addClickable(Clickable clk){
         this.addItem(new MenuItem(clk));
         clk.initIcon(ICON_SIZE);
@@ -314,6 +317,7 @@ public class CircleMenu extends View {
         currentPositionY = cornerY;
     }
 
+    //Transition when the menu is half extended
     private void transition(){
         if (!transisionLock ){
             if (shouldExtand && radius < extRadius) {
@@ -339,6 +343,7 @@ public class CircleMenu extends View {
         }
     }
 
+    //Compute item coords
     private void updateItemDisplay(){
         if (!scrollLock){
             int margin = (int)(extRadius*(1-ITEM_CIRCLE_RADIUS));
@@ -377,6 +382,7 @@ public class CircleMenu extends View {
         return Math.hypot(x1 - x2, y1 - y2);
     }
 
+    //Class used to represent an item in the menu
     private class MenuItem{
         private RectF rect;
         private String string;
