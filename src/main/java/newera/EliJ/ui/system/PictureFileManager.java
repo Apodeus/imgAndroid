@@ -126,6 +126,14 @@ public class PictureFileManager {
         dispatchPickPictureFromGallery();
     }
 
+    public static void loadFromUri(Uri uri){
+        TmpUriFile = uri;
+        Image i = Activity.civ.getImage();
+        if (i != null && !i.isEmpty())
+            i.recycleBitmaps();
+        Activity.civ.setImage(RetrieveSavedPictureFromIntent());
+    }
+
     /**
      * Retrieve a picture previously saved with CreatePictureFileFromCamera() or LoadPictureFromGallery().
      * @return A new Image object of the saved picture
@@ -140,6 +148,7 @@ public class PictureFileManager {
 
                 ParcelFileDescriptor parcelFD = Activity.getContentResolver().openFileDescriptor(TmpUriFile, "r");
                 FileDescriptor fileDescriptor = parcelFD.getFileDescriptor();
+                result.setOrig(TmpUriFile);
 
                 BitmapRegionDecoder decoder = BitmapRegionDecoder.newInstance(fileDescriptor, true);
 
@@ -155,7 +164,7 @@ public class PictureFileManager {
                 double lines = Math.ceil((double)h / (double)DECODE_TILE_SIZE);
 
                 result.setDim((int)rows, (int)lines);
-                result.initDimOriginalBitmap((int)rows, (int)lines);
+                //result.initDimOriginalBitmap((int)rows, (int)lines);
 
                 for(int y = 0; y < lines; ++y){
                     for(int x = 0; x < rows; ++x){
@@ -173,12 +182,12 @@ public class PictureFileManager {
                 }
                 parcelFD.close();
 
-                for(int y = 0; y < lines; ++y)
+                /*for(int y = 0; y < lines; ++y)
                     for(int x = 0; x < rows; ++x)
                     {
                         img = result.getBitmap(x, y);
                         result.initOriginalBitmap(img, x, y);
-                    }
+                    }*/
                 } else {
                 Log.i("", "ERROR: TmpUriFile is empty.");
             }

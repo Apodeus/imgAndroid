@@ -1,6 +1,7 @@
 package newera.EliJ.ui.view;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -34,9 +35,6 @@ public class CImageView extends View {
     public InputManager getManager() {
         return inputManager;
     }
-
-
-
 
     private enum TouchMethod {DRAG, ZOOM, TOOL}
     private Image image;
@@ -151,7 +149,9 @@ public class CImageView extends View {
         switch (currentInputItem){
             case S_QUALITY_SAVE:
                 try {
-                    PictureFileManager.SaveBitmap(image.getBitmap(image.getAngle()), (int)params.get("value"));
+                    Bitmap fullBitmap = image.getBitmap();
+                    PictureFileManager.SaveBitmap(fullBitmap, (int)params.get("value"));
+                    fullBitmap.recycle();
                 } catch (IOException e)
                 {
                     e.printStackTrace();
