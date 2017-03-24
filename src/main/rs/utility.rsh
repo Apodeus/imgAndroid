@@ -45,6 +45,12 @@ static float3 HslToRgb(float3 hsl) {
         rgb.g = Hue_2_RGB(v1, v2, hue);
         rgb.b = Hue_2_RGB(v1, v2, hue - (1.0f / 3));
     }
+    if(rgb.z >= 255.0) rgb.z = 255.0;
+        else if (rgb.z <= 0.0) rgb.z = 0.0;
+    if(rgb.y >= 255.0) rgb.y = 255.0;
+               else if (rgb.y <= 0.0) rgb.y = 0.0;
+    if(rgb.x >= 255.0) rgb.x = 255.0;
+             else if (rgb.x <= 0.0) rgb.x = 0.0;
     return rgb;
 }
 
@@ -76,6 +82,10 @@ static float3 RgbToHsl(float3 rgb) {
     float delta = valMax - valMin;
 
     hsl.z = (valMax + valMin) / 2;
+
+    if(hsl.z >= 255.0) hsl.z = 255.0;
+    else if (hsl.z <= 0.0) hsl.z = 0.0;
+
 
     if (delta == 0) {
         hsl.x = 0;
