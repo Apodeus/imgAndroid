@@ -10,6 +10,7 @@
     <string name="shaderKeepHueName">Keep specific Hue</string>
     <string name="shaderSepiaName">Sepia</string>
     <string name="shaderContrastName">Contrast</string>
+    <string name="shaderCartoonName">Cartoon</string>
     <string name="systemGalleryName">Gallery</string>
     <string name="systemCameraName">Camera</string>
     <string name="systemResetName">Reset</string>

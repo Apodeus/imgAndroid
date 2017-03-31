@@ -1,7 +1,6 @@
 #pragma version(1)
 #pragma rs java_package_name(newera.EliJ)
 
-#include "rs_debug.rsh"
 #include "utility.rsh"
 
 float newHue;

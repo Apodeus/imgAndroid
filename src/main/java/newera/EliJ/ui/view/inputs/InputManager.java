@@ -76,6 +76,7 @@ public class InputManager {
                 currentBox = new GenericBox(this, label, l);
                 break;
 
+            case F_CARTOON:
             case F_HISTOGRAM_EQ:
             case F_CONVOLUTION:
             case F_SEPIA:
