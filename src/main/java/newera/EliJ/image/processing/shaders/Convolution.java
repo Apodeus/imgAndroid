@@ -1,8 +1,8 @@
 package newera.EliJ.image.processing.shaders;
 import android.graphics.Bitmap;
-import android.renderscript.Allocation;
-import android.renderscript.Element;
+import android.support.v8.renderscript.Allocation;
 
+import android.support.v8.renderscript.Element;
 import newera.EliJ.MainActivity;
 import newera.EliJ.R;
 import newera.EliJ.ScriptC_convolution;
@@ -132,7 +132,6 @@ public class Convolution extends Shader{
                     out.copyTo(bitmap);
                 }
         }
-        //refreshImage();
     }
 
     private void setupMatrix(ScriptC_convolution conv, ConvType type){

@@ -2,6 +2,7 @@ package newera.EliJ.ui.system;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.BitmapRegionDecoder;
 import android.graphics.Matrix;
 import android.graphics.Rect;
@@ -127,6 +128,14 @@ public class PictureFileManager {
         dispatchPickPictureFromGallery();
     }
 
+    public static void loadFromUri(Uri uri){
+        TmpUriFile = uri;
+        Image i = Activity.civ.getImage();
+        if (i != null && !i.isEmpty())
+            i.recycleBitmaps();
+        Activity.civ.setImage(RetrieveSavedPictureFromIntent());
+    }
+
     /**
      * Retrieve a picture previously saved with CreatePictureFileFromCamera() or LoadPictureFromGallery().
      * @return A new Image object of the saved picture
@@ -141,6 +150,7 @@ public class PictureFileManager {
 
                 ParcelFileDescriptor parcelFD = Activity.getContentResolver().openFileDescriptor(TmpUriFile, "r");
                 FileDescriptor fileDescriptor = parcelFD.getFileDescriptor();
+                result.setOrig(TmpUriFile);
 
                 BitmapRegionDecoder decoder = BitmapRegionDecoder.newInstance(fileDescriptor, true);
 
@@ -149,12 +159,14 @@ public class PictureFileManager {
                 int xm, ym, xM, yM;//4160*3120
 
                 Rect rect = new Rect();
+                BitmapFactory.Options opts = new BitmapFactory.Options();
+                opts.inMutable = true;
 
                 double rows = Math.ceil((double)w / (double)DECODE_TILE_SIZE);
                 double lines = Math.ceil((double)h / (double)DECODE_TILE_SIZE);
 
                 result.setDim((int)rows, (int)lines);
-                result.initDimOriginalBitmap((int)rows, (int)lines);
+                //result.initDimOriginalBitmap((int)rows, (int)lines);
 
                 for(int y = 0; y < lines; ++y){
                     for(int x = 0; x < rows; ++x){
@@ -166,19 +178,18 @@ public class PictureFileManager {
 
                         rect.set(xm, ym, xM, yM);
 
-                        img = decoder.decodeRegion(rect, null);
-                        //Log.i("DBG", "rect= x("+xm +","+xM+"), y("+ym+","+yM+"), bitmap : w="+img.getWidth()+", h="+img.getHeight());
+                        img = decoder.decodeRegion(rect, opts);
                         result.addBitmap(img, x, y);
                     }
                 }
                 parcelFD.close();
 
-                for(int y = 0; y < lines; ++y)
+                /*for(int y = 0; y < lines; ++y)
                     for(int x = 0; x < rows; ++x)
                     {
                         img = result.getBitmap(x, y);
                         result.initOriginalBitmap(img, x, y);
-                    }
+                    }*/
                 } else {
                 Log.i("", "ERROR: TmpUriFile is empty.");
             }

@@ -2,7 +2,8 @@ package newera.EliJ.image.processing.shaders;
 
 
 import android.content.Context;
-import android.renderscript.RenderScript;
+
+import android.support.v8.renderscript.RenderScript;
 import newera.EliJ.image.Image;
 import newera.EliJ.image.processing.EItems;
 import newera.EliJ.ui.view.ActionClickable;

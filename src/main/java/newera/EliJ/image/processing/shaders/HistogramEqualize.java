@@ -1,8 +1,8 @@
 package newera.EliJ.image.processing.shaders;
 
 import android.graphics.Bitmap;
-import android.renderscript.Allocation;
-import android.renderscript.Element;
+import android.support.v8.renderscript.Allocation;
+import android.support.v8.renderscript.Element;
 
 import newera.EliJ.MainActivity;
 import newera.EliJ.R;
@@ -63,7 +63,6 @@ public class HistogramEqualize extends Shader {
                 }
             }
         }
-        //refreshImage();
     }
 
 }
