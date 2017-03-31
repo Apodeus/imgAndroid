@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import newera.EliJ.image.processing.shaders.Cartoon;
 import newera.EliJ.image.processing.shaders.ChangeHue;
 import newera.EliJ.image.processing.shaders.Contrast;
 import newera.EliJ.image.processing.shaders.Convolution;
@@ -101,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initializeFilterMenu(CircleMenu menu) {
+        menu.addClickable(new Cartoon(this));
         menu.addClickable(new InvertColor(this));
         menu.addClickable(new GrayScale(this));
         menu.addClickable(new Sepia(this));
