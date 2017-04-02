@@ -231,6 +231,9 @@ public class GenericBox {
                 case COLOR_PICKER:
                     c = new ColorPicker(this);
                     break;
+                case HARD_DATA:
+                    c = new HardData(this);
+                    break;
                 default:
                     c = new Label(this);
                     break;
