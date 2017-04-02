@@ -1,17 +1,20 @@
 #pragma version(1)
 #pragma rs java_package_name(newera.EliJ)
 
-int size = 7
-const int treshLight[size] = {0, 40, 80, 120, 160, 200, 255};
+#include "utility.rsh"
+
+int size = 7;
+const int treshLight[7] = {0, 40, 80, 120, 160, 200, 255};
 
 static int nearestLight(float l){
 
     int index = 0;
     for(int i = 1; i < size; i++){
-        if( fabs(threshLight[i] - l) < fabs(threshLight[index] - l) )
-            index = i;
+        if( fabs(treshLight[i] - l) < fabs(treshLight[index] - l) )
+           index = i;
     }
-    return threshLight[index];
+    return treshLight[index];
+    return 1;
 }
 
 static float3 tresh(float r, float g, float b){
