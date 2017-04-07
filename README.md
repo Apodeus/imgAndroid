@@ -5,11 +5,13 @@
 
 ## Sujet
 
-[Lien](http://dept-info.labri.fr/~vialard/ANDROID/references/cahierDesCharges.pdf).
+[Lien du sujet](http://dept-info.labri.fr/~vialard/ANDROID/references/cahierDesCharges.pdf)
+
+[Consignes du rendu](http://dept-info.labri.fr/~vialard/ANDROID/renduFinal.pdf)
 
 Deadline premier rendu - *Version Akuma*: **Vendredi 3 Mars**
 
-Deadline rendu final - *Version Buzzard*: **Vendredi 14 Avril**
+Deadline rendu final - *Version Buzzard*: ~~**Vendredi 14 Avril**~~ **Jeudi 20 Avril - 23:59**
 ## Cahier des charges
 Cahier : [Overleaf](https://www.overleaf.com/8419408rzkrzspxynkf#/29873234/).
 
