@@ -30,7 +30,7 @@ uchar4 __attribute__((kernel)) cartoon_edge(uint32_t x, uint32_t y) {
             stack += rsUnpackColor8888(rsGetElementAt_uchar4(in, mx, my)) * factor;
         }
     }
-    if (stack.r+stack.g+stack.b < 1) stack = 0;
+    if (stack.r+stack.g+stack.b < 0.5) stack = 0;
 
-    return rsPackColorTo8888(stack*10);
+    return rsPackColorTo8888(stack*2);
 }

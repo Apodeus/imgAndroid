@@ -28,4 +28,5 @@
     <string name="shaderConvolutionLAPLName">LAPL Convolution</string>
     <string name="shaderConvolutionMoyName">AVG Convolution</string>
     <string name="shaderConvolutionSobelName">SOBEL Convolution</string>
+    <string name="shaderPencilName">Pencil</string>
 </resources>

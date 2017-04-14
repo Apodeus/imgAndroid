@@ -8,8 +8,7 @@ import android.support.v8.renderscript.Element;
 import newera.EliJ.R;
 import newera.EliJ.ScriptC_cartoon_edge;
 import newera.EliJ.ScriptC_cartoon_saturation;
-import newera.EliJ.ScriptC_contrast;
-import newera.EliJ.ScriptC_convolution;
+import newera.EliJ.ScriptC_invert;
 import newera.EliJ.ScriptC_soustract;
 import newera.EliJ.ScriptC_thresholdLightness;
 import newera.EliJ.image.Image;
@@ -20,12 +19,12 @@ import newera.EliJ.image.processing.EItems;
  * Created by romain on 09/02/17.
  */
 
-public class Cartoon extends Shader{
+public class Pencil extends Shader{
 
-    public Cartoon(Context context) {
+    public Pencil(Context context) {
         super(context);
         this.drawableIconId = R.drawable.ic_contrast_tonality_black_24dp;
-        this.clickableName = R.string.shaderCartoonName;
+        this.clickableName = R.string.shaderPencilName;
         this.item = EItems.F_CONTRAST;
     }
 
@@ -52,11 +51,13 @@ public class Cartoon extends Shader{
                     Allocation in = Allocation.createFromBitmap(renderScript, bitmap);
                     Allocation out = Allocation.createTyped(renderScript, in.getType());
                     Allocation out2 = Allocation.createTyped(renderScript, in.getType());
-                    Allocation out3 = Allocation.createTyped(renderScript, in.getType());
+
+                    ScriptC_thresholdLightness rsLum = new ScriptC_thresholdLightness(renderScript);
+                    rsLum.forEach_treshold(in, out);//
 
                     rsConv.set_h(bitmap.getHeight());
                     rsConv.set_w(bitmap.getWidth());
-                    rsConv.set_in(in);
+                    rsConv.set_in(out);
 
                     rsConv.set_matrix_size(matrix_edge.length);
                     rsConv.set_matrix_factor(1);
@@ -65,20 +66,12 @@ public class Cartoon extends Shader{
                     matAlloc.copyFrom(mat);
                     rsConv.set_matrix2D(matAlloc);
 
-                    rsConv.forEach_cartoon_edge(out);//
+                    rsConv.forEach_cartoon_edge(out2);//
 
-                    ScriptC_thresholdLightness rsLum = new ScriptC_thresholdLightness(renderScript);
-                    rsLum.forEach_treshold(in, out2);//
+                    ScriptC_invert rsInv = new ScriptC_invert(renderScript);
+                    rsInv.forEach_invert(out2, in);//
 
-                    ScriptC_soustract rsSous = new ScriptC_soustract(renderScript);
-                    rsSous.set_in1(out2);
-                    rsSous.set_in2(out);
-                    rsSous.forEach_soustract(out3);//
-
-                    ScriptC_cartoon_saturation rsSat = new ScriptC_cartoon_saturation(renderScript);
-                    rsSat.forEach_saturation(out3, out);//
-
-                    out.copyTo(bitmap);
+                    in.copyTo(bitmap);
                 }
         }
     }

@@ -165,7 +165,7 @@ public class PictureFileManager {
                 double rows = Math.ceil((double)w / (double)DECODE_TILE_SIZE);
                 double lines = Math.ceil((double)h / (double)DECODE_TILE_SIZE);
 
-                result.setDim((int)rows, (int)lines);
+                result.setDim((int)rows, (int)lines, w, h);
                 //result.initDimOriginalBitmap((int)rows, (int)lines);
 
                 for(int y = 0; y < lines; ++y){
@@ -238,7 +238,7 @@ public class PictureFileManager {
     private static void dispatchPickPictureFromGallery()
     {
 
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         Activity.startActivityForResult(intent, REQUEST_IMAGE_GALLERY);
         LAST_REQUEST = REQUEST_IMAGE_GALLERY;
     }

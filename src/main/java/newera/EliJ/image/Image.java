@@ -8,8 +8,6 @@ import android.graphics.Rect;
 import android.net.Uri;
 import android.util.Log;
 
-import java.io.FileDescriptor;
-
 import newera.EliJ.ui.system.PictureFileManager;
 
 import static java.lang.Math.abs;
@@ -22,9 +20,11 @@ import static java.lang.Math.min;
 public class Image {
     private Bitmap[][] bitmap;
     private Bitmap[][] originalBitmap;
-    private int w, h;
+    private int w, h, fw, fh;
     private int angle = 0;
     private static Uri origUri;
+
+
 
     /**
      * @return Edited tile reference
@@ -47,9 +47,11 @@ public class Image {
      * @param lines number of bitmaps in height
      *       Initialize the array of Bitmaps
      */
-    public void setDim(int rows, int lines){
+    public void setDim(int rows, int lines, int w, int h){
         this.w = rows;
         this.h = lines;
+        this.fw = w;
+        this.fh = h;
         this.bitmap = new Bitmap[rows][lines];
         for(int x = 0; x < rows; ++x) {
             for (int y = 0; y < lines; ++y) {
@@ -62,17 +64,20 @@ public class Image {
      * @return Bitmap : The full sized bitmap.
      */
     public Bitmap getBitmap(){
-        //rotateBitmaps(alpha);
+        int alpha = angle;
+        rotateBitmaps(alpha);
 
         int nWidth = this.getWidth();
         int nHeight = this.getHeight();
 
+        Log.i("DBG", "Save image : "+nWidth+"x"+nHeight);
+
         Bitmap newBitmap = Bitmap.createBitmap(nWidth, nHeight, bitmap[0][0].getConfig());
         Canvas canvas = new Canvas(newBitmap);
 
-        //drawOriginalBitmap(canvas, alpha);
-        //rotateBitmaps(-1 * alpha);
-        draw(canvas, new Paint(), nWidth/2, nHeight/2, 1);
+        drawOrientedBitmap(canvas, alpha);
+        rotateBitmaps(-1 * alpha);
+        //draw(canvas, new Paint(), nWidth/2, nHeight/2, 1);
 
         return newBitmap;
     }
@@ -87,6 +92,7 @@ public class Image {
         this.bitmap[x][y] = bitmap;
     }
 
+
     /**
      * Draw the whole tileset of Bitmap in the canvas.
      * @param canvas Canvas to draw in
@@ -95,13 +101,42 @@ public class Image {
      * @param coordY Coordinate Y
      * @param scale Scale to draw on
      */
+    /*
     public void draw(Canvas canvas, Paint paint, int coordX, int coordY, float scale){
         Rect dst = new Rect();
 
         int cx = (coordX - (int)((this.getWidth() - 1) * (scale/2)));
         int cy = (coordY - (int)((this.getHeight() - 1) * (scale/2)));
-
+        int lastW = 0, lastH = 0;
         for(int x = 0; x < this.getTileW(); ++x) {
+            lastH = 0;
+            for (int y = 0; y < this.getTileH(); ++y) {
+                dst.left   = cx + (int)(lastW*(scale));//x*(int)((PictureFileManager.DECODE_TILE_SIZE )*(scale));
+                dst.top    = cy + (int)(lastH*(scale));//y*(int)((PictureFileManager.DECODE_TILE_SIZE )*(scale));
+
+                dst.right  = dst.left + (int)Math.ceil((this.getWidth(x,y))*(scale));
+                dst.bottom = dst.top + (int)Math.ceil((this.getHeight(x,y))*(scale));
+
+                lastH += this.getHeight(x,y);
+
+                /*canvas.save();
+                canvas.rotate(this.angle, dst.left, dst.top);
+                canvas.drawBitmap(this.getBitmap(x, y), null, dst, paint);
+                //canvas.restore();
+            }
+            lastW += this.getWidth(x,0);
+        }
+    }
+    */
+
+    public void draw(Canvas canvas, Paint paint, int coordX, int coordY, float scale){
+        Rect dst = new Rect();
+
+        int cx = (coordX - (int)((this.getWidth() - 1) * (scale/2)));
+        int cy = (coordY - (int)((this.getHeight() - 1) * (scale/2)));
+        //int lastW = 0, lastH = 0;
+        for(int x = 0; x < this.getTileW(); ++x) {
+            //lastH = 0;
             for (int y = 0; y < this.getTileH(); ++y) {
                 dst.left   = cx + x*(int)((PictureFileManager.DECODE_TILE_SIZE )*(scale));
                 dst.top    = cy + y*(int)((PictureFileManager.DECODE_TILE_SIZE )*(scale));
@@ -109,26 +144,18 @@ public class Image {
                 dst.right  = dst.left + (int)((this.getWidth(x,y))*(scale));
                 dst.bottom = dst.top + (int)((this.getHeight(x,y))*(scale));
 
-                /*canvas.save();
-                canvas.rotate(this.angle, dst.left, dst.top);*/
+                //lastH += this.getHeight(x,y);
+
+                canvas.save();
+                canvas.rotate(this.angle, dst.left, dst.top);
                 canvas.drawBitmap(this.getBitmap(x, y), null, dst, paint);
-                //canvas.restore();
+                canvas.restore();
             }
+            //lastW += this.getWidth(x,0);
         }
     }
 
-    /**
-     * Store a copy of original bitmap on given coordinates.
-     * @param bitmap Original tile
-     * @param x Coordinate x
-     * @param y Coordinate y
-     */
-    /*
-    public void initOriginalBitmap(Bitmap bitmap, int x, int y){
-        if(bitmap == null)
-            return;
-        this.originalBitmap[x][y] = bitmap.copy(bitmap.getConfig(), bitmap.isMutable());
-    }*/
+
 
     public void setOrig(Uri uri){
         this.origUri = uri;
@@ -177,22 +204,24 @@ public class Image {
      * @return Width of the full-sized bitmap.
      */
     public int getWidth(){
-        int bmp_width = 0;
+        return fw;
+        /*int bmp_width = 0;
         for (int x = 0; x < w; ++x) {
             bmp_width += bitmap[x][0].getWidth();
         }
-        return bmp_width;
+        return bmp_width;*/
     }
 
     /**
      * @return Height of the full-sized bitmap.
      */
     public int getHeight() {
-        int bmp_height = 0;
+        return fh;
+        /*int bmp_height = 0;
         for (int y = 0; y < h; ++y) {
             bmp_height += bitmap[0][y].getHeight();
         }
-        return bmp_height;
+        return bmp_height;*/
     }
 
     /**
@@ -221,8 +250,8 @@ public class Image {
     private int getTileH() {
         return h;
     }
-    /*
-    private void drawOriginalBitmap(Canvas canvas, int alpha){
+
+    private void drawOrientedBitmap(Canvas canvas, int alpha){
         Rect dst = new Rect();
         int shiftW = 0;
         int shiftH = 0;
@@ -243,7 +272,7 @@ public class Image {
             shiftH = 0;
             shiftW += lastShift;
         }
-    }*/
+    }
 
     private void rotateBitmaps(int angle){
 
@@ -258,8 +287,8 @@ public class Image {
                 bitmap[x][y] = Bitmap.createBitmap(tmp, 0, 0, tmp.getWidth(), tmp.getHeight(), matrix, true);
                 //tmp.recycle();
 
-                Bitmap tmp2 = this.originalBitmap[x][y];
-                originalBitmap[x][y] = Bitmap.createBitmap(tmp2, 0, 0, tmp2.getWidth(), tmp2.getHeight(), matrix, true);
+                //Bitmap tmp2 = this.originalBitmap[x][y];
+                //originalBitmap[x][y] = Bitmap.createBitmap(tmp2, 0, 0, tmp2.getWidth(), tmp2.getHeight(), matrix, true);
                 //tmp2.recycle();
             }
         }
@@ -291,8 +320,13 @@ public class Image {
             this.w = this.h;
             this.h = tmp;
 
+            tmp = fw;
+            fw = fh;
+            fh = tmp;
+
             bitmap = rotateArrayBitmap(bitmap, a);
-            originalBitmap = rotateArrayBitmap(originalBitmap, a);
+            //rotateBitmaps(a);
+            //originalBitmap = rotateArrayBitmap(originalBitmap, a);
         }
     }
 

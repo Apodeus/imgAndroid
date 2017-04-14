@@ -3,8 +3,8 @@
 
 #include "utility.rsh"
 
-int size = 7;
-const int treshLight[7] = {0, 40, 80, 120, 160, 200, 255};
+int size = 5;
+const int treshLight[5] = {0, 60, 120, 180,  255};
 
 static int nearestLight(float l){
 

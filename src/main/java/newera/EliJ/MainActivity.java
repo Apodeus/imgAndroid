@@ -14,6 +14,7 @@ import newera.EliJ.image.processing.shaders.HistogramEqualize;
 import newera.EliJ.image.processing.shaders.InvertColor;
 import newera.EliJ.image.processing.shaders.KeepHue;
 import newera.EliJ.image.processing.shaders.Lightness;
+import newera.EliJ.image.processing.shaders.Pencil;
 import newera.EliJ.image.processing.shaders.Sepia;
 import newera.EliJ.ui.system.DataFragment;
 import newera.EliJ.ui.system.SystemActionHandler;
@@ -110,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
         menu.addClickable(new Lightness(this));
         menu.addClickable(new ChangeHue(this));
         menu.addClickable(new KeepHue(this));
+        menu.addClickable(new Pencil(this));
         menu.addClickable(new HistogramEqualize(this));
         menu.addClickable(new Convolution(this, Convolution.ConvType.GAUSS));
         menu.addClickable(new Convolution(this, Convolution.ConvType.MOY));
