@@ -36,17 +36,20 @@ public class CImageView extends View {
     private Image image;
     private Point contentCoords;
 
+    private Bitmap drawingCache;
+
     private float contentScale;
+
     private TouchHandler touchHandler;
     private InputManager inputManager;
     private Paint imagePaint;
-
     public InputManager getManager() {
         return inputManager;
     }
 
     public CImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.setDrawingCacheEnabled(true);
         image = null;
         this.contentCoords = new Point(0, 0);
         this.touchHandler = new TouchHandler();
@@ -101,6 +104,8 @@ public class CImageView extends View {
             */
             inputManager.draw(canvas);
         }
+
+        drawingCache = this.getDrawingCache(true);
     }
 
     @Override
@@ -160,27 +165,6 @@ public class CImageView extends View {
     }
 
     //TODO
-    //For Undo / redo options...
-    /*public void onPreviewFilter(int value) {
-        switch (currentInputType) {
-            case NONE:
-                return;
-            case SHADER:
-                switch (currentInputItem) {
-                    case NONE:
-                        return;
-                    case F_CHANGE_HUE:
-                        Shader s = new ChangeHue(getContext());
-                        s.ApplyPreviewFilter(image, inputManager.getPreviewParams());
-                        break;
-                }
-                break;
-            case TOOL:
-                break;
-            case SYSTEM:
-                break;
-        }
-    }*/
 
     /**
      * @return the Image's reference
@@ -234,17 +218,17 @@ public class CImageView extends View {
     }
 
     private class TouchHandler{
+
         private int initialX, initialY;
         private int initialContentX, initialContentY;
         private float initialDist, initialScale;
         private int mActivePointerId, pointerIndex;
         private List<Point> touchList;
-
-
         TouchHandler(){
             this.touchList = new ArrayList<>();
             this.touchList = new ArrayList<>();
         }
+
 
         float onTouch(MotionEvent event, TouchMethod method, Point coord, float scale){
             touchList.clear();
@@ -303,8 +287,8 @@ public class CImageView extends View {
     }
 
     private class Point{
-        int x, y;
 
+        int x, y;
         Point(){
             this.x = 0;
             this.y = 0;
@@ -318,5 +302,30 @@ public class CImageView extends View {
         float distanceFromPoint(Point b) {
             return (float) Math.sqrt((double)((this.x - b.x)*(this.x - b.x) + (this.y - b.y)*(this.y - b.y)));
         }
+
     }
+    /*public void onPreviewFilter(int value) {
+        switch (currentInputType) {
+            case NONE:
+                return;
+            case SHADER:
+                switch (currentInputItem) {
+                    case NONE:
+                        return;
+                    case F_CHANGE_HUE:
+                        Shader s = new ChangeHue(getContext());
+                        s.ApplyPreviewFilter(image, inputManager.getPreviewParams());
+                        break;
+                }
+                break;
+            case TOOL:
+                break;
+            case SYSTEM:
+                break;
+        }
+    }*/
+    //For Undo / redo options...
+
+
+
 }

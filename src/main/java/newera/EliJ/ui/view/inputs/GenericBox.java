@@ -109,12 +109,12 @@ public class GenericBox {
                 //Handle action_down
             }
 
-        if (isEdit && event.getAction() == MotionEvent.ACTION_MOVE)
-        {
+        //if (isEdit && event.getAction() == MotionEvent.ACTION_MOVE)
+        //{
             //Handle edit
             for (IGenericBoxComponent c : components)
                 c.handleEdit(event);
-        }
+        //}
 
         if (event.getAction() == MotionEvent.ACTION_UP)
         {

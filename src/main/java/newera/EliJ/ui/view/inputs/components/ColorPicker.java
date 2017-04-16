@@ -2,6 +2,7 @@ package newera.EliJ.ui.view.inputs.components;
 
 import android.graphics.*;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.MotionEvent;
 import newera.EliJ.R;
 import newera.EliJ.ui.view.inputs.GenericBox;
@@ -34,6 +35,7 @@ public class ColorPicker implements IGenericBoxComponent {
     private boolean isEditBar = false;
     private boolean isEditPicker = false;
     private boolean pickerActive = false;
+    private Bitmap viewCache;
 
     private Drawable pickIconDrawable;
 
@@ -197,7 +199,10 @@ public class ColorPicker implements IGenericBoxComponent {
     @Override
     public void disableEdit() {
         isEditBar = false;
+
+
         isEditPicker = false;
+
     }
 
     @Override
@@ -205,12 +210,31 @@ public class ColorPicker implements IGenericBoxComponent {
         if (isEditBar)
             currentValue =  Math.max(minValue, Math.min(maxValue, (int) ( minValue +(event.getRawX() - barBackground.left - CURSOR_SIZE/2.5f) / barTik)));
 
+
         if (isEditPicker)
         {
             isEditPicker = false;
             pickerActive = !pickerActive;
             box.setPictureEdit(pickerActive);
+
+            if (pickerActive)
+            {
+                viewCache = Bitmap.createBitmap(box.getInputManager().getView().getWidth(), box.getInputManager().getView().getHeight(), Bitmap.Config.ARGB_8888);
+                Canvas c = new Canvas(viewCache);
+                box.getInputManager().getView().draw(c);
+            }
         }
+
+        if (pickerActive && event.getX() < boxBackground.top)
+        {
+            float[] hsv = {0f, 0f, 0f};
+            Color.colorToHSV(viewCache.getPixel((int) event.getRawX(), (int) event.getRawY()), hsv);
+            currentValue = (int) hsv[0];
+            //Bitmap b = box.getInputManager().getView().getImage().getBitmap();
+            //currentValue = b.getPixel((int) event.getRawX(), (int) event.getRawY()); // need to convert to HSL + get H
+            //Log.w("INFO", "" + viewCache.getPixel((int) event.getRawX(), (int) event.getRawY())); // need to convert to HSL + get H
+        }
+
     }
 
 }
