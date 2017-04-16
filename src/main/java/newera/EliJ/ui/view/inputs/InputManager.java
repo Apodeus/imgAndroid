@@ -92,6 +92,16 @@ public class InputManager {
                 InputDataType seekBarQuality = new InputDataType(EInputType.INTEGER_SEEKBAR, "value", "Quality", new int[] {50, 100, 75});
                 l.add(seekBarQuality);
                 currentBox = new GenericBox(this, label, l);
+                break;
+
+            case T_BRUSH:
+                currentCategory = ECategory.TOOL;
+                InputDataType colorPallet = new InputDataType(EInputType.COLOR_PICKER, "value", "Couleur", new int[] {0, 360, 0});
+                InputDataType tool = new InputDataType(EInputType.DRAW, "canvas", "", new int[] {0});
+                l.add(colorPallet);
+                l.add(tool);
+                currentBox = new GenericBox(this, label, l);
+                break;
 
             case NONE:
                 break;

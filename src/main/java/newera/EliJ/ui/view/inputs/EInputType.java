@@ -5,5 +5,5 @@ package newera.EliJ.ui.view.inputs;
  */
 public enum EInputType {
     INTEGER_SEEKBAR,
-    COLOR_PICKER, HARD_DATA,
+    COLOR_PICKER, HARD_DATA, DRAW,
 }

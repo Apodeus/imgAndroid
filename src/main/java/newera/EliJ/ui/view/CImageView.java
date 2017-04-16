@@ -32,18 +32,18 @@ public class CImageView extends View {
     private final static float MOVE_SAFEZONE = 0.5f;
     private EItems currentInputItem;
 
-    public InputManager getManager() {
-        return inputManager;
-    }
-
-    private enum TouchMethod {DRAG, ZOOM, TOOL}
+    private enum TouchMethod {DRAG, ZOOM, TOOL;}
     private Image image;
-
     private Point contentCoords;
+
     private float contentScale;
     private TouchHandler touchHandler;
     private InputManager inputManager;
     private Paint imagePaint;
+
+    public InputManager getManager() {
+        return inputManager;
+    }
 
     public CImageView(Context context, AttributeSet attrs) {
         super(context, attrs);

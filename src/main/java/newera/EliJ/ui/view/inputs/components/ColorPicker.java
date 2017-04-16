@@ -29,7 +29,13 @@ public class ColorPicker implements IGenericBoxComponent {
     private Rect barForeground;
     private String plusSign;
     private Bitmap cursorIconBitmap;
-    private boolean isEdit = false;
+    private Bitmap pickColorIconBitmap;
+    private Canvas pickColorIconCanvas;
+    private boolean isEditBar = false;
+    private boolean isEditPicker = false;
+    private boolean pickerActive = false;
+
+    private Drawable pickIconDrawable;
 
     private float barTik;
 
@@ -42,6 +48,10 @@ public class ColorPicker implements IGenericBoxComponent {
     private final static float BOX_WIDTH_COVERAGE = 0.75f;
     private final static float BOX_BORDER_THICKNESS = 0.7f;
     private final static float PAINT_ALPHA = 0.8f;
+
+    private final static float PICK_ICON_FROM_RIGHT = 0.2f;
+    private final static float PICK_ICON_FROM_TOP = 0.35f;
+    private final static int PICK_ICON_SIZE = 100;
 
     private int viewWidth;
     private int viewHeight;
@@ -103,6 +113,17 @@ public class ColorPicker implements IGenericBoxComponent {
         cursorD.setBounds(0,0,CURSOR_SIZE,CURSOR_SIZE);
         cursorD.draw(cursorIconCanvas);
         cursorIconBitmap = Bitmap.createBitmap(o, 0, 0, CURSOR_SIZE, CURSOR_SIZE, m, true);
+
+        pickIconDrawable= box.getInputManager().getView().getResources().getDrawable(R.drawable.ic_keep_hue_colorize_black_24dp);
+        o = Bitmap.createBitmap(PICK_ICON_SIZE, PICK_ICON_SIZE, Bitmap.Config.ARGB_8888);
+        pickColorIconCanvas = new Canvas(o);
+
+        pickIconDrawable.setColorFilter(box.getInputManager().getView().getResources().getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP);
+        pickIconDrawable.setBounds(0, 0, PICK_ICON_SIZE, PICK_ICON_SIZE);
+        pickColorIconCanvas.drawColor(box.getInputManager().getView().getResources().getColor(R.color.colorLight));
+        pickIconDrawable.draw(pickColorIconCanvas);
+
+        pickColorIconBitmap = o;
     }
 
     @Override
@@ -147,25 +168,48 @@ public class ColorPicker implements IGenericBoxComponent {
         paint.setTextAlign(Paint.Align.CENTER);
         canvas.drawText(label + " : " + (currentValue > 0 ? plusSign : "") + currentValue, viewWidth / 2, boxBackground.top + getHeight()/2 + TEXT_SIZE, paint);
 
+        if (pickerActive)
+        {
+            pickColorIconCanvas.drawColor(box.getInputManager().getView().getResources().getColor(R.color.colorAccent));
+            pickIconDrawable.setColorFilter(box.getInputManager().getView().getResources().getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP);
+        }else{
+            pickColorIconCanvas.drawColor(box.getInputManager().getView().getResources().getColor(R.color.colorPrimary));
+            pickIconDrawable.setColorFilter(box.getInputManager().getView().getResources().getColor(R.color.colorLight), PorterDuff.Mode.SRC_ATOP);
+        }
+
+        pickIconDrawable.draw(pickColorIconCanvas);
+        canvas.drawBitmap(pickColorIconBitmap, boxBackground.right - boxBackground.width()*PICK_ICON_FROM_RIGHT, boxBackground.top + boxBackground.height()*PICK_ICON_FROM_TOP, paint);
     }
 
     @Override
     public void enableEdit(MotionEvent event) {
-        if (event.getX() > barForeground.right && event.getX() < barForeground.right + CURSOR_SIZE)
+        float boxW = boxBackground.right - boxBackground.left;
+        float boxH = boxBackground.bottom - boxBackground.top;
+        if ((event.getX() > barForeground.right && event.getX() < barForeground.right + CURSOR_SIZE))
             if (event.getY() > barForeground.top + BAR_THICKNESS / 2 - CURSOR_SIZE * 0.75f && event.getY() < barForeground.top + BAR_THICKNESS / 2 + CURSOR_SIZE * 0.75f)
-                isEdit = true;
+                isEditBar = true;
+
+        if (event.getX() < (boxBackground.right - boxW*PICK_ICON_FROM_RIGHT + PICK_ICON_SIZE) && event.getX() > boxBackground.right - boxW*PICK_ICON_FROM_RIGHT)
+            if(event.getY() > boxBackground.top + boxH*PICK_ICON_FROM_TOP && event.getY() < boxBackground.top + boxH*PICK_ICON_FROM_TOP + PICK_ICON_SIZE)
+                isEditPicker = true;
     }
 
     @Override
     public void disableEdit() {
-        isEdit = false;
+        isEditBar = false;
+        isEditPicker = false;
     }
 
     @Override
     public void handleEdit(MotionEvent event) {
-        if (isEdit)
-        {
+        if (isEditBar)
             currentValue =  Math.max(minValue, Math.min(maxValue, (int) ( minValue +(event.getRawX() - barBackground.left - CURSOR_SIZE/2.5f) / barTik)));
+
+        if (isEditPicker)
+        {
+            isEditPicker = false;
+            pickerActive = !pickerActive;
+            box.setPictureEdit(pickerActive);
         }
     }
 

@@ -24,9 +24,5 @@ public class Brush extends Tool {
         brushEdge.draw(e);
     }
 
-    public Bitmap getBitmap()
-    {
-
-    }
 
 }

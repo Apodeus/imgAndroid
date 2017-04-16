@@ -7,14 +7,16 @@ import newera.EliJ.image.processing.tools.Tool;
 /**
  * Created by echo on 24/03/2017.
  */
-public class ToolCanvas {
+public class CanvasTool {
     private int offsetX;
     private int offsetY;
     private int size;
-    private Bitmap bitmap;
-    private Canvas canvas;
 
-    public ToolCanvas(int offsetX, int offsetY, int size)
+    private Bitmap bitmap;
+
+    private Canvas canvas;
+    public boolean active = false;
+    public CanvasTool(int offsetX, int offsetY, int size)
     {
         this.offsetX = offsetX;
         this.offsetY = offsetY;
@@ -30,6 +32,7 @@ public class ToolCanvas {
     {
         this.bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
         this.canvas = new Canvas(this.bitmap);
+        this.active = true;
         return this.isInitialized();
     }
 
@@ -43,5 +46,21 @@ public class ToolCanvas {
         y = y - offsetY;
         canvas.drawBitmap(tool.getBitmap(), x, y, config.getPaint());
 
+    }
+
+    public int getOffsetX() {
+        return offsetX;
+    }
+
+    public int getOffsetY() {
+        return offsetY;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public Bitmap getBitmap() {
+        return bitmap;
     }
 }
