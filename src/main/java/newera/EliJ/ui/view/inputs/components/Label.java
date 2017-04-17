@@ -52,6 +52,11 @@ public class Label implements IGenericBoxComponent {
     }
 
     @Override
+    public boolean getEditStatus() {
+        return false;
+    }
+
+    @Override
     public void draw(Canvas canvas) {
 
     }

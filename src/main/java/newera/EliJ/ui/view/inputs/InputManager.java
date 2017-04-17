@@ -64,10 +64,10 @@ public class InputManager {
 
             case F_KEEP_HUE:
                 currentCategory = ECategory.FILTER;
-                InputDataType seekBarHue = new InputDataType(EInputType.COLOR_PICKER, "valueHue", "Hue", new int[] {0, 360, 0});
                 InputDataType seekBarTolerance = new InputDataType(EInputType.INTEGER_SEEKBAR, "valueTolerance", "Tolerance", new int[] {0, 180, 0});
-                l.add(seekBarHue);
+                InputDataType seekBarHue = new InputDataType(EInputType.COLOR_PICKER, "valueHue", "Hue", new int[] {0, 360, 0});
                 l.add(seekBarTolerance);
+                l.add(seekBarHue);
                 currentBox = new GenericBox(this, label, l);
                 break;
 

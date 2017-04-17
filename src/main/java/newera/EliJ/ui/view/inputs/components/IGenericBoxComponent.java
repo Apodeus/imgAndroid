@@ -14,6 +14,7 @@ public interface IGenericBoxComponent {
     void setIndex(int index);
     void setLabel(String label);
     String getLabel();
+    boolean getEditStatus();
     void draw(Canvas canvas);
     void enableEdit(MotionEvent event);
     void disableEdit();

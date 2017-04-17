@@ -53,6 +53,11 @@ public class HardData implements IGenericBoxComponent {
     }
 
     @Override
+    public boolean getEditStatus() {
+        return false;
+    }
+
+    @Override
     public void draw(Canvas canvas) {
 
     }

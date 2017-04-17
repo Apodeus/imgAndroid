@@ -1,5 +1,6 @@
 package newera.EliJ.image.processing.tools;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 
 /**
@@ -8,6 +9,11 @@ import android.graphics.Bitmap;
 
 public abstract class Tool{
     private int standardSize;
+
+    public void initialize(Context context)
+    {
+
+    }
 
     public int getStandardSize() {
         return standardSize;

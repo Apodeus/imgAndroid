@@ -52,8 +52,8 @@ public class ColorPicker implements IGenericBoxComponent {
     private final static float PAINT_ALPHA = 0.8f;
 
     private final static float PICK_ICON_FROM_RIGHT = 0.2f;
-    private final static float PICK_ICON_FROM_TOP = 0.35f;
-    private final static int PICK_ICON_SIZE = 100;
+    private final static float PICK_ICON_FROM_TOP = 0.5f;
+    private final static int PICK_ICON_SIZE = 80;
 
     private int viewWidth;
     private int viewHeight;
@@ -144,6 +144,11 @@ public class ColorPicker implements IGenericBoxComponent {
     }
 
     @Override
+    public boolean getEditStatus() {
+        return pickerActive;
+    }
+
+    @Override
     public void draw(Canvas canvas) {
         barForeground.right = barBackground.left + (int) ((currentValue + length - maxValue) * barTik);
 
@@ -168,7 +173,7 @@ public class ColorPicker implements IGenericBoxComponent {
         paint.setColor(textColor);
         paint.setTextSize(TEXT_SIZE);
         paint.setTextAlign(Paint.Align.CENTER);
-        canvas.drawText(label + " : " + (currentValue > 0 ? plusSign : "") + currentValue, viewWidth / 2, boxBackground.top + getHeight()/2 + TEXT_SIZE, paint);
+        canvas.drawText(label + " : " + (currentValue > 0 ? plusSign : "") + currentValue, viewWidth / 2, boxBackground.top + getHeight()/2 + TEXT_SIZE - 5, paint);
 
         if (pickerActive)
         {
@@ -215,7 +220,7 @@ public class ColorPicker implements IGenericBoxComponent {
         {
             isEditPicker = false;
             pickerActive = !pickerActive;
-            box.setPictureEdit(pickerActive);
+            //box.setPictureEdit(pickerActive);
 
             if (pickerActive)
             {
@@ -225,7 +230,7 @@ public class ColorPicker implements IGenericBoxComponent {
             }
         }
 
-        if (pickerActive && event.getX() < boxBackground.top)
+        if (pickerActive && event.getY() < boxBackground.top)
         {
             float[] hsv = {0f, 0f, 0f};
             Color.colorToHSV(viewCache.getPixel((int) event.getRawX(), (int) event.getRawY()), hsv);

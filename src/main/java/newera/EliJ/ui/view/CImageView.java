@@ -36,17 +36,18 @@ public class CImageView extends View {
     private Image image;
     private Point contentCoords;
 
-    private Bitmap drawingCache;
+    private CCanvas cCanvas;
 
+    private Bitmap drawingCache;
     private float contentScale;
 
     private TouchHandler touchHandler;
+
     private InputManager inputManager;
     private Paint imagePaint;
     public InputManager getManager() {
         return inputManager;
     }
-
     public CImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.setDrawingCacheEnabled(true);
@@ -60,6 +61,8 @@ public class CImageView extends View {
         this.imagePaint = new Paint();
         imagePaint.setAntiAlias(false);
         imagePaint.setFilterBitmap(false);
+
+        this.cCanvas = new CCanvas();
     }
 
     /**
@@ -220,6 +223,7 @@ public class CImageView extends View {
     private class TouchHandler{
 
         private int initialX, initialY;
+
         private int initialContentX, initialContentY;
         private float initialDist, initialScale;
         private int mActivePointerId, pointerIndex;
@@ -228,8 +232,6 @@ public class CImageView extends View {
             this.touchList = new ArrayList<>();
             this.touchList = new ArrayList<>();
         }
-
-
         float onTouch(MotionEvent event, TouchMethod method, Point coord, float scale){
             touchList.clear();
             for(int i = 0; i < event.getPointerCount(); ++i){
@@ -284,16 +286,17 @@ public class CImageView extends View {
             return scale;
         }
 
+
     }
 
     private class Point{
 
         int x, y;
+
         Point(){
             this.x = 0;
             this.y = 0;
         }
-
         Point(int x, int y){
             this.x = x;
             this.y = y;
@@ -304,6 +307,8 @@ public class CImageView extends View {
         }
 
     }
+
+    //For Undo / redo options...
     /*public void onPreviewFilter(int value) {
         switch (currentInputType) {
             case NONE:
@@ -324,7 +329,11 @@ public class CImageView extends View {
                 break;
         }
     }*/
-    //For Undo / redo options...
+
+
+    public CCanvas getcCanvas() {
+        return cCanvas;
+    }
 
 
 

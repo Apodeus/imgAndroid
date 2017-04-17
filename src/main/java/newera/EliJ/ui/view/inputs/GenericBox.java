@@ -23,8 +23,6 @@ public class GenericBox {
     private boolean isEdit = false;
     private boolean isExtended = true;
 
-    private boolean isPictureEdit = false;
-
     private String label;
 
     private Bitmap applyIconBitmap;
@@ -150,7 +148,7 @@ public class GenericBox {
             isEdit = false;
         }
 
-        return isEdit || isPictureEdit;
+        return isEdit || isPictureEdit();
     }
 
     /**
@@ -259,10 +257,11 @@ public class GenericBox {
     }
 
     public boolean isPictureEdit() {
-        return isPictureEdit;
+        boolean result = false;
+        for (IGenericBoxComponent c : components)
+            result = result || c.getEditStatus();
+
+        return result;
     }
 
-    public void setPictureEdit(boolean pictureEdit) {
-        isPictureEdit = pictureEdit;
-    }
 }
