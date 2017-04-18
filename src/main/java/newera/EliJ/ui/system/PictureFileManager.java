@@ -152,7 +152,9 @@ public class PictureFileManager {
                 FileDescriptor fileDescriptor = parcelFD.getFileDescriptor();
                 result.setOrig(TmpUriFile);
 
-                BitmapRegionDecoder decoder = BitmapRegionDecoder.newInstance(fileDescriptor, true);
+                Bitmap decoder = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+
+                //BitmapRegionDecoder decoder = BitmapRegionDecoder.newInstance(fileDescriptor, true);
 
                 int h = decoder.getHeight();
                 int w = decoder.getWidth();
@@ -178,7 +180,8 @@ public class PictureFileManager {
 
                         rect.set(xm, ym, xM, yM);
 
-                        img = decoder.decodeRegion(rect, opts);
+                        //img = decoder.decodeRegion(rect, opts);
+                        img = Bitmap.createBitmap(decoder, rect.left, rect.top, rect.width(), rect.height());
                         result.addBitmap(img, x, y);
                     }
                 }
