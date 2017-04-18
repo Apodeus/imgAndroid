@@ -14,7 +14,7 @@ import java.util.List;
  * Created by echo on 17/03/2017.
  */
 public class CCanvas {
-    private final static int PANEL_SIZE = 50;
+    private final static int PANEL_SIZE = 150;
     private int nw;
     private int nh;
     private CanvasTool[][] paintingCanvas;
@@ -40,8 +40,8 @@ public class CCanvas {
         for (int i = 0; i < nw; i++)
             for (int j = 0; j < nh; j++)
             {
-                paintingCanvas[i][j] = new CanvasTool(i * PANEL_SIZE, j * PANEL_SIZE, 50);
-                paintingCanvas[i][j].initialize();
+                paintingCanvas[i][j] = new CanvasTool(i * PANEL_SIZE, j * PANEL_SIZE, PANEL_SIZE);
+                //paintingCanvas[i][j].initialize();
             }
 
         //this.currentCanvas = canvas;
