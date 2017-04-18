@@ -29,4 +29,6 @@
     <string name="shaderConvolutionMoyName">AVG Convolution</string>
     <string name="shaderConvolutionSobelName">SOBEL Convolution</string>
     <string name="shaderPencilName">Pencil</string>
+    <string name="brushName">Brush Tool</string>
+    <string name="toolsBrush">Brush</string>
 </resources>

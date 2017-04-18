@@ -24,27 +24,27 @@ public class GenericBox {
     private boolean isExtended = true;
 
     private String label;
+
     private Bitmap applyIconBitmap;
     private Bitmap cancelIconBitmap;
     private Bitmap extendIconBitmap;
     private Bitmap collapseIconBitmap;
-
     private Rect currentBoxBackground;
+
     private Rect extendedBoxBackground;
     private Rect collapsedBoxBackground;
-
     private int boxBackgroundColor;
-    private int textColor;
 
+    private int textColor;
     private List<IGenericBoxComponent> components;
+
     private List<InputDataType> askedValues;
     private boolean init = false;
-
     private final static float BOX_BOTTOM_OFFSET_Y = 0.05f;
+
     private final static float BOX_WIDTH_COVERAGE = 0.85f;
     private final static int TEXT_SIZE = 40;
     private final static int ICON_SIZE = 125;
-
     private final static float PAINT_ALPHA = 0.8f;
 
     /**
@@ -107,12 +107,12 @@ public class GenericBox {
                 //Handle action_down
             }
 
-        if (isEdit && event.getAction() == MotionEvent.ACTION_MOVE)
-        {
+        //if (isEdit && event.getAction() == MotionEvent.ACTION_MOVE)
+        //{
             //Handle edit
             for (IGenericBoxComponent c : components)
                 c.handleEdit(event);
-        }
+        //}
 
         if (event.getAction() == MotionEvent.ACTION_UP)
         {
@@ -148,7 +148,7 @@ public class GenericBox {
             isEdit = false;
         }
 
-        return isEdit;
+        return isEdit || isPictureEdit();
     }
 
     /**
@@ -231,6 +231,12 @@ public class GenericBox {
                 case COLOR_PICKER:
                     c = new ColorPicker(this);
                     break;
+                case HARD_DATA:
+                    c = new HardData(this);
+                    break;
+                case DRAW:
+                    c = new DrawInterface(this);
+                    break;
                 default:
                     c = new Label(this);
                     break;
@@ -249,4 +255,13 @@ public class GenericBox {
 
         this.init = true;
     }
+
+    public boolean isPictureEdit() {
+        boolean result = false;
+        for (IGenericBoxComponent c : components)
+            result = result || c.getEditStatus();
+
+        return result;
+    }
+
 }

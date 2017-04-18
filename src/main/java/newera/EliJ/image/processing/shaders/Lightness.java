@@ -27,7 +27,8 @@ public class Lightness extends Shader {
     {
         if(image != null && !image.isEmpty()) {
             ScriptC_lightness rsLightness = new ScriptC_lightness(renderScript);
-            rsLightness.set_brightness( ((int) params.get("value") + 50) * (1f/50f) );
+            int bordersup = ((int[]) params.get("borders"))[1];
+            rsLightness.set_brightness(((int) params.get("value") + ((float)bordersup)) * (1f/((float)bordersup)) );
 
             for (Bitmap[] arrBitmap : image.getBitmaps())
                 for (Bitmap bitmap : arrBitmap) {

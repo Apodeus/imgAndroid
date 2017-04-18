@@ -5,13 +5,14 @@ import android.view.MotionEvent;
 import newera.EliJ.ui.view.inputs.GenericBox;
 
 /**
- * Created by echo on 24/02/2017.
+ * Created by echo on 17/03/2017.
  */
-public class Label implements IGenericBoxComponent {
+public class HardData implements IGenericBoxComponent {
 
-    private final GenericBox box;
+    private GenericBox box;
+    private int[] values;
 
-    public Label(GenericBox box)
+    public HardData(GenericBox box)
     {
         this.box = box;
     }
@@ -28,12 +29,12 @@ public class Label implements IGenericBoxComponent {
 
     @Override
     public Object getValue() {
-        return null;
+        return values;
     }
 
     @Override
     public void initialize(int[] settings) {
-
+        this.values = settings;
     }
 
     @Override

@@ -26,4 +26,6 @@
     <string name="shaderConvolutionLAPLName">Convolution LAPL</string>
     <string name="shaderConvolutionMoyName">Convolution MOY</string>
     <string name="shaderConvolutionSobelName">Convolution SOBEL</string>
+    <string name="brushName">Outil Pinceau</string>
+    <string name="toolsBrush">Pinceau</string>
 </resources>

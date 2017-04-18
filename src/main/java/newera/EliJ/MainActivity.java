@@ -18,13 +18,7 @@ import newera.EliJ.image.processing.shaders.Pencil;
 import newera.EliJ.image.processing.shaders.Sepia;
 import newera.EliJ.ui.system.DataFragment;
 import newera.EliJ.ui.system.SystemActionHandler;
-import newera.EliJ.ui.view.ActionCamera;
-import newera.EliJ.ui.view.ActionGallery;
-import newera.EliJ.ui.view.ActionReset;
-import newera.EliJ.ui.view.ActionRotate;
-import newera.EliJ.ui.view.ActionSave;
-import newera.EliJ.ui.view.CImageView;
-import newera.EliJ.ui.view.CircleMenu;
+import newera.EliJ.ui.view.*;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -118,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
         menu.addClickable(new Convolution(this, Convolution.ConvType.EDGE));
         menu.addClickable(new Convolution(this, Convolution.ConvType.LAPL));
         menu.addClickable(new Convolution(this, Convolution.ConvType.SOBEL));
+        menu.addClickable(new ActionTools(this));
 
         /*
         itemList.get(0).string = "Gallery";

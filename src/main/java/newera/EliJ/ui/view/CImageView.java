@@ -32,21 +32,27 @@ public class CImageView extends View {
     private final static float MOVE_SAFEZONE = 0.5f;
     private EItems currentInputItem;
 
-    public InputManager getManager() {
-        return inputManager;
-    }
-
-    private enum TouchMethod {DRAG, ZOOM, TOOL}
+    private enum TouchMethod {DRAG, ZOOM, TOOL;}
     private Image image;
 
     private Point contentCoords;
+
+    private CCanvas cCanvas;
+
+    private Bitmap drawingCache;
+
     private float contentScale;
     private TouchHandler touchHandler;
-    private InputManager inputManager;
-    private Paint imagePaint;
 
+    private InputManager inputManager;
+
+    private Paint imagePaint;
+    public InputManager getManager() {
+        return inputManager;
+    }
     public CImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.setDrawingCacheEnabled(true);
         image = null;
         this.contentCoords = new Point(0, 0);
         this.touchHandler = new TouchHandler();
@@ -57,8 +63,9 @@ public class CImageView extends View {
         this.imagePaint = new Paint();
         imagePaint.setAntiAlias(false);
         imagePaint.setFilterBitmap(false);
-    }
 
+        this.cCanvas = new CCanvas(this);
+    }
     /**
      * Set the picture to be displayed on the view.
      * @param image Image object to be displayed.
@@ -99,6 +106,12 @@ public class CImageView extends View {
             dst.bottom =  contentCoords.y + (int) (image.getHeight() * (contentScale/2));
             canvas.drawBitmap(image.getBitmap(), src, dst, null);
             */
+            drawingCache = this.getDrawingCache(true);
+
+            if (cCanvas.isInitialized()) {
+                cCanvas.applyCanvasToImage(0.8f, canvas, contentCoords.x, contentCoords.y, contentScale);
+            }
+
             inputManager.draw(canvas);
         }
     }
@@ -119,6 +132,14 @@ public class CImageView extends View {
         }
         invalidate();
         return true;
+    }
+
+    public Point getContentCoords() {
+        return contentCoords;
+    }
+
+    public float getContentScale() {
+        return contentScale;
     }
 
     /**
@@ -160,27 +181,6 @@ public class CImageView extends View {
     }
 
     //TODO
-    //For Undo / redo options...
-    /*public void onPreviewFilter(int value) {
-        switch (currentInputType) {
-            case NONE:
-                return;
-            case SHADER:
-                switch (currentInputItem) {
-                    case NONE:
-                        return;
-                    case F_CHANGE_HUE:
-                        Shader s = new ChangeHue(getContext());
-                        s.ApplyPreviewFilter(image, inputManager.getPreviewParams());
-                        break;
-                }
-                break;
-            case TOOL:
-                break;
-            case SYSTEM:
-                break;
-        }
-    }*/
 
     /**
      * @return the Image's reference
@@ -234,18 +234,17 @@ public class CImageView extends View {
     }
 
     private class TouchHandler{
+
         private int initialX, initialY;
+
         private int initialContentX, initialContentY;
         private float initialDist, initialScale;
         private int mActivePointerId, pointerIndex;
         private List<Point> touchList;
-
-
         TouchHandler(){
             this.touchList = new ArrayList<>();
             this.touchList = new ArrayList<>();
         }
-
         float onTouch(MotionEvent event, TouchMethod method, Point coord, float scale){
             touchList.clear();
             for(int i = 0; i < event.getPointerCount(); ++i){
@@ -300,16 +299,17 @@ public class CImageView extends View {
             return scale;
         }
 
+
     }
 
-    private class Point{
+    class Point{
+
         int x, y;
 
         Point(){
             this.x = 0;
             this.y = 0;
         }
-
         Point(int x, int y){
             this.x = x;
             this.y = y;
@@ -318,5 +318,36 @@ public class CImageView extends View {
         float distanceFromPoint(Point b) {
             return (float) Math.sqrt((double)((this.x - b.x)*(this.x - b.x) + (this.y - b.y)*(this.y - b.y)));
         }
+
     }
+
+    //For Undo / redo options...
+    /*public void onPreviewFilter(int value) {
+        switch (currentInputType) {
+            case NONE:
+                return;
+            case SHADER:
+                switch (currentInputItem) {
+                    case NONE:
+                        return;
+                    case F_CHANGE_HUE:
+                        Shader s = new ChangeHue(getContext());
+                        s.ApplyPreviewFilter(image, inputManager.getPreviewParams());
+                        break;
+                }
+                break;
+            case TOOL:
+                break;
+            case SYSTEM:
+                break;
+        }
+    }*/
+
+
+    public CCanvas getcCanvas() {
+        return cCanvas;
+    }
+
+
+
 }

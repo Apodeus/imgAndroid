@@ -56,16 +56,18 @@ public class InputManager {
             case F_LIGHTNESS:
                 currentCategory = ECategory.FILTER;
                 InputDataType seekBar = new InputDataType(EInputType.INTEGER_SEEKBAR, "value", "Lightness", new int[] {-50, 50, 0});
+                InputDataType data = new InputDataType(EInputType.HARD_DATA, "borders", "", new int[] {-50, 50, 0});
                 l.add(seekBar);
+                l.add(data);
                 currentBox = new GenericBox(this, label, l);
                 break;
 
             case F_KEEP_HUE:
                 currentCategory = ECategory.FILTER;
-                InputDataType seekBarHue = new InputDataType(EInputType.COLOR_PICKER, "valueHue", "Hue", new int[] {0, 360, 0});
                 InputDataType seekBarTolerance = new InputDataType(EInputType.INTEGER_SEEKBAR, "valueTolerance", "Tolerance", new int[] {0, 180, 0});
-                l.add(seekBarHue);
+                InputDataType seekBarHue = new InputDataType(EInputType.COLOR_PICKER, "valueHue", "Hue", new int[] {0, 360, 0});
                 l.add(seekBarTolerance);
+                l.add(seekBarHue);
                 currentBox = new GenericBox(this, label, l);
                 break;
 
@@ -91,6 +93,16 @@ public class InputManager {
                 InputDataType seekBarQuality = new InputDataType(EInputType.INTEGER_SEEKBAR, "value", "Quality", new int[] {50, 100, 75});
                 l.add(seekBarQuality);
                 currentBox = new GenericBox(this, label, l);
+                break;
+
+            case T_BRUSH:
+                currentCategory = ECategory.TOOL;
+                InputDataType colorPallet = new InputDataType(EInputType.COLOR_PICKER, "value", "Couleur", new int[] {0, 360, 0});
+                InputDataType tool = new InputDataType(EInputType.DRAW, "canvas", "", new int[] {0});
+                l.add(colorPallet);
+                l.add(tool);
+                currentBox = new GenericBox(this, label, l);
+                break;
 
             case NONE:
                 break;

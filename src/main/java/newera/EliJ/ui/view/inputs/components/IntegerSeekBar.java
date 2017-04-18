@@ -122,6 +122,11 @@ public class IntegerSeekBar implements IGenericBoxComponent {
     }
 
     @Override
+    public boolean getEditStatus() {
+        return false;
+    }
+
+    @Override
     public void draw(Canvas canvas) {
         barForeground.right = barBackground.left + (int) ((currentValue + length - maxValue) * barTik);
 
