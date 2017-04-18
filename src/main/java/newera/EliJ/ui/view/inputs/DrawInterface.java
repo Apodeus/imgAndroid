@@ -32,7 +32,6 @@ public class DrawInterface implements IGenericBoxComponent {
     private Rect barBackground;
     private Rect barForeground;
     private String plusSign;
-    private Bitmap cursorIconBitmap;
     private Bitmap pickColorIconBitmap;
     private Canvas drawColorIconCanvas;
     private boolean isEditBar = false;
@@ -41,6 +40,7 @@ public class DrawInterface implements IGenericBoxComponent {
     private Bitmap viewCache;
 
     private Drawable drawIconDrawable;
+    private Drawable eraserIconDrawable;
     private ToolConfig config;
     private Tool brush;
 
@@ -50,12 +50,19 @@ public class DrawInterface implements IGenericBoxComponent {
 
     private final static float BRUSH_ICON_FROM_RIGHT = 1f;
     private final static float BRUSH_ICON_FROM_TOP = 0.2f;
+    private final static float ERASER_ICON_FROM_RIGHT = 0.8f;
+    private final static float ERASER_ICON_FROM_TOP = 0.2f;
     private final static int PICK_ICON_SIZE = 100;
 
     private int viewWidth;
     private int viewHeight;
     private Paint paint;
     private int genericBoxOffset;
+    private Canvas eraserIconCanvas;
+    private Bitmap eraserIconBitmap;
+    private boolean eraseActive;
+    private boolean isEditEraser;
+
     public DrawInterface(GenericBox genericBox) {
         this.box = genericBox;
     }
@@ -94,12 +101,21 @@ public class DrawInterface implements IGenericBoxComponent {
         Bitmap o = Bitmap.createBitmap(PICK_ICON_SIZE, PICK_ICON_SIZE, Bitmap.Config.ARGB_8888);
         drawColorIconCanvas = new Canvas(o);
 
+        eraserIconDrawable = box.getInputManager().getView().getResources().getDrawable(R.drawable.brush_eraser);
+        Bitmap p = Bitmap.createBitmap(PICK_ICON_SIZE, PICK_ICON_SIZE, Bitmap.Config.ARGB_8888);
+        eraserIconCanvas = new Canvas(p);
+
         drawIconDrawable.setColorFilter(box.getInputManager().getView().getResources().getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP);
         drawIconDrawable.setBounds(0, 0, PICK_ICON_SIZE, PICK_ICON_SIZE);
         drawColorIconCanvas.drawColor(box.getInputManager().getView().getResources().getColor(R.color.colorLight));
         drawIconDrawable.draw(drawColorIconCanvas);
+        eraserIconDrawable.setColorFilter(box.getInputManager().getView().getResources().getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP);
+        eraserIconDrawable.setBounds(0, 0, PICK_ICON_SIZE, PICK_ICON_SIZE);
+        eraserIconCanvas.drawColor(box.getInputManager().getView().getResources().getColor(R.color.colorLight));
+        eraserIconDrawable.draw(eraserIconCanvas);
 
         pickColorIconBitmap = o;
+        eraserIconBitmap = p;
 
         config = new ToolConfig();
         brush = new Brush();
@@ -124,7 +140,7 @@ public class DrawInterface implements IGenericBoxComponent {
 
     @Override
     public boolean getEditStatus() {
-        return drawActive;
+        return drawActive || eraseActive;
     }
 
     @Override
@@ -140,8 +156,20 @@ public class DrawInterface implements IGenericBoxComponent {
             drawIconDrawable.setColorFilter(box.getInputManager().getView().getResources().getColor(R.color.colorLight), PorterDuff.Mode.SRC_ATOP);
         }
 
+        if (eraseActive)
+        {
+            eraserIconCanvas.drawColor(box.getInputManager().getView().getResources().getColor(R.color.colorAccent));
+            eraserIconDrawable.setColorFilter(box.getInputManager().getView().getResources().getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP);
+        }else{
+            eraserIconCanvas.drawColor(box.getInputManager().getView().getResources().getColor(R.color.colorPrimary));
+            eraserIconDrawable.setColorFilter(box.getInputManager().getView().getResources().getColor(R.color.colorLight), PorterDuff.Mode.SRC_ATOP);
+        }
+
+
         drawIconDrawable.draw(drawColorIconCanvas);
+        eraserIconDrawable.draw(eraserIconCanvas);
         canvas.drawBitmap(pickColorIconBitmap, boxBackground.right - boxBackground.width()* BRUSH_ICON_FROM_RIGHT, boxBackground.top + boxBackground.height()* BRUSH_ICON_FROM_TOP, paint);
+        canvas.drawBitmap(eraserIconBitmap, boxBackground.right - boxBackground.width()* ERASER_ICON_FROM_RIGHT, boxBackground.top + boxBackground.height()* ERASER_ICON_FROM_TOP, paint);
 
     }
 
@@ -153,11 +181,18 @@ public class DrawInterface implements IGenericBoxComponent {
         if (event.getX() < (boxBackground.right - boxW* BRUSH_ICON_FROM_RIGHT + PICK_ICON_SIZE) && event.getX() > boxBackground.right - boxW* BRUSH_ICON_FROM_RIGHT)
             if(event.getY() > boxBackground.top + boxH* BRUSH_ICON_FROM_TOP && event.getY() < boxBackground.top + boxH* BRUSH_ICON_FROM_TOP + PICK_ICON_SIZE)
                 isEditDrawer = true;
+
+        if (event.getX() < (boxBackground.right - boxW* ERASER_ICON_FROM_RIGHT + PICK_ICON_SIZE) && event.getX() > boxBackground.right - boxW* ERASER_ICON_FROM_RIGHT)
+            if(event.getY() > boxBackground.top + boxH* ERASER_ICON_FROM_TOP && event.getY() < boxBackground.top + boxH* ERASER_ICON_FROM_TOP + PICK_ICON_SIZE)
+                isEditEraser = true;
+
+
     }
 
     @Override
     public void disableEdit() {
         isEditDrawer = false;
+        isEditEraser = false;
     }
 
     @Override
@@ -170,6 +205,22 @@ public class DrawInterface implements IGenericBoxComponent {
 
             if (drawActive)
             {
+                eraseActive = false;
+                viewCache = Bitmap.createBitmap(box.getInputManager().getView().getWidth(), box.getInputManager().getView().getHeight(), Bitmap.Config.ARGB_8888);
+                Canvas c = new Canvas(viewCache);
+                box.getInputManager().getView().draw(c);
+            }
+        }
+
+        if (isEditEraser)
+        {
+            isEditEraser = false;
+            eraseActive = !eraseActive;
+            //box.setPictureEdit(eraseActive);
+
+            if (eraseActive)
+            {
+                drawActive = false;
                 viewCache = Bitmap.createBitmap(box.getInputManager().getView().getWidth(), box.getInputManager().getView().getHeight(), Bitmap.Config.ARGB_8888);
                 Canvas c = new Canvas(viewCache);
                 box.getInputManager().getView().draw(c);
@@ -177,15 +228,9 @@ public class DrawInterface implements IGenericBoxComponent {
         }
 
         if (drawActive && event.getY() < boxBackground.top)
-        {
             box.getInputManager().getView().getcCanvas().applyTool(brush, config, (int) event.getRawX(), (int) event.getRawY());
-            //float[] hsv = {0f, 0f, 0f};
-            //Color.colorToHSV(viewCache.getPixel((int) event.getRawX(), (int) event.getRawY()), hsv);
-            //currentValue = (int) hsv[0];
-            //Bitmap b = box.getInputManager().getView().getImage().getBitmap();
-            //currentValue = b.getPixel((int) event.getRawX(), (int) event.getRawY()); // need to convert to HSL + get H
-            //Log.w("INFO", "" + viewCache.getPixel((int) event.getRawX(), (int) event.getRawY())); // need to convert to HSL + get H
 
-        }
+        if (eraseActive && event.getY() < boxBackground.top)
+            box.getInputManager().getView().getcCanvas().erase(brush, config, (int) event.getRawX(), (int) event.getRawY());
     }
 }

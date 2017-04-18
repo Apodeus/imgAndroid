@@ -50,6 +50,15 @@ public class CanvasTool {
 
     }
 
+    public void erase(Tool tool, ToolConfig config, int x, int y) {
+        //x = x % size;
+        //y = y % size;
+        x = x - offsetX - (int) (tool.getStandardSize()*config.getSizeModifier()/2);
+        y = y - offsetY - (int) (tool.getStandardSize()*config.getSizeModifier()/2);
+        canvas.drawBitmap(tool.getBitmap(), x, y, config.getEraser());
+
+    }
+
     public int getOffsetX() {
         return offsetX;
     }

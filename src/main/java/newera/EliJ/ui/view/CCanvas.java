@@ -66,6 +66,24 @@ public class CCanvas {
         }
     }
 
+    public void erase(Tool tool, ToolConfig config, int x, int y)
+    {
+        float s = cv.getContentScale();
+        x = (int)(x) - (int)(cv.getContentCoords().x - cv.getImage().getWidth()* s / 2);
+        y = (int)(y) - (int)(cv.getContentCoords().y - cv.getImage().getHeight()* s / 2);
+
+        int toolSize = (int) (tool.getStandardSize() * config.getSizeModifier());
+        List<CanvasTool> panels = preparePanel(x, y, toolSize);
+
+        for (CanvasTool b : panels)
+        {
+            if (!b.isInitialized())
+                b.initialize();
+
+            b.erase(tool, config, (int)(x/s), (int)(y/s));
+        }
+    }
+
     private List<CanvasTool> preparePanel(int x, int y, int toolSize) {
         float s = cv.getContentScale();
         ArrayList<CanvasTool> result = new ArrayList<>();
