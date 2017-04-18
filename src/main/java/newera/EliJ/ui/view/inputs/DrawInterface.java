@@ -4,6 +4,9 @@ import android.graphics.*;
 import android.graphics.drawable.Drawable;
 import android.view.MotionEvent;
 import newera.EliJ.R;
+import newera.EliJ.image.processing.tools.Brush;
+import newera.EliJ.image.processing.tools.Tool;
+import newera.EliJ.ui.view.ToolConfig;
 import newera.EliJ.ui.view.inputs.components.IGenericBoxComponent;
 
 /**
@@ -38,6 +41,8 @@ public class DrawInterface implements IGenericBoxComponent {
     private Bitmap viewCache;
 
     private Drawable drawIconDrawable;
+    private ToolConfig config;
+    private Tool brush;
 
     private final static float BOX_BOTTOM_OFFSET_Y = 0.05f;
     private final static float BOX_HEIGHT_COVERAGE = 0.08f;
@@ -96,6 +101,10 @@ public class DrawInterface implements IGenericBoxComponent {
 
         pickColorIconBitmap = o;
 
+        config = new ToolConfig();
+        brush = new Brush();
+        ((Brush)brush).initialize(box.getInputManager().getView().getContext());
+        box.getInputManager().getView().getcCanvas().initialize(box.getInputManager().getView().getImage());
     }
 
     @Override
@@ -167,8 +176,9 @@ public class DrawInterface implements IGenericBoxComponent {
             }
         }
 
-        if (drawActive && event.getX() < boxBackground.top)
+        if (drawActive && event.getY() < boxBackground.top)
         {
+            box.getInputManager().getView().getcCanvas().applyTool(brush, config, (int) event.getRawX(), (int) event.getRawY());
             //float[] hsv = {0f, 0f, 0f};
             //Color.colorToHSV(viewCache.getPixel((int) event.getRawX(), (int) event.getRawY()), hsv);
             //currentValue = (int) hsv[0];

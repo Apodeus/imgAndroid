@@ -8,7 +8,7 @@ import android.graphics.Bitmap;
  */
 
 public abstract class Tool{
-    private int standardSize;
+    protected int standardSize;
 
     public void initialize(Context context)
     {

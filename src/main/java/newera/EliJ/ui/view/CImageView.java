@@ -34,16 +34,18 @@ public class CImageView extends View {
 
     private enum TouchMethod {DRAG, ZOOM, TOOL;}
     private Image image;
+
     private Point contentCoords;
 
     private CCanvas cCanvas;
 
     private Bitmap drawingCache;
-    private float contentScale;
 
+    private float contentScale;
     private TouchHandler touchHandler;
 
     private InputManager inputManager;
+
     private Paint imagePaint;
     public InputManager getManager() {
         return inputManager;
@@ -62,9 +64,8 @@ public class CImageView extends View {
         imagePaint.setAntiAlias(false);
         imagePaint.setFilterBitmap(false);
 
-        this.cCanvas = new CCanvas();
+        this.cCanvas = new CCanvas(this);
     }
-
     /**
      * Set the picture to be displayed on the view.
      * @param image Image object to be displayed.
@@ -105,10 +106,14 @@ public class CImageView extends View {
             dst.bottom =  contentCoords.y + (int) (image.getHeight() * (contentScale/2));
             canvas.drawBitmap(image.getBitmap(), src, dst, null);
             */
+            drawingCache = this.getDrawingCache(true);
+
+            if (cCanvas.isInitialized()) {
+                cCanvas.applyCanvasToImage(0.8f, canvas, contentCoords.x, contentCoords.y, contentScale);
+            }
+
             inputManager.draw(canvas);
         }
-
-        drawingCache = this.getDrawingCache(true);
     }
 
     @Override
@@ -127,6 +132,14 @@ public class CImageView extends View {
         }
         invalidate();
         return true;
+    }
+
+    public Point getContentCoords() {
+        return contentCoords;
+    }
+
+    public float getContentScale() {
+        return contentScale;
     }
 
     /**
@@ -289,7 +302,7 @@ public class CImageView extends View {
 
     }
 
-    private class Point{
+    class Point{
 
         int x, y;
 

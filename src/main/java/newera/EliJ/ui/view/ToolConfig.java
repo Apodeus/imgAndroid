@@ -14,6 +14,7 @@ public class ToolConfig {
     {
         this.paint = new Paint();
         paint.setColor(Color.RED);
+        sizeModifier = 1f;
     }
 
     public float getSizeModifier() {

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import newera.EliJ.R;
 
@@ -26,6 +27,7 @@ public class Brush extends Tool {
         this.context = context;
         brushCircleId = R.drawable.brush_fill;
         brushEdgeId = R.drawable.brush_outline;
+        this.standardSize = RES_SIZE;
         initializeBrush();
     }
 
@@ -36,9 +38,17 @@ public class Brush extends Tool {
         Canvas c = new Canvas(circle);
         Canvas e = new Canvas(edge);
         Drawable d = context.getResources().getDrawable(brushCircleId);
+        d.setBounds(0, 0, RES_SIZE, RES_SIZE);
         d.draw(c);
         d = context.getResources().getDrawable(brushEdgeId);
+        d.setBounds(0, 0, RES_SIZE, RES_SIZE);
         d.draw(e);
+    }
+
+    @Override
+    public Bitmap getBitmap()
+    {
+        return circle;
     }
 
 
