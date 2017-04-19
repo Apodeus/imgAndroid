@@ -68,6 +68,15 @@ public class GenericBox {
         if (!init)
             initialize(canvas);
 
+        if (components != null & isExtended)
+        {
+            int tsize = 0;
+            for (IGenericBoxComponent c : components)
+                tsize += c.getHeight();
+
+            currentBoxBackground.top = collapsedBoxBackground.top - tsize;
+        }
+
         paint.setColor(boxBackgroundColor);
         paint.setAlpha((int) (PAINT_ALPHA * 255));
         canvas.drawRect(currentBoxBackground, paint);
@@ -139,7 +148,7 @@ public class GenericBox {
                 } else if (!isEdit){
                     isExtended = !isExtended;
 
-                    if (currentBoxBackground.equals(extendedBoxBackground))
+                    if (!isExtended)
                         currentBoxBackground = collapsedBoxBackground;
                     else
                         currentBoxBackground = extendedBoxBackground;

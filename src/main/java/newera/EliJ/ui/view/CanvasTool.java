@@ -46,7 +46,7 @@ public class CanvasTool {
         //y = y % size;
         x = x - offsetX - (int) (tool.getStandardSize()*config.getSizeModifier()/2);
         y = y - offsetY - (int) (tool.getStandardSize()*config.getSizeModifier()/2);
-        canvas.drawBitmap(tool.getBitmap(), x, y, config.getPaint());
+        canvas.drawBitmap(tool.getBitmap(config.getPaint()), x, y, config.getPaint());
 
     }
 
@@ -55,7 +55,7 @@ public class CanvasTool {
         //y = y % size;
         x = x - offsetX - (int) (tool.getStandardSize()*config.getSizeModifier()/2);
         y = y - offsetY - (int) (tool.getStandardSize()*config.getSizeModifier()/2);
-        canvas.drawBitmap(tool.getBitmap(), x, y, config.getEraser());
+        canvas.drawBitmap(tool.getBitmap(config.getPaint()), x, y, config.getEraser());
 
     }
 

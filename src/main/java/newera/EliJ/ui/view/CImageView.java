@@ -42,11 +42,12 @@ public class CImageView extends View {
     private Bitmap drawingCache;
 
     private float contentScale;
-    private TouchHandler touchHandler;
 
+    private TouchHandler touchHandler;
     private InputManager inputManager;
 
     private Paint imagePaint;
+
     public InputManager getManager() {
         return inputManager;
     }
@@ -81,7 +82,6 @@ public class CImageView extends View {
             invalidate();
         }
     }
-
     /**
      * Reset Image's content.
      */
@@ -238,6 +238,7 @@ public class CImageView extends View {
         private int initialX, initialY;
 
         private int initialContentX, initialContentY;
+
         private float initialDist, initialScale;
         private int mActivePointerId, pointerIndex;
         private List<Point> touchList;
@@ -298,9 +299,8 @@ public class CImageView extends View {
 
             return scale;
         }
-
-
     }
+
 
     class Point{
 
@@ -310,11 +310,11 @@ public class CImageView extends View {
             this.x = 0;
             this.y = 0;
         }
+
         Point(int x, int y){
             this.x = x;
             this.y = y;
         }
-
         float distanceFromPoint(Point b) {
             return (float) Math.sqrt((double)((this.x - b.x)*(this.x - b.x) + (this.y - b.y)*(this.y - b.y)));
         }
@@ -322,6 +322,7 @@ public class CImageView extends View {
     }
 
     //For Undo / redo options...
+
     /*public void onPreviewFilter(int value) {
         switch (currentInputType) {
             case NONE:
@@ -342,11 +343,15 @@ public class CImageView extends View {
                 break;
         }
     }*/
+    public void setcCanvas(CCanvas cCanvas) {
+        this.cCanvas = cCanvas;
+    }
 
 
     public CCanvas getcCanvas() {
         return cCanvas;
     }
+
 
 
 

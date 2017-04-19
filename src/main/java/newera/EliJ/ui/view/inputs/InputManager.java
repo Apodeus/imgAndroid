@@ -166,6 +166,9 @@ public class InputManager {
     void onCancel()
     {
         view.onCancelFilter();
+        if (currentCategory == ECategory.TOOL)
+            view.getcCanvas().reset();
+
         currentBox = null;
         Snackbar snackbar = Snackbar
                 .make(view, "Filter canceled", Snackbar.LENGTH_SHORT);

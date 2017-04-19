@@ -29,6 +29,15 @@ public class CCanvas {
         this.cv = cv;
     }
 
+    public void reset()
+    {
+        image = null;
+        nw = 0;
+        nh = 0;
+        paintingCanvas = null;
+        isInitialized = false;
+    }
+
     public void initialize(Image image)
     {
         this.image = image;
