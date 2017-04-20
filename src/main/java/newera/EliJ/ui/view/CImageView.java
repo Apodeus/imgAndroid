@@ -245,6 +245,7 @@ public class CImageView extends View {
     @Override
     public void onRestoreInstanceState(Parcelable state)
     {
+        cCanvas.reset();
         if (state instanceof Bundle) // implicit null check
         {
             Bundle bundle = (Bundle) state;
