@@ -4,6 +4,10 @@ import android.graphics.*;
 import android.graphics.drawable.Drawable;
 import android.view.MotionEvent;
 import newera.EliJ.R;
+import newera.EliJ.image.processing.tools.Brush;
+import newera.EliJ.ui.view.CanvasTool;
+import newera.EliJ.ui.view.EMethod;
+import newera.EliJ.ui.view.ToolConfig;
 import newera.EliJ.ui.view.inputs.components.*;
 import newera.EliJ.ui.view.inputs.components.IntegerSeekBar;
 
@@ -46,6 +50,11 @@ public class GenericBox {
     private final static int TEXT_SIZE = 40;
     private final static int ICON_SIZE = 125;
     private final static float PAINT_ALPHA = 0.8f;
+    private Bitmap zoneIconBitmap;
+    private boolean isEditZone;
+
+    private Brush zoneSelectorBrush;
+    private ToolConfig zoneSelectorConfig;
 
     /**
      * Create a modular input box for user interaction on items.
@@ -68,17 +77,44 @@ public class GenericBox {
         if (!init)
             initialize(canvas);
 
+        if (components != null & isExtended)
+        {
+            int tsize = 0;
+            for (IGenericBoxComponent c : components)
+                tsize += c.getHeight();
+
+            currentBoxBackground.top = collapsedBoxBackground.top - tsize;
+        }
+
         paint.setColor(boxBackgroundColor);
         paint.setAlpha((int) (PAINT_ALPHA * 255));
         canvas.drawRect(currentBoxBackground, paint);
 
         canvas.drawBitmap(applyIconBitmap, currentBoxBackground.right - ICON_SIZE, currentBoxBackground.bottom - ICON_SIZE, paint);
+        if (manager.getCategory() == ECategory.FILTER)
+            canvas.drawBitmap(zoneIconBitmap, currentBoxBackground.right - ICON_SIZE * 2 - 15, currentBoxBackground.bottom - ICON_SIZE, paint);
+
         canvas.drawBitmap(cancelIconBitmap, currentBoxBackground.left, currentBoxBackground.bottom - ICON_SIZE, paint);
 
         paint.setColor(textColor);
         paint.setTextSize(TEXT_SIZE);
         paint.setTextAlign(Paint.Align.CENTER);
         canvas.drawText(label, viewWidth/2, currentBoxBackground.bottom - ICON_SIZE / 1.75f, paint);
+
+        Canvas zoneIconCanvas = new Canvas(zoneIconBitmap);
+        Drawable zoneD = manager.getView().getResources().getDrawable(R.drawable.ic_filter_center_focus_black_24dp);
+        zoneD.setBounds(0,0,ICON_SIZE,ICON_SIZE);
+
+        if (isEditZone)
+        {
+            zoneIconCanvas.drawColor(manager.getView().getResources().getColor(R.color.colorAccent));
+            zoneD.setColorFilter(manager.getView().getResources().getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP);
+        }else{
+            zoneIconCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.SRC);
+            zoneD.setColorFilter(manager.getView().getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_ATOP);
+        }
+
+        zoneD.draw(zoneIconCanvas);
 
         if (isExtended)
         {
@@ -92,6 +128,15 @@ public class GenericBox {
 
     }
 
+    private void zoneDraw(MotionEvent event)
+    {
+            if (event.getY() < currentBoxBackground.top)
+            {
+                zoneSelectorConfig.setSizeModifier(1/manager.getView().getContentScale());
+                isEdit = true;
+                manager.getView().getcCanvas().applyTool(zoneSelectorBrush, zoneSelectorConfig, (int) event.getRawX(), (int) event.getRawY());
+            }
+    }
     /**
      * To be called by View's onTouchEvent. Deal with touchEvent on the box.
      * @param event MotionEvent given to the View as it.
@@ -111,6 +156,10 @@ public class GenericBox {
         for (IGenericBoxComponent c : components)
             c.handleEdit(event);
 
+        if (isEditZone)
+            zoneDraw(event);
+
+
         if (event.getAction() == MotionEvent.ACTION_UP)
         {
 
@@ -122,21 +171,29 @@ public class GenericBox {
                 {
                     manager.onCancel();
                 }
-                else if (!isEdit && event.getX() < currentBoxBackground.right && event.getX() > currentBoxBackground.right - ICON_SIZE)
-                {
+                else if (!isEdit && event.getX() < currentBoxBackground.right && event.getX() > currentBoxBackground.right - ICON_SIZE) {
                     Map<String, Object> params = new HashMap<>();
-                    for (int i = 0; i < components.size(); i++)
-                    {
+                    for (int i = 0; i < components.size(); i++) {
                         String label = askedValues.get(i).getDataLabel();
                         Object value = components.get(i).getValue();
                         params.put(label, value);
                     }
 
                     manager.onConfirm(params);
+                }else if (!isEdit && event.getX() < currentBoxBackground.right - ICON_SIZE - 15 && event.getX() > currentBoxBackground.right - ICON_SIZE*2 - 15)
+                {
+                    isEditZone = !isEditZone;
+                    if (!isEditZone)
+                        manager.getView().getcCanvas().reset();
+                    else
+                    {
+                        manager.getView().getcCanvas().setMethod(EMethod.SELECTION);
+                        manager.getView().getcCanvas().initialize(manager.getView().getImage());
+                    }
                 } else if (!isEdit){
                     isExtended = !isExtended;
 
-                    if (currentBoxBackground.equals(extendedBoxBackground))
+                    if (!isExtended)
                         currentBoxBackground = collapsedBoxBackground;
                     else
                         currentBoxBackground = extendedBoxBackground;
@@ -174,6 +231,7 @@ public class GenericBox {
 
     private void initialize(Canvas canvas)
     {
+
         this.viewWidth = canvas.getWidth();
         this.viewHeight = canvas.getHeight();
 
@@ -189,11 +247,12 @@ public class GenericBox {
         Drawable extendD = manager.getView().getResources().getDrawable(R.drawable.ic_arrow_drop_up_black_24dp);
         Drawable collapseD = manager.getView().getResources().getDrawable(R.drawable.ic_arrow_drop_down_black_24dp);
 
-
         applyIconBitmap = Bitmap.createBitmap(ICON_SIZE, ICON_SIZE, Bitmap.Config.ARGB_8888);
         cancelIconBitmap = Bitmap.createBitmap(ICON_SIZE, ICON_SIZE, Bitmap.Config.ARGB_8888);
         extendIconBitmap = Bitmap.createBitmap(ICON_SIZE, ICON_SIZE, Bitmap.Config.ARGB_8888);
         collapseIconBitmap = Bitmap.createBitmap(ICON_SIZE, ICON_SIZE, Bitmap.Config.ARGB_8888);
+        zoneIconBitmap = Bitmap.createBitmap(ICON_SIZE, ICON_SIZE, Bitmap.Config.ARGB_8888);
+
         Canvas applyIconCanvas = new Canvas(applyIconBitmap);
         Canvas cancelIconCanvas = new Canvas(cancelIconBitmap);
         Canvas extendIconCanvas = new Canvas(extendIconBitmap);
@@ -250,6 +309,10 @@ public class GenericBox {
         this.extendedBoxBackground = new Rect(collapsedBoxBackground.left, collapsedBoxBackground.top - currentAdditionalHeight, collapsedBoxBackground.right, collapsedBoxBackground.bottom);
         this.currentBoxBackground = extendedBoxBackground;
 
+        zoneSelectorBrush = new Brush();
+        zoneSelectorBrush.initialize(manager.getView().getContext());
+        zoneSelectorConfig = new ToolConfig();
+        zoneSelectorConfig.setColor(Color.argb(255, 0, 0, 200));
         this.init = true;
     }
 

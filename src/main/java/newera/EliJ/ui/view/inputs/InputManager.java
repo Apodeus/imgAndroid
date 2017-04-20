@@ -1,13 +1,19 @@
 package newera.EliJ.ui.view.inputs;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.support.design.widget.Snackbar;
+import android.support.v8.renderscript.Allocation;
+import android.support.v8.renderscript.RenderScript;
 import android.view.MotionEvent;
 import newera.EliJ.R;
+import newera.EliJ.ScriptC_fuse_bitmap;
 import newera.EliJ.image.processing.EItems;
 import newera.EliJ.image.processing.shaders.Shader;
 import newera.EliJ.ui.Clickable;
+import newera.EliJ.ui.view.CCanvas;
 import newera.EliJ.ui.view.CImageView;
+import newera.EliJ.ui.view.CanvasTool;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -144,7 +150,28 @@ public class InputManager {
                 message = view.getResources().getString(R.string.messageFilterApplied);
                 break;
             case TOOL:
-                // :thinking:
+                //azerty
+                RenderScript rs = RenderScript.create(view.getContext());
+                ScriptC_fuse_bitmap script = new ScriptC_fuse_bitmap(rs);
+                CCanvas cca = view.getcCanvas();
+                for(int i = 0; i < cca.getWidth(); i++)
+                    for(int j = 0; j < cca.getHeight(); j++)
+                    {
+                        if (view.getcCanvas().getCanvasTool(i, j).isInitialized())
+                        {
+                            Allocation ori = Allocation.createFromBitmap(rs, view.getImage().getBitmap(i, j));
+                            Allocation pnt = Allocation.createFromBitmap(rs, view.getcCanvas().getCanvasTool(i, j).getBitmap());
+                            Allocation out = Allocation.createTyped(rs, ori.getType());
+                            script.set_src(ori);
+                            script.forEach_Fuse(pnt, out);
+                            Bitmap res = Bitmap.createBitmap(view.getImage().getBitmap(i, j).getWidth(), view.getImage().getBitmap(i, j).getHeight(), Bitmap.Config.ARGB_8888);
+                            out.copyTo(res);
+                            view.getImage().setBitmap(i, j, res);
+                        }
+
+                    }
+
+                view.getcCanvas().reset();
                 break;
             case SYSTEM:
                 view.onApplySystem(params);
@@ -162,11 +189,18 @@ public class InputManager {
     void onCancel()
     {
         view.onCancelFilter();
+        if (currentCategory == ECategory.TOOL)
+            view.getcCanvas().reset();
+
         currentBox = null;
         Snackbar snackbar = Snackbar
                 .make(view, "Filter canceled", Snackbar.LENGTH_SHORT);
 
         snackbar.show();
+    }
+
+    public ECategory getCategory() {
+        return currentCategory;
     }
 }
 

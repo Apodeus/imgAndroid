@@ -2,6 +2,7 @@ package newera.EliJ.image.processing.tools;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Paint;
 
 /**
  * Created by Emile Barjou-Suire on 09/02/2017.
@@ -19,7 +20,7 @@ public abstract class Tool{
         return standardSize;
     }
 
-    public Bitmap getBitmap() {
+    public Bitmap getBitmap(Paint paint) {
         return null;
     }
 }

@@ -20,6 +20,23 @@ import static java.lang.Math.min;
 public class Image {
     private Bitmap[][] bitmap;
     private Bitmap[][] originalBitmap;
+
+    public int getW() {
+        return w;
+    }
+
+    public int getH() {
+        return h;
+    }
+
+    public int getFw() {
+        return fw;
+    }
+
+    public int getFh() {
+        return fh;
+    }
+
     private int w, h, fw, fh;
     private int angle = 0;
     private static Uri origUri;
@@ -101,33 +118,6 @@ public class Image {
      * @param coordY Coordinate Y
      * @param scale Scale to draw on
      */
-    /*
-    public void draw(Canvas canvas, Paint paint, int coordX, int coordY, float scale){
-        Rect dst = new Rect();
-
-        int cx = (coordX - (int)((this.getWidth() - 1) * (scale/2)));
-        int cy = (coordY - (int)((this.getHeight() - 1) * (scale/2)));
-        int lastW = 0, lastH = 0;
-        for(int x = 0; x < this.getTileW(); ++x) {
-            lastH = 0;
-            for (int y = 0; y < this.getTileH(); ++y) {
-                dst.left   = cx + (int)(lastW*(scale));//x*(int)((PictureFileManager.DECODE_TILE_SIZE )*(scale));
-                dst.top    = cy + (int)(lastH*(scale));//y*(int)((PictureFileManager.DECODE_TILE_SIZE )*(scale));
-
-                dst.right  = dst.left + (int)Math.ceil((this.getWidth(x,y))*(scale));
-                dst.bottom = dst.top + (int)Math.ceil((this.getHeight(x,y))*(scale));
-
-                lastH += this.getHeight(x,y);
-
-                /*canvas.save();
-                canvas.rotate(this.angle, dst.left, dst.top);
-                canvas.drawBitmap(this.getBitmap(x, y), null, dst, paint);
-                //canvas.restore();
-            }
-            lastW += this.getWidth(x,0);
-        }
-    }
-    */
 
     public void draw(Canvas canvas, Paint paint, int coordX, int coordY, float scale){
         Rect dst = new Rect();
@@ -288,6 +278,10 @@ public class Image {
 
     public int getAngle(){return this.angle;}
 
+
+    public void setBitmap(int i, int j, Bitmap res) {
+        bitmap[i][j] = res;
+    }
 }
 
 

@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
             // load the data from the web
         }else{
             civ.setImage(dataFragment.getImage());
+            civ.setcCanvas(dataFragment.getcCanvas());
         }
     }
 
@@ -70,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
     {
         super.onDestroy();
         dataFragment.setImage(civ.getImage());
+        dataFragment.setCCanvas(civ.getcCanvas());
     }
 
     @Override
