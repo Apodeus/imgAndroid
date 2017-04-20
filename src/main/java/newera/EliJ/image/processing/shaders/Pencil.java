@@ -25,16 +25,23 @@ public class Pencil extends Shader{
         super(context);
         this.drawableIconId = R.drawable.ic_contrast_tonality_black_24dp;
         this.clickableName = R.string.shaderPencilName;
-        this.item = EItems.F_CONTRAST;
+        this.item = EItems.F_PENCIL;
     }
 
     private float factor_edge = 1;
     private float[][] matrix_edge = {
-            {0,0,-1,0,0},
-            {0,-1,-2,-1,0},
-            {-1,-2,16,-2,-1},
-            {0,-1,-2,-1,0},
-            {0,0,-1,0,0},
+            {0, 8, 0},
+            {8, -32, 8},
+            {0, 8, 0},
+    };
+
+    private float factor_mult = 1;
+    private float[][] matrix_mult = {
+            {2,0,0,0,0},
+            {0,2,0,0,0},
+            {0,0,2,0,0},
+            {0,0,0,2,0},
+            {0,0,0,0,2},
     };
 
     @Override
@@ -44,34 +51,42 @@ public class Pencil extends Shader{
 
             ScriptC_cartoon_edge rsConv = new ScriptC_cartoon_edge(renderScript);
 
+            float[] mat;
+            Allocation matAlloc;
             for (Bitmap[] arrBitmap : image.getBitmaps())
                 for (Bitmap bitmap : arrBitmap) {
-
 
                     Allocation in = Allocation.createFromBitmap(renderScript, bitmap);
                     Allocation out = Allocation.createTyped(renderScript, in.getType());
                     Allocation out2 = Allocation.createTyped(renderScript, in.getType());
 
-                    ScriptC_thresholdLightness rsLum = new ScriptC_thresholdLightness(renderScript);
-                    rsLum.forEach_treshold(in, out);//
+                    rsConv.set_h(bitmap.getHeight());
+                    rsConv.set_w(bitmap.getWidth());
+                    rsConv.set_in(in);
+                    rsConv.set_matrix_size(matrix_edge.length);
+                    rsConv.set_matrix_factor(1);
+                    mat = MatrixToArray(matrix_edge);
+                    matAlloc = Allocation.createSized(renderScript, Element.F32(renderScript), mat.length);
+                    matAlloc.copyFrom(mat);
+                    rsConv.set_matrix2D(matAlloc);
+                    rsConv.forEach_cartoon_edge(out2);//
 
                     rsConv.set_h(bitmap.getHeight());
                     rsConv.set_w(bitmap.getWidth());
-                    rsConv.set_in(out);
-
-                    rsConv.set_matrix_size(matrix_edge.length);
+                    rsConv.set_in(out2);
+                    rsConv.set_matrix_size(matrix_mult.length);
                     rsConv.set_matrix_factor(1);
-                    float[] mat = MatrixToArray(matrix_edge);
-                    Allocation matAlloc = Allocation.createSized(renderScript, Element.F32(renderScript), mat.length);
+                    mat = MatrixToArray(matrix_mult);
+                    matAlloc = Allocation.createSized(renderScript, Element.F32(renderScript), mat.length);
                     matAlloc.copyFrom(mat);
                     rsConv.set_matrix2D(matAlloc);
-
-                    rsConv.forEach_cartoon_edge(out2);//
+                    rsConv.forEach_cartoon_edge(in);
 
                     ScriptC_invert rsInv = new ScriptC_invert(renderScript);
-                    rsInv.forEach_invert(out2, in);//
+                    rsInv.forEach_invert(in, out);
 
-                    in.copyTo(bitmap);
+                    out.copyTo(bitmap);
+
                 }
         }
     }

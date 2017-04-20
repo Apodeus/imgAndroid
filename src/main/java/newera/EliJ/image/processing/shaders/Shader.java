@@ -36,11 +36,6 @@ public abstract class Shader extends ActionClickable {
     {
     }
 
-    /*public void ApplyPreviewFilter(Image image, Object param)
-    {
-
-    }*/
-
 
     /**
      * Called when the button on CircleMenu is pressed, nicely asks InputManager to generate inputs

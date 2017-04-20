@@ -40,7 +40,6 @@ public class SystemActionHandler {
         StartupView sv = (StartupView) Activity.findViewById(R.id.startupView);
         if (sv != null)
             sv.setVisibility(View.GONE);
-            //((ViewGroup) sv.getParent()).removeView(sv);
     }
 
     /**

@@ -34,8 +34,6 @@ public class MainActivity extends AppCompatActivity {
         SystemActionHandler.setActivity(this);
         SystemActionHandler.requestCreateDirectory();
 
-        //PictureFileManager.CreatePictureFileFromCamera();
-        //PictureFileManager.LoadPictureFromGallery();
         civ = (CImageView) findViewById(R.id.cImageView);
 
         CircleMenu sysmenu = (CircleMenu) findViewById(R.id.sysMenu);
@@ -116,10 +114,5 @@ public class MainActivity extends AppCompatActivity {
         menu.addClickable(new Convolution(this, Convolution.ConvType.SOBEL));
         menu.addClickable(new ActionTools(this));
 
-        /*
-        itemList.get(0).string = "Gallery";
-        itemList.get(1).string = "Camera";
-        itemList.get(2).string = "Save";
-        itemList.get(3).string = "Reinitialize";*/
     }
 }

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v8.renderscript.Allocation;
@@ -78,8 +77,6 @@ public class CImageView extends View {
     {
         if(image != null && !image.isEmpty()) {
             this.image = image;
-            //src = new Rect(0, 0, image.getWidth(), image.getHeight());
-            //dst = new Rect(getWidth() - image.getWidth() / 2, getHeight() - image.getHeight() / 2, getWidth() + image.getWidth() / 2, getHeight() + image.getHeight() / 2);
             contentCoords.x = getWidth() / 2;
             contentCoords.y = getHeight() / 2;
             invalidate();
@@ -102,13 +99,7 @@ public class CImageView extends View {
         canvas.drawColor(getResources().getColor(R.color.colorPrimaryDark));
         if (image != null && !image.isEmpty()){
             image.draw(canvas, imagePaint, contentCoords.x, contentCoords.y, contentScale);
-            /*
-            dst.left = contentCoords.x - (int) (image.getWidth() * (contentScale/2));
-            dst.top = contentCoords.y - (int) (image.getHeight() * (contentScale/2));
-            dst.right = contentCoords.x + (int) (image.getWidth() * (contentScale/2));
-            dst.bottom =  contentCoords.y + (int) (image.getHeight() * (contentScale/2));
-            canvas.drawBitmap(image.getBitmap(), src, dst, null);
-            */
+
             drawingCache = this.getDrawingCache(true);
 
             if (cCanvas.isInitialized())
@@ -308,10 +299,7 @@ public class CImageView extends View {
                         case MotionEvent.ACTION_MOVE: {
                             coord.x = (int) Math.max(0 - image.getWidth() * contentScale + getWidth() * MOVE_SAFEZONE  + (int) (image.getWidth() * (contentScale/2)), initialContentX + (touchList.get(0).x - initialX)); // need a scale factor somewhere here
                             coord.y = (int) Math.max(0 - image.getHeight() * contentScale + getHeight() * MOVE_SAFEZONE + (int) (image.getHeight() * (contentScale/2)), initialContentY + (touchList.get(0).y - initialY));
-                            /*
-                            coord.x = initialContentX + (touchList.get(0).x - initialX); // need a scale factor somewhere here
-                            coord.y = initialContentY + (touchList.get(0).y - initialY);
-                            */
+
                         } break;
                     }
                 } break;
@@ -324,10 +312,6 @@ public class CImageView extends View {
                         float currentDist = touchList.get(0).distanceFromPoint(touchList.get(1));
                         scale = currentDist / initialDist * initialScale;
 
-                        /*
-                        coord.x =  (touchList.get(0).x +  touchList.get(1).x)/2 - image.getWidth()/2; // need a scale factor somewhere here
-                        coord.y = (touchList.get(0).x +  touchList.get(1).x)/2 - image.getHeight()/2;
-                        */
                     }
 
                 } break;
@@ -360,28 +344,6 @@ public class CImageView extends View {
 
     }
 
-    //For Undo / redo options...
-
-    /*public void onPreviewFilter(int value) {
-        switch (currentInputType) {
-            case NONE:
-                return;
-            case SHADER:
-                switch (currentInputItem) {
-                    case NONE:
-                        return;
-                    case F_CHANGE_HUE:
-                        Shader s = new ChangeHue(getContext());
-                        s.ApplyPreviewFilter(image, inputManager.getPreviewParams());
-                        break;
-                }
-                break;
-            case TOOL:
-                break;
-            case SYSTEM:
-                break;
-        }
-    }*/
     public void setcCanvas(CCanvas cCanvas) {
         this.cCanvas = cCanvas;
     }

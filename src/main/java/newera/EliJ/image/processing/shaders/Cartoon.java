@@ -26,7 +26,7 @@ public class Cartoon extends Shader{
         super(context);
         this.drawableIconId = R.drawable.ic_tag_faces_black_24dp;
         this.clickableName = R.string.shaderCartoonName;
-        this.item = EItems.F_CONTRAST;
+        this.item = EItems.F_CARTOON;
     }
 
     private float factor_edge = 1;
