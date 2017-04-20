@@ -83,6 +83,7 @@ public class InputManager {
             case F_CONVOLUTION:
             case F_SEPIA:
             case F_INVERT_COLOR:
+            case F_PENCIL:
             case F_GRAYSCALE:
                 currentCategory = ECategory.FILTER;
                 currentBox = new GenericBox(this, label, l);
@@ -126,11 +127,6 @@ public class InputManager {
         if (currentBox != null)
             currentBox.drawBox(canvas);
     }
-
-    /*public void onPreviewFilter(int value, Map<String, Object> params)
-    {
-        view.onPreviewFilter(value);
-    }*/
 
     /**
      * @return View for GenericBox's needs.

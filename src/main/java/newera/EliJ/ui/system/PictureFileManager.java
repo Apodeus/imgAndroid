@@ -154,8 +154,6 @@ public class PictureFileManager {
 
                 Bitmap decoder = BitmapFactory.decodeFileDescriptor(fileDescriptor);
 
-                //BitmapRegionDecoder decoder = BitmapRegionDecoder.newInstance(fileDescriptor, true);
-
                 int h = decoder.getHeight();
                 int w = decoder.getWidth();
                 int xm, ym, xM, yM;//4160*3120
@@ -168,7 +166,6 @@ public class PictureFileManager {
                 double lines = Math.ceil((double)h / (double)DECODE_TILE_SIZE);
 
                 result.setDim((int)rows, (int)lines, w, h);
-                //result.initDimOriginalBitmap((int)rows, (int)lines);
 
                 for(int y = 0; y < lines; ++y){
                     for(int x = 0; x < rows; ++x){
@@ -180,20 +177,13 @@ public class PictureFileManager {
 
                         rect.set(xm, ym, xM, yM);
 
-                        //img = decoder.decodeRegion(rect, opts);
                         img = Bitmap.createBitmap(decoder, rect.left, rect.top, rect.width(), rect.height());
                         result.addBitmap(img, x, y);
                     }
                 }
                 parcelFD.close();
 
-                /*for(int y = 0; y < lines; ++y)
-                    for(int x = 0; x < rows; ++x)
-                    {
-                        img = result.getBitmap(x, y);
-                        result.initOriginalBitmap(img, x, y);
-                    }*/
-                } else {
+            } else {
                 Log.i("", "ERROR: TmpUriFile is empty.");
             }
         } catch(IOException e) {

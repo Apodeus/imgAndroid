@@ -138,7 +138,6 @@ public class IntegerSeekBar implements IGenericBoxComponent {
         paint.setAlpha((int) (PAINT_ALPHA * 255));
         canvas.drawRect(barForeground, paint);
 
-        //canvas.drawBitmap(cursorIconBitmap, barForeground.right - CURSOR_SIZE / 2, barBackground.top - CURSOR_SIZE, paint);
         canvas.drawBitmap(cursorIconBitmap, barForeground.right - CURSOR_SIZE / 12.5f, barBackground.top + BAR_THICKNESS / 2 - CURSOR_SIZE/2, paint);
 
         paint.setColor(textColor);

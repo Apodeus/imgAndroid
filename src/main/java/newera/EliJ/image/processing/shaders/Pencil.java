@@ -25,7 +25,7 @@ public class Pencil extends Shader{
         super(context);
         this.drawableIconId = R.drawable.ic_contrast_tonality_black_24dp;
         this.clickableName = R.string.shaderPencilName;
-        this.item = EItems.F_CONTRAST;
+        this.item = EItems.F_PENCIL;
     }
 
     private float factor_edge = 1;

@@ -235,9 +235,6 @@ public class ColorPicker implements IGenericBoxComponent {
             float[] hsv = {0f, 0f, 0f};
             Color.colorToHSV(viewCache.getPixel((int) event.getRawX(), (int) event.getRawY()), hsv);
             currentValue = (int) hsv[0];
-            //Bitmap b = box.getInputManager().getView().getImage().getBitmap();
-            //currentValue = b.getPixel((int) event.getRawX(), (int) event.getRawY()); // need to convert to HSL + get H
-            //Log.w("INFO", "" + viewCache.getPixel((int) event.getRawX(), (int) event.getRawY())); // need to convert to HSL + get H
         }
 
     }

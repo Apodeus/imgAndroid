@@ -41,10 +41,8 @@ public class CCanvas {
             for (int j = 0; j < nh; j++)
             {
                 paintingCanvas[i][j] = new CanvasTool(i * PANEL_SIZE, j * PANEL_SIZE, PANEL_SIZE);
-                //paintingCanvas[i][j].initialize();
             }
 
-        //this.currentCanvas = canvas;
         isInitialized = true;
     }
 

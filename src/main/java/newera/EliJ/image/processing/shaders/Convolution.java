@@ -17,7 +17,7 @@ import newera.EliJ.image.processing.EItems;
 
 public class Convolution extends Shader{
 
-    //This Enum permit to know which Convolution should be apply
+    //This Enum permits to know which Convolution should be apply
     public enum ConvType{GAUSS, EDGE, LAPL, MOY, SOBEL, SOBEL_H, SOBEL_V}
     public ConvType matrix = ConvType.EDGE;
     private float sigma = 1;

@@ -107,19 +107,16 @@ public class GenericBox {
                 //Handle action_down
             }
 
-        //if (isEdit && event.getAction() == MotionEvent.ACTION_MOVE)
-        //{
-            //Handle edit
-            for (IGenericBoxComponent c : components)
-                c.handleEdit(event);
-        //}
+        //Handle edit
+        for (IGenericBoxComponent c : components)
+            c.handleEdit(event);
 
         if (event.getAction() == MotionEvent.ACTION_UP)
         {
 
             for (IGenericBoxComponent c : components)
                 c.disableEdit();
-            //manager.onPreviewFilter(currentValue, getParams());
+
             if (!isEdit && event.getY() > currentBoxBackground.bottom - ICON_SIZE && event.getY() < currentBoxBackground.bottom)
                 if (event.getX() > currentBoxBackground.left && event.getX() < currentBoxBackground.left + ICON_SIZE)
                 {

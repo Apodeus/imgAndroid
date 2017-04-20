@@ -168,7 +168,6 @@ public class DrawInterface implements IGenericBoxComponent {
 
     @Override
     public void draw(Canvas canvas) {
-        //barForeground.right = barBackground.left + (int) ((currentValue + length - maxValue) * barTik);
 
         if (drawActive)
         {
@@ -253,7 +252,6 @@ public class DrawInterface implements IGenericBoxComponent {
         {
             isEditEraser = false;
             eraseActive = !eraseActive;
-            //box.setPictureEdit(eraseActive);
 
             if (eraseActive)
             {

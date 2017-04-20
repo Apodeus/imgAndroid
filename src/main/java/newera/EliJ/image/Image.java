@@ -162,35 +162,10 @@ public class Image {
     }
 
     /**
-     * Generate an empty tileset for original bitmap's storage.
-     * @param w Number of tiles on w axis
-     * @param h Number of tiles on h axis
-     */
-    /*
-    public void initDimOriginalBitmap(int w, int h){
-        this.w = w;
-        this.h = h;
-        this.originalBitmap = new Bitmap[w][h];
-        for(int y = 0; y < h; ++y) {
-            for (int x = 0; x < w; ++x) {
-                originalBitmap[x][y] = null;
-            }
-        }
-    }*/
-
-    /**
      * Reset edited bitmap at original's state.
      */
     public void reinitializeBitmap(){
         PictureFileManager.loadFromUri(origUri);
-        /*for(int x = 0; x < w; x++) {
-            for (int y = 0; y < h; y++) {
-                this.bitmap[x][y] = this.originalBitmap[x][y].copy(
-                        this.originalBitmap[x][y].getConfig(),
-                        this.originalBitmap[x][y].isMutable()
-                );
-            }
-        }*/
     }
 
     /**
@@ -205,11 +180,6 @@ public class Image {
      */
     public int getWidth(){
         return fw;
-        /*int bmp_width = 0;
-        for (int x = 0; x < w; ++x) {
-            bmp_width += bitmap[x][0].getWidth();
-        }
-        return bmp_width;*/
     }
 
     /**
@@ -217,11 +187,6 @@ public class Image {
      */
     public int getHeight() {
         return fh;
-        /*int bmp_height = 0;
-        for (int y = 0; y < h; ++y) {
-            bmp_height += bitmap[0][y].getHeight();
-        }
-        return bmp_height;*/
     }
 
     /**
@@ -276,20 +241,13 @@ public class Image {
 
     private void rotateBitmaps(int angle){
 
-
         Matrix matrix = new Matrix();
         matrix.postRotate(angle);
 
         for(int x = 0; x < w; x++){
             for(int y = 0; y < h; y++){
-
                 Bitmap tmp = this.getBitmap(x, y);
                 bitmap[x][y] = Bitmap.createBitmap(tmp, 0, 0, tmp.getWidth(), tmp.getHeight(), matrix, true);
-                //tmp.recycle();
-
-                //Bitmap tmp2 = this.originalBitmap[x][y];
-                //originalBitmap[x][y] = Bitmap.createBitmap(tmp2, 0, 0, tmp2.getWidth(), tmp2.getHeight(), matrix, true);
-                //tmp2.recycle();
             }
         }
 
@@ -325,13 +283,10 @@ public class Image {
             fh = tmp;
 
             bitmap = rotateArrayBitmap(bitmap, a);
-            //rotateBitmaps(a);
-            //originalBitmap = rotateArrayBitmap(originalBitmap, a);
         }
     }
 
     public int getAngle(){return this.angle;}
-
 
 }
 
