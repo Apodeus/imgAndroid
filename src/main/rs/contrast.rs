@@ -15,7 +15,7 @@ static float restrein(float v){
 uchar4 __attribute__((kernel)) Contrast(uchar4 in, uint32_t x, uint32_t y) {
   float3 pixel = {in.r, in.g, in.b};
 
-  float factor = contrast/(128*1.33)+1.25;//Normalize [-128, 128] -> [0.5, 2]
+  float factor = contrast/(128*1.33)+1;//Normalize [-128, 128] -> [0.5, 2]
 
   uchar4 out;
   out.a = in.a;

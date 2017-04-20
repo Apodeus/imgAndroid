@@ -61,8 +61,8 @@ public class InputManager {
 
             case F_LIGHTNESS:
                 currentCategory = ECategory.FILTER;
-                InputDataType seekBar = new InputDataType(EInputType.INTEGER_SEEKBAR, "value", "Lightness", new int[] {-50, 50, 0});
-                InputDataType data = new InputDataType(EInputType.HARD_DATA, "borders", "", new int[] {-50, 50, 0});
+                InputDataType seekBar = new InputDataType(EInputType.INTEGER_SEEKBAR, "value", "Lightness", new int[] {-100, 100, 0});
+                InputDataType data = new InputDataType(EInputType.HARD_DATA, "borders", "", new int[] {-100, 100, 0});
                 l.add(seekBar);
                 l.add(data);
                 currentBox = new GenericBox(this, label, l);

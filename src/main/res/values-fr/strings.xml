@@ -11,6 +11,8 @@
     <string name="shaderSepiaName">Sepia</string>
     <string name="shaderContrastName">Contraste</string>
     <string name="shaderConvolutionName">Convolution</string>
+    <string name="shaderPencilName">Effet Crayon</string>
+    <string name="shaderCartoonName">Effet Cartoon</string>
     <string name="systemGalleryName">Galerie</string>
     <string name="systemCameraName">Appareil photo</string>
     <string name="systemResetName">Réinitialiser l\'image</string>

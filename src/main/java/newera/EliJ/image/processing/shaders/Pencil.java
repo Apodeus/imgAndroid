@@ -8,6 +8,7 @@ import android.support.v8.renderscript.Element;
 import newera.EliJ.R;
 import newera.EliJ.ScriptC_cartoon_edge;
 import newera.EliJ.ScriptC_cartoon_saturation;
+import newera.EliJ.ScriptC_grayscale;
 import newera.EliJ.ScriptC_invert;
 import newera.EliJ.ScriptC_soustract;
 import newera.EliJ.ScriptC_thresholdLightness;
@@ -23,7 +24,7 @@ public class Pencil extends Shader{
 
     public Pencil(Context context) {
         super(context);
-        this.drawableIconId = R.drawable.ic_contrast_tonality_black_24dp;
+        this.drawableIconId = R.drawable.ic_edit_black_24dp;
         this.clickableName = R.string.shaderPencilName;
         this.item = EItems.F_PENCIL;
     }
@@ -50,6 +51,8 @@ public class Pencil extends Shader{
         if(image != null && !image.isEmpty()) {
 
             ScriptC_cartoon_edge rsConv = new ScriptC_cartoon_edge(renderScript);
+            ScriptC_invert rsInv = new ScriptC_invert(renderScript);
+            ScriptC_grayscale rsGray = new ScriptC_grayscale(renderScript);
 
             float[] mat;
             Allocation matAlloc;
@@ -82,10 +85,10 @@ public class Pencil extends Shader{
                     rsConv.set_matrix2D(matAlloc);
                     rsConv.forEach_cartoon_edge(in);
 
-                    ScriptC_invert rsInv = new ScriptC_invert(renderScript);
                     rsInv.forEach_invert(in, out);
 
-                    out.copyTo(bitmap);
+                    rsGray.forEach_Grayscale(out, in);
+                    in.copyTo(bitmap);
 
                 }
         }
