@@ -161,7 +161,7 @@ public class InputManager {
                 for(int i = 0; i < cca.getWidth(); i++)
                     for(int j = 0; j < cca.getHeight(); j++)
                     {
-                        if (view.getcCanvas().getCanvasTool(i, j).isInitialized())
+                        if (view.getcCanvas().getCanvasTool(i, j).active)
                         {
                             Allocation ori = Allocation.createFromBitmap(rs, view.getImage().getBitmap(i, j));
                             Allocation pnt = Allocation.createFromBitmap(rs, view.getcCanvas().getCanvasTool(i, j).getBitmap());
@@ -170,7 +170,7 @@ public class InputManager {
                             script.forEach_Fuse(pnt, out);
                             Bitmap res = Bitmap.createBitmap(view.getImage().getBitmap(i, j).getWidth(), view.getImage().getBitmap(i, j).getHeight(), Bitmap.Config.ARGB_8888);
                             out.copyTo(res);
-                            view.getImage().setBitmap(i, j, res);
+                            view.getImage().addBitmap(res, i, j);
                         }
 
                     }
