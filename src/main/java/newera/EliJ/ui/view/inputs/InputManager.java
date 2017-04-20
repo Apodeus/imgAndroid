@@ -54,14 +54,14 @@ public class InputManager {
         switch (type) {
             case F_CHANGE_HUE:
                 currentCategory = ECategory.FILTER;
-                InputDataType n = new InputDataType(EInputType.COLOR_PICKER, "value", "Hue", new int[] {0, 360, 0});
+                InputDataType n = new InputDataType(EInputType.COLOR_PICKER, "value", view.getResources().getString(R.string.hue), new int[] {0, 360, 0});
                 l.add(n);
                 currentBox = new GenericBox(this, label, l);
                 break;
 
             case F_LIGHTNESS:
                 currentCategory = ECategory.FILTER;
-                InputDataType seekBar = new InputDataType(EInputType.INTEGER_SEEKBAR, "value", "Lightness", new int[] {-100, 100, 0});
+                InputDataType seekBar = new InputDataType(EInputType.INTEGER_SEEKBAR, "value", view.getResources().getString(R.string.shaderLightnessName), new int[] {-100, 100, 0});
                 InputDataType data = new InputDataType(EInputType.HARD_DATA, "borders", "", new int[] {-100, 100, 0});
                 l.add(seekBar);
                 l.add(data);
@@ -70,7 +70,7 @@ public class InputManager {
 
             case F_KEEP_HUE:
                 currentCategory = ECategory.FILTER;
-                InputDataType seekBarTolerance = new InputDataType(EInputType.INTEGER_SEEKBAR, "valueTolerance", "Tolerance", new int[] {0, 180, 0});
+                InputDataType seekBarTolerance = new InputDataType(EInputType.INTEGER_SEEKBAR, "valueTolerance", view.getResources().getString(R.string.tolerance), new int[] {0, 180, 0});
                 InputDataType seekBarHue = new InputDataType(EInputType.COLOR_PICKER, "valueHue", "Hue", new int[] {0, 360, 0});
                 l.add(seekBarTolerance);
                 l.add(seekBarHue);
@@ -79,7 +79,7 @@ public class InputManager {
 
             case F_CONTRAST:
                 currentCategory = ECategory.FILTER;
-                InputDataType seekBarContrast = new InputDataType(EInputType.INTEGER_SEEKBAR, "value", "Contrast", new int[] {-128, 128, 0});
+                InputDataType seekBarContrast = new InputDataType(EInputType.INTEGER_SEEKBAR, "value", view.getResources().getString(R.string.shaderContrastName), new int[] {-128, 128, 0});
                 l.add(seekBarContrast);
                 currentBox = new GenericBox(this, label, l);
                 break;
@@ -97,7 +97,7 @@ public class InputManager {
 
             case S_QUALITY_SAVE:
                 currentCategory = ECategory.SYSTEM;
-                InputDataType seekBarQuality = new InputDataType(EInputType.INTEGER_SEEKBAR, "value", "Quality", new int[] {50, 100, 75});
+                InputDataType seekBarQuality = new InputDataType(EInputType.INTEGER_SEEKBAR, "value", view.getResources().getString(R.string.quality), new int[] {50, 100, 75});
                 l.add(seekBarQuality);
                 currentBox = new GenericBox(this, label, l);
                 break;

@@ -31,4 +31,7 @@
     <string name="shaderConvolutionSobelName">SOBEL Convolution</string>
     <string name="brushName">Brush Tool</string>
     <string name="toolsBrush">Brush</string>
+    <string name="hue">Hue</string>
+    <string name="tolerance">Tolerance</string>
+    <string name="quality">Quality</string>
 </resources>

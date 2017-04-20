@@ -30,4 +30,7 @@
     <string name="shaderConvolutionSobelName">Convolution SOBEL</string>
     <string name="brushName">Outil Pinceau</string>
     <string name="toolsBrush">Pinceau</string>
+    <string name="hue">Teinte</string>
+    <string name="tolerance">Tolérance</string>
+    <string name="quality">Qualité d\'image</string>
 </resources>
