@@ -7,11 +7,14 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v8.renderscript.Allocation;
+import android.support.v8.renderscript.RenderScript;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
 import newera.EliJ.R;
+import newera.EliJ.ScriptC_fuse_bitmap;
 import newera.EliJ.image.Image;
 import newera.EliJ.image.processing.EItems;
 import newera.EliJ.image.processing.shaders.*;
@@ -108,8 +111,13 @@ public class CImageView extends View {
             */
             drawingCache = this.getDrawingCache(true);
 
-            if (cCanvas.isInitialized()) {
-                cCanvas.applyCanvasToImage(0.8f, canvas, contentCoords.x, contentCoords.y, contentScale);
+            if (cCanvas.isInitialized())
+            {
+                if(cCanvas.getMethod() == EMethod.DRAW)
+                    cCanvas.applyCanvasToImage(1f, canvas, contentCoords.x, contentCoords.y, contentScale);
+
+                if (cCanvas.getMethod() == EMethod.SELECTION)
+                    cCanvas.applyCanvasToImage(0.6f, canvas, contentCoords.x, contentCoords.y, contentScale);
             }
 
             inputManager.draw(canvas);
@@ -150,6 +158,37 @@ public class CImageView extends View {
     public void onApplyFilter(Shader shader, Map<String, Object> params)
     {
         shader.setParameters(params);
+        if (cCanvas.getMethod() == EMethod.SELECTION)
+        {
+            Image dup = new Image();
+            dup.setDim(image.getW(), image.getH(), image.getFw(), image.getFh());
+            for (int i = 0; i < image.getW(); i++)
+                for (int j = 0; j < image.getH(); j++)
+                    dup.addBitmap(image.getBitmap(i, j).copy(Bitmap.Config.ARGB_8888, true), i, j);
+
+            shader.ApplyFilter(dup);
+            RenderScript rs = RenderScript.create(getContext());
+            ScriptC_fuse_bitmap fb = new ScriptC_fuse_bitmap(rs);
+            for (int i = 0; i < image.getW(); i++)
+                for (int j = 0; j < image.getH(); j++)
+                {
+                    CanvasTool ct = cCanvas.getCanvasTool(i, j);
+                    if (ct.active)
+                    {
+                        Allocation in = Allocation.createFromBitmap(rs, ct.getBitmap());
+                        Allocation cut = Allocation.createFromBitmap(rs, dup.getBitmap(i, j));
+                        Allocation src = Allocation.createFromBitmap(rs, image.getBitmap(i, j));
+                        Allocation out = Allocation.createTyped(rs, src.getType());
+                        fb.set_cut(cut);
+                        fb.set_src(src);
+                        fb.forEach_Cut(in, out);
+                        out.copyTo(image.getBitmap(i, j));
+                    }
+                }
+
+                cCanvas.reset();
+        }
+        else
         shader.ApplyFilter(image);
     }
 

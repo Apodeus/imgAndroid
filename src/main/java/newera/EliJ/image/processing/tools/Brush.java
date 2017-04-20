@@ -41,7 +41,9 @@ public class Brush extends Tool {
     @Override
     public Bitmap getBitmap(Paint paint)
     {
-        drawable.setColorFilter(paint.getColor(), PorterDuff.Mode.SRC_ATOP);
+        circle = Bitmap.createBitmap(RES_SIZE, RES_SIZE, Bitmap.Config.ARGB_8888);
+        canvas = new Canvas(circle);
+        drawable.setColorFilter(paint.getColor(), PorterDuff.Mode.MULTIPLY);
         drawable.draw(canvas);
         return circle;
     }

@@ -9,6 +9,10 @@ import android.graphics.PorterDuffXfermode;
  * Created by echo on 24/03/2017.
  */
 public class ToolConfig {
+    public void setSizeModifier(float sizeModifier) {
+        this.sizeModifier = sizeModifier;
+    }
+
     private float sizeModifier;
     private Paint paint;
     private int color;

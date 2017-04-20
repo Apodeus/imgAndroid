@@ -9,6 +9,7 @@ import newera.EliJ.R;
 import newera.EliJ.ScriptC_color_bars;
 import newera.EliJ.image.processing.tools.Brush;
 import newera.EliJ.image.processing.tools.Tool;
+import newera.EliJ.ui.view.EMethod;
 import newera.EliJ.ui.view.ToolConfig;
 import newera.EliJ.ui.view.inputs.components.IGenericBoxComponent;
 
@@ -111,6 +112,7 @@ public class DrawInterface implements IGenericBoxComponent {
         this.box = genericBox;
         rs = RenderScript.create(box.getInputManager().getView().getContext());
         script = new ScriptC_color_bars(rs);
+        box.getInputManager().getView().getcCanvas().setMethod(EMethod.DRAW);
     }
 
     @Override
@@ -253,7 +255,14 @@ public class DrawInterface implements IGenericBoxComponent {
             canvas.drawBitmap(colorBarR, null, colorBarRRect, paint);
             canvas.drawBitmap(colorBarG, null, colorBarGRect, paint);
             canvas.drawBitmap(colorBarB, null, colorBarBRect, paint);
+            Xfermode xf =  paint.getXfermode();
+            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC));
+            //ColorFilter cf = paint.getColorFilter();
+            //paint.setColorFilter(new PorterDuffColorFilter(Color.TRANSPARENT, PorterDuff.Mode.DST_IN));
             canvas.drawBitmap(colorBarA, null, colorBarARect, paint);
+            //paint.setColorFilter(cf);
+            paint.setXfermode(xf);
+
             canvas.drawBitmap(colorCursorIconBitmap, (int)(colorBarRRect.left - BAR_SEEKER_ICON_SIZE / 2 + Color.red(currentColor)/255f * colorBarRRect.width()), (int)(colorBarRRect.top - CURSOR_DECAL_TO_UP), paint);
             canvas.drawBitmap(colorCursorIconBitmap, (int)(colorBarGRect.left - BAR_SEEKER_ICON_SIZE / 2 + Color.green(currentColor)/255f * colorBarRRect.width()), (int)(colorBarGRect.top - CURSOR_DECAL_TO_UP), paint);
             canvas.drawBitmap(colorCursorIconBitmap, (int)(colorBarBRect.left - BAR_SEEKER_ICON_SIZE / 2 + Color.blue(currentColor)/255f * colorBarRRect.width()), (int)(colorBarBRect.top - CURSOR_DECAL_TO_UP), paint);
@@ -323,6 +332,7 @@ public class DrawInterface implements IGenericBoxComponent {
 
     @Override
     public void handleEdit(MotionEvent event) {
+        config.setSizeModifier(1/box.getInputManager().getView().getContentScale());
         if (isEditDrawer)
         {
             isEditDrawer = false;

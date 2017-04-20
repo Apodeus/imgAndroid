@@ -1,5 +1,6 @@
 package newera.EliJ.ui.view;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -14,7 +15,7 @@ import java.util.List;
  * Created by echo on 17/03/2017.
  */
 public class CCanvas {
-    private final static int PANEL_SIZE = 150;
+    private final static int PANEL_SIZE = 512;
     private int nw;
     private int nh;
     private CanvasTool[][] paintingCanvas;
@@ -22,6 +23,7 @@ public class CCanvas {
     private Image image;
     private CImageView cv;
     private boolean isInitialized;
+    private EMethod method;
 
 
     public CCanvas(CImageView cv)
@@ -36,6 +38,7 @@ public class CCanvas {
         nh = 0;
         paintingCanvas = null;
         isInitialized = false;
+        method = null;
     }
 
     public void initialize(Image image)
@@ -43,13 +46,13 @@ public class CCanvas {
         this.image = image;
         int w = image.getWidth();
         int h = image.getHeight();
-        nw = w / PANEL_SIZE;
-        nh = h / PANEL_SIZE;
+        nw = w / PANEL_SIZE + 1;
+        nh = h / PANEL_SIZE + 1;
         this.paintingCanvas = new CanvasTool[nw][nh];
         for (int i = 0; i < nw; i++)
             for (int j = 0; j < nh; j++)
             {
-                paintingCanvas[i][j] = new CanvasTool(i * PANEL_SIZE, j * PANEL_SIZE, PANEL_SIZE);
+                paintingCanvas[i][j] = new CanvasTool(i * PANEL_SIZE, j * PANEL_SIZE, Math.min(PANEL_SIZE, w - i*PANEL_SIZE), Math.min(PANEL_SIZE, h - j * PANEL_SIZE));
                 //paintingCanvas[i][j].initialize();
             }
 
@@ -104,18 +107,18 @@ public class CCanvas {
         for (int j = 0; j < nh; j++)
             for (int i = 0; i < nw; i++)
             {
-                if (       paintingCanvas[i][j].getOffsetX()*s + paintingCanvas[i][j].getSize()*s > x - toolSize/2*s
+                if (       paintingCanvas[i][j].getOffsetX()*s + paintingCanvas[i][j].getSizeX()*s > x - toolSize/2*s
                         && paintingCanvas[i][j].getOffsetX()*s < x - toolSize/2*s
-                        && paintingCanvas[i][j].getOffsetY()*s + paintingCanvas[i][j].getSize()*s > y - toolSize/2*s
+                        && paintingCanvas[i][j].getOffsetY()*s + paintingCanvas[i][j].getSizeY()*s > y - toolSize/2*s
                         && paintingCanvas[i][j].getOffsetY()*s < y - toolSize/2*s)
                 {
                     x1 = i;
                     y1 = j;
                 }
 
-                if (       paintingCanvas[i][j].getOffsetX()*s + paintingCanvas[i][j].getSize()*s > x + toolSize/2*s
+                if (       paintingCanvas[i][j].getOffsetX()*s + paintingCanvas[i][j].getSizeX()*s > x + toolSize/2*s
                         && paintingCanvas[i][j].getOffsetX()*s < x + toolSize/2*s
-                        && paintingCanvas[i][j].getOffsetY()*s + paintingCanvas[i][j].getSize()*s > y + toolSize/2*s
+                        && paintingCanvas[i][j].getOffsetY()*s + paintingCanvas[i][j].getSizeY()*s > y + toolSize/2*s
                         && paintingCanvas[i][j].getOffsetY()*s < y + toolSize/2*s)
                 {
                     x2 = i;
@@ -142,10 +145,10 @@ public class CCanvas {
                 if (b.active)
                 {
                     Rect dst = new Rect();
-                    dst.left = cx + (int) (scale * (b.getOffsetX() - 1));
-                    dst.top = cy + (int) (scale * (b.getOffsetY() - 1));
-                    dst.right = dst.left + (int) (scale * b.getSize());
-                    dst.bottom = dst.top + (int) (scale * b.getSize());
+                    dst.left = cx + (int) (scale * (b.getOffsetX())) - 1;
+                    dst.top = cy + (int) (scale * (b.getOffsetY())) - 1;
+                    dst.right = dst.left + (int) (scale * b.getSizeX());
+                    dst.bottom = dst.top + (int) (scale * b.getSizeY());
                     Paint p = new Paint();
                     p.setAlpha((int)(255 * alpha));
                     canvas.drawBitmap(b.getBitmap(), null, dst, p);
@@ -155,5 +158,30 @@ public class CCanvas {
 
     public boolean isInitialized() {
         return isInitialized;
+    }
+
+    public CanvasTool[][] getCanvasTools() {
+        return paintingCanvas;
+    }
+
+    public int getWidth() {
+        return nw;
+    }
+
+    public int getHeight() {
+        return nh;
+    }
+
+    public CanvasTool getCanvasTool(int x, int y)
+    {
+        return paintingCanvas[x][y];
+    }
+
+    public EMethod getMethod() {
+        return method;
+    }
+
+    public void setMethod(EMethod method) {
+        this.method = method;
     }
 }

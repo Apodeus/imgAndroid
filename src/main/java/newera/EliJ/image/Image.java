@@ -20,6 +20,23 @@ import static java.lang.Math.min;
 public class Image {
     private Bitmap[][] bitmap;
     private Bitmap[][] originalBitmap;
+
+    public int getW() {
+        return w;
+    }
+
+    public int getH() {
+        return h;
+    }
+
+    public int getFw() {
+        return fw;
+    }
+
+    public int getFh() {
+        return fh;
+    }
+
     private int w, h, fw, fh;
     private int angle = 0;
     private static Uri origUri;
@@ -333,6 +350,9 @@ public class Image {
     public int getAngle(){return this.angle;}
 
 
+    public void setBitmap(int i, int j, Bitmap res) {
+        bitmap[i][j] = res;
+    }
 }
 
 
